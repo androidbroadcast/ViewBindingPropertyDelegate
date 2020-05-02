@@ -1,0 +1,3 @@
+include ':app'
+include ':library'
+rootProject.name = "View Binding Delegate"
