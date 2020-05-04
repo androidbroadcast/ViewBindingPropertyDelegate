@@ -7,7 +7,6 @@ Make work with [Android View Binding](https://developer.android.com/topic/librar
 ```groovy
 allprojects {
   repositories {
-    ...
     maven { url 'https://jitpack.io' }
   }
 }
