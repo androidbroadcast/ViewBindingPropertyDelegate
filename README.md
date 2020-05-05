@@ -12,7 +12,7 @@ allprojects {
 }
 
 dependencies {
-    implementation 'com.github.kirich1409:ViewBindingPropertyDelegate:0.1'
+    implementation 'com.github.kirich1409:ViewBindingPropertyDelegate:0.2'
 }
 ```
 
