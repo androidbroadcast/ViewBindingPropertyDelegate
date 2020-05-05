@@ -6,5 +6,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 
 class ProfileFragment : Fragment(R.layout.profile) {
 
-    private val viewBinding: ProfileBinding by viewBinding()
+    private val viewBindingUsingReflection: ProfileBinding by viewBinding()
+
+    private val viewBinding: ProfileBinding by viewBinding(ProfileBinding::bind)
 }
