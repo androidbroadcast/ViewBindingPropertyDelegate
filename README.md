@@ -20,10 +20,23 @@ dependencies {
 
 ```kotlin
 class ProfileFragment : Fragment(R.layout.profile) {
-    private val viewBinding: ProfileBinding by viewBinding()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        // Use viewBinding
+    val viewBindingUsingReflection: ProfileBinding by viewBinding()
+
+    val viewBinding by viewBinding(ProfileBinding::bind)
+}
+```
+
+```kotlin
+class ProfileActivity : AppCompatActivity(R.layout.profile) {
+
+    val viewBindingUsingReflection: ProfileBinding by viewBinding(R.id.container)
+
+    val viewBinding by viewBinding(R.id.container, ProfileBinding::bind)
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        // Don't need to call setContentView(viewBinding.root)
+    }
 }
 ```

@@ -9,7 +9,7 @@ class ProfileActivity : AppCompatActivity(R.layout.profile) {
 
     private val viewBindingUsingReflection: ProfileBinding by viewBinding(R.id.container)
 
-    private val viewBinding: ProfileBinding by viewBinding(R.id.container, ProfileBinding::bind)
+    private val viewBinding by viewBinding(R.id.container, ProfileBinding::bind)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -8,5 +8,5 @@ class ProfileFragment : Fragment(R.layout.profile) {
 
     private val viewBindingUsingReflection: ProfileBinding by viewBinding()
 
-    private val viewBinding: ProfileBinding by viewBinding(ProfileBinding::bind)
+    private val viewBinding by viewBinding(ProfileBinding::bind)
 }
