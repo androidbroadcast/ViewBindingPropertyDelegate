@@ -21,18 +21,22 @@ dependencies {
 ```kotlin
 class ProfileFragment : Fragment(R.layout.profile) {
 
-    val viewBindingUsingReflection: ProfileBinding by viewBinding()
+    private val viewBindingUsingReflection: ProfileBinding by viewBinding()
 
-    val viewBinding by viewBinding(ProfileBinding::bind)
+    private val viewBindingWithoutReflection by viewBinding { fragment ->
+        ProfileBinding.bind(fragment.requireView())
+    }
 }
 ```
 
 ```kotlin
 class ProfileActivity : AppCompatActivity(R.layout.profile) {
 
-    val viewBindingUsingReflection: ProfileBinding by viewBinding(R.id.container)
+    private val viewBindingUsingReflection: ProfileBinding by viewBinding(R.id.container)
 
-    val viewBinding by viewBinding(R.id.container, ProfileBinding::bind)
+    private val viewBindingWithoutReflection by viewBinding { activity ->
+        ProfileBinding.bind(activity.findViewById(R.id.container))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

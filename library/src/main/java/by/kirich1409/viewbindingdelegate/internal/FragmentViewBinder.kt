@@ -2,14 +2,12 @@ package by.kirich1409.viewbindingdelegate.internal
 
 import android.view.View
 import androidx.annotation.RestrictTo
+import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
-import by.kirich1409.viewbindingdelegate.ViewBinder
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 @PublishedApi
-internal class DefaultViewBinder<T : ViewBinding>(
-    private val viewBindingClass: Class<T>
-) : ViewBinder<T> {
+internal class FragmentViewBinder<T : ViewBinding>(private val viewBindingClass: Class<T>) {
 
     /**
      * Cache static method `ViewBinding.bind(View)`
@@ -22,7 +20,7 @@ internal class DefaultViewBinder<T : ViewBinding>(
      * Create new [ViewBinding] instance
      */
     @Suppress("UNCHECKED_CAST")
-    override fun bind(view: View): T {
-        return bindViewMethod(null, view) as T
+    fun bind(fragment: Fragment): T {
+        return bindViewMethod(null, fragment.requireView()) as T
     }
 }
