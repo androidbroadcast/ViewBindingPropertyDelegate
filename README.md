@@ -1,4 +1,5 @@
 # ViewBindingPropertyDelegate
+[![](https://jitpack.io/v/kirich1409/ViewBindingPropertyDelegate.svg)](https://jitpack.io/#kirich1409/ViewBindingPropertyDelegate)
 
 Make work with [Android View Binding](https://developer.android.com/topic/libraries/view-binding) simpler
 
