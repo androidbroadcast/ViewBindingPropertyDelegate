@@ -17,7 +17,7 @@ dependencies {
 }
 ```
 
-## Sample 
+## Samples
 
 ```kotlin
 class ProfileFragment : Fragment(R.layout.profile) {
@@ -42,6 +42,38 @@ class ProfileActivity : AppCompatActivity(R.layout.profile) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Don't need to call setContentView(viewBinding.root)
+    }
+}
+```
+
+```kotlin
+class ProfileDialogFragment : DialogFragment() {
+
+    private val viewBindingUsingReflection: ProfileBinding by dialogViewBinding(R.id.container)
+
+    private val viewBindingWithoutReflection by dialogViewBinding { fragment ->
+        ProfileBinding.bind(fragment.dialog!!.window!!.decorView.findViewById(R.id.container))
+    }
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        return AlertDialog.Builder(requireContext())
+            .setView(R.layout.profile)
+            .create()
+    }
+}
+```
+
+```kotlin
+class ProfileDialogFragment : DialogFragment() {
+
+    private val viewBindingUsingReflection: ProfileBinding by dialogViewBinding(R.id.container)
+
+    private val viewBindingWithoutReflection by viewBinding { fragment ->
+        ProfileBinding.bind(fragment.requireView())
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.profile, container, false)
     }
 }
 ```
