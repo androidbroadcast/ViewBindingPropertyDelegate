@@ -6,11 +6,13 @@ import android.view.View
 import androidx.annotation.IdRes
 import androidx.annotation.MainThread
 import androidx.core.app.ComponentActivity
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.viewbinding.ViewBinding
 import by.kirich1409.viewbindingdelegate.internal.ActivityViewBinder
+import by.kirich1409.viewbindingdelegate.internal.DialogFragmentViewBinder
 import by.kirich1409.viewbindingdelegate.internal.FragmentViewBinder
 import by.kirich1409.viewbindingdelegate.internal.checkIsMainThread
 import by.kirich1409.viewbindingdelegate.internal.requireViewByIdCompat
@@ -65,6 +67,16 @@ internal class FragmentViewBindingProperty<F : Fragment, T : ViewBinding>(
     override fun getLifecycleOwner(thisRef: F) = thisRef.viewLifecycleOwner
 }
 
+@PublishedApi
+internal class DialogFragmentViewBindingProperty<F : DialogFragment, T : ViewBinding>(
+    viewBinder: (F) -> T
+) : ViewBindingProperty<F, T>(viewBinder) {
+
+    override fun getLifecycleOwner(thisRef: F): LifecycleOwner {
+        return if (thisRef.view == null) thisRef.viewLifecycleOwner else thisRef
+    }
+}
+
 /**
  * Create new [ViewBinding] associated with the [Activity][this]
  *
@@ -105,4 +117,27 @@ inline fun <F : Fragment, reified T : ViewBinding> F.viewBinding(): ViewBindingP
 @JvmName("viewBindingFragment")
 fun <F : Fragment, T : ViewBinding> F.viewBinding(viewBinder: (F) -> T): ViewBindingProperty<F, T> {
     return FragmentViewBindingProperty(viewBinder)
+}
+
+/**
+ * Create new [ViewBinding] associated with the [DialogFragment][this]'s view
+ *
+ * @param viewBindingRootId Id of the root view from your custom view
+ */
+@Suppress("unused")
+@JvmName("viewBindingDialogFragment")
+inline fun <reified T : ViewBinding> DialogFragment.dialogViewBinding(
+    @IdRes viewBindingRootId: Int
+): ViewBindingProperty<DialogFragment, T> {
+    return dialogViewBinding(DialogFragmentViewBinder(T::class.java, viewBindingRootId)::bind)
+}
+
+
+/**
+ * Create new [ViewBinding] associated with the [DialogFragment][this]
+ */
+@Suppress("unused")
+@JvmName("viewBindingDialogFragment")
+fun <F : DialogFragment, T : ViewBinding> F.dialogViewBinding(viewBinder: (F) -> T): ViewBindingProperty<F, T> {
+    return DialogFragmentViewBindingProperty(viewBinder)
 }
