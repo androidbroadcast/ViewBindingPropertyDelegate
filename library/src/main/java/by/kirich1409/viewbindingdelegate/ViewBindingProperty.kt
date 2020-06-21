@@ -4,9 +4,9 @@ import android.app.Activity
 import android.os.Handler
 import android.os.Looper
 import android.view.View
-import androidx.activity.ComponentActivity
 import androidx.annotation.IdRes
 import androidx.annotation.MainThread
+import androidx.core.app.ComponentActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
@@ -18,8 +18,7 @@ import by.kirich1409.viewbindingdelegate.internal.requireViewByIdCompat
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
-@PublishedApi
-internal abstract class ViewBindingProperty<R, T : ViewBinding>(
+abstract class ViewBindingProperty<R, T : ViewBinding>(
     private val viewBinder: (R) -> T
 ) : ReadOnlyProperty<R, T> {
 
@@ -52,19 +51,19 @@ internal abstract class ViewBindingProperty<R, T : ViewBinding>(
 }
 
 @PublishedApi
-internal class ActivityViewBindingProperty<T : ViewBinding>(
-    viewBinder: (Activity) -> T
-) : ViewBindingProperty<ComponentActivity, T>(viewBinder) {
+internal class ActivityViewBindingProperty<A : ComponentActivity, T : ViewBinding>(
+    viewBinder: (A) -> T
+) : ViewBindingProperty<A, T>(viewBinder) {
 
-    override fun getLifecycleOwner(thisRef: ComponentActivity) = thisRef
+    override fun getLifecycleOwner(thisRef: A) = thisRef
 }
 
 @PublishedApi
-internal class FragmentViewBindingProperty<T : ViewBinding>(
-    viewBinder: (Fragment) -> T
-) : ViewBindingProperty<Fragment, T>(viewBinder) {
+internal class FragmentViewBindingProperty<F : Fragment, T : ViewBinding>(
+    viewBinder: (F) -> T
+) : ViewBindingProperty<F, T>(viewBinder) {
 
-    override fun getLifecycleOwner(thisRef: Fragment) = thisRef.viewLifecycleOwner
+    override fun getLifecycleOwner(thisRef: F) = thisRef.viewLifecycleOwner
 }
 
 /**
@@ -73,9 +72,9 @@ internal class FragmentViewBindingProperty<T : ViewBinding>(
  * @param viewBindingRootId Root view's id that will be used as root for the view binding
  */
 @Suppress("unused")
-inline fun <reified T : ViewBinding> ComponentActivity.viewBinding(
+inline fun <A : ComponentActivity, reified T : ViewBinding> A.viewBinding(
     @IdRes viewBindingRootId: Int
-): ReadOnlyProperty<ComponentActivity, T> {
+): ViewBindingProperty<A, T> {
     val activityViewBinder =
         ActivityViewBinder(T::class.java) { it.requireViewByIdCompat(viewBindingRootId) }
     return ActivityViewBindingProperty(activityViewBinder::bind)
@@ -86,9 +85,7 @@ inline fun <reified T : ViewBinding> ComponentActivity.viewBinding(
  * a [View] will be bounded to the view binding.
  */
 @Suppress("unused")
-fun <T : ViewBinding> ComponentActivity.viewBinding(
-    viewBinder: (Activity) -> T
-): ReadOnlyProperty<ComponentActivity, T> {
+fun <A : ComponentActivity, T : ViewBinding> A.viewBinding(viewBinder: (A) -> T): ViewBindingProperty<A, T> {
     return ActivityViewBindingProperty(viewBinder)
 }
 
@@ -96,8 +93,8 @@ fun <T : ViewBinding> ComponentActivity.viewBinding(
  * Create new [ViewBinding] associated with the [Fragment][this]
  */
 @Suppress("unused")
-inline fun <reified T : ViewBinding> Fragment.viewBinding(
-    noinline viewBinder: (Fragment) -> T = FragmentViewBinder(T::class.java)::bind
-): ReadOnlyProperty<Fragment, T> {
+inline fun <F : Fragment, reified T : ViewBinding> F.viewBinding(
+    noinline viewBinder: (F) -> T = FragmentViewBinder(T::class.java)::bind
+): ViewBindingProperty<F, T> {
     return FragmentViewBindingProperty(viewBinder)
 }
