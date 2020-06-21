@@ -1,6 +1,5 @@
 package by.kirich1409.viewbindingdelegate
 
-import android.app.Activity
 import android.os.Handler
 import android.os.Looper
 import android.view.View
@@ -18,7 +17,7 @@ import by.kirich1409.viewbindingdelegate.internal.requireViewByIdCompat
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
-abstract class ViewBindingProperty<R, T : ViewBinding>(
+abstract class ViewBindingProperty<in R, T : ViewBinding>(
     private val viewBinder: (R) -> T
 ) : ReadOnlyProperty<R, T> {
 
@@ -77,7 +76,7 @@ inline fun <A : ComponentActivity, reified T : ViewBinding> A.viewBinding(
 ): ViewBindingProperty<A, T> {
     val activityViewBinder =
         ActivityViewBinder(T::class.java) { it.requireViewByIdCompat(viewBindingRootId) }
-    return ActivityViewBindingProperty(activityViewBinder::bind)
+    return viewBinding(activityViewBinder::bind)
 }
 
 /**
@@ -85,6 +84,7 @@ inline fun <A : ComponentActivity, reified T : ViewBinding> A.viewBinding(
  * a [View] will be bounded to the view binding.
  */
 @Suppress("unused")
+@JvmName("viewBindingActivity")
 fun <A : ComponentActivity, T : ViewBinding> A.viewBinding(viewBinder: (A) -> T): ViewBindingProperty<A, T> {
     return ActivityViewBindingProperty(viewBinder)
 }
@@ -93,8 +93,16 @@ fun <A : ComponentActivity, T : ViewBinding> A.viewBinding(viewBinder: (A) -> T)
  * Create new [ViewBinding] associated with the [Fragment][this]
  */
 @Suppress("unused")
-inline fun <F : Fragment, reified T : ViewBinding> F.viewBinding(
-    noinline viewBinder: (F) -> T = FragmentViewBinder(T::class.java)::bind
-): ViewBindingProperty<F, T> {
+@JvmName("viewBindingFragment")
+inline fun <F : Fragment, reified T : ViewBinding> F.viewBinding(): ViewBindingProperty<Fragment, T> {
+    return viewBinding(FragmentViewBinder(T::class.java)::bind)
+}
+
+/**
+ * Create new [ViewBinding] associated with the [Fragment][this]
+ */
+@Suppress("unused")
+@JvmName("viewBindingFragment")
+fun <F : Fragment, T : ViewBinding> F.viewBinding(viewBinder: (F) -> T): ViewBindingProperty<F, T> {
     return FragmentViewBindingProperty(viewBinder)
 }
