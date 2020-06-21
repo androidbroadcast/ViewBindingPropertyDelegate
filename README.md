@@ -22,38 +22,24 @@ dependencies {
 ```kotlin
 class ProfileFragment : Fragment(R.layout.profile) {
 
-    private val viewBindingUsingReflection: ProfileBinding by viewBinding()
-
-    private val viewBindingWithoutReflection by viewBinding { fragment ->
-        ProfileBinding.bind(fragment.requireView())
-    }
+    private val viewBinding: ProfileBinding by viewBinding()
 }
 ```
 
 ```kotlin
 class ProfileActivity : AppCompatActivity(R.layout.profile) {
 
-    private val viewBindingUsingReflection: ProfileBinding by viewBinding(R.id.container)
-
-    private val viewBindingWithoutReflection by viewBinding { activity ->
-        ProfileBinding.bind(activity.findViewById(R.id.container))
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        // Don't need to call setContentView(viewBinding.root)
-    }
+    private val viewBinding: ProfileBinding by viewBinding(R.id.container)
 }
 ```
 
 ```kotlin
 class ProfileDialogFragment : DialogFragment() {
 
-    private val viewBindingUsingReflection: ProfileBinding by dialogViewBinding(R.id.container)
+    private val viewBinding: ProfileBinding by dialogViewBinding(R.id.container)
 
-    private val viewBindingWithoutReflection by dialogViewBinding { fragment ->
-        ProfileBinding.bind(fragment.dialog!!.window!!.decorView.findViewById(R.id.container))
-    }
+    // Creating via default way will work too for that case
+    // private val viewBinding: ProfileBinding by viewBinding()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return AlertDialog.Builder(requireContext())
@@ -66,11 +52,7 @@ class ProfileDialogFragment : DialogFragment() {
 ```kotlin
 class ProfileDialogFragment : DialogFragment() {
 
-    private val viewBindingUsingReflection: ProfileBinding by dialogViewBinding(R.id.container)
-
-    private val viewBindingWithoutReflection by viewBinding { fragment ->
-        ProfileBinding.bind(fragment.requireView())
-    }
+    private val viewBinding: ProfileBinding by dialogViewBinding(R.id.container)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.profile, container, false)

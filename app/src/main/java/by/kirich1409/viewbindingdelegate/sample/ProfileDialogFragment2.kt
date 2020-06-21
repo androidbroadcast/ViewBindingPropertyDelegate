@@ -15,6 +15,9 @@ class ProfileDialogFragment2 : DialogFragment() {
 
     private val viewBindingUsingReflection: ProfileBinding by dialogViewBinding(R.id.container)
 
+    // Creating via default way will work too for that case
+    // private val viewBinding: ProfileBinding by viewBinding()
+
     private val viewBindingWithoutReflection by viewBinding { fragment ->
         ProfileBinding.bind(fragment.requireView())
     }
