@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package by.kirich1409.viewbindingdelegate.sample
 
 import androidx.fragment.app.Fragment
