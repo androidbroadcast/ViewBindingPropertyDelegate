@@ -20,6 +20,7 @@ android {
     // For Kotlin projects
     kotlinOptions {
         jvmTarget = "1.8"
+        kotlinOptions.freeCompilerArgs += ['-module-name', "com.github.kirich1409.ViewBindingPropertyDelegate"]
     }
 
 
