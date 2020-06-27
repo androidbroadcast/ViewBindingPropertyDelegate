@@ -1,5 +1,9 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+}
+
+apply from: 'publishing.gradle'
 
 android {
     compileSdkVersion 29
@@ -20,7 +24,8 @@ android {
     // For Kotlin projects
     kotlinOptions {
         jvmTarget = "1.8"
-        kotlinOptions.freeCompilerArgs += ['-module-name', "com.github.kirich1409.ViewBindingPropertyDelegate"]
+        kotlinOptions.freeCompilerArgs +=
+                ['-module-name', "com.github.kirich1409.ViewBindingPropertyDelegate"]
     }
 }
 
