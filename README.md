@@ -1,5 +1,4 @@
 # ViewBindingPropertyDelegate
-[![](https://jitpack.io/v/kirich1409/ViewBindingPropertyDelegate.svg)](https://jitpack.io/#kirich1409/ViewBindingPropertyDelegate)
 
 Make work with [Android View Binding](https://developer.android.com/topic/libraries/view-binding) simpler
 
@@ -8,12 +7,12 @@ Make work with [Android View Binding](https://developer.android.com/topic/librar
 ```groovy
 allprojects {
   repositories {
-    maven { url 'https://jitpack.io' }
+    jcenter()
   }
 }
 
 dependencies {
-    implementation 'com.github.kirich1409:ViewBindingPropertyDelegate:0.4.1'
+    implementation 'com.kirich1409.viewbindingpropertydelegate:viewbindingpropertydelegate:1.0.0-beta1'
 }
 ```
 
