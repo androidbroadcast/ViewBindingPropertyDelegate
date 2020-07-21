@@ -27,6 +27,16 @@ android {
         kotlinOptions.freeCompilerArgs +=
                 ['-module-name', "com.github.kirich1409.ViewBindingPropertyDelegate"]
     }
+
+    buildFeatures {
+        buildConfig = false
+        viewBinding = false
+        dataBinding = false
+        aidl = true
+        renderScript = true
+        resValues = true
+        shaders = true
+    }
 }
 
 dependencies {
