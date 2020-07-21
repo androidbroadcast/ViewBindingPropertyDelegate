@@ -12,7 +12,7 @@ allprojects {
 }
 
 dependencies {
-    implementation 'com.kirich1409.viewbindingpropertydelegate:viewbindingpropertydelegate:1.0.0-beta1'
+    implementation 'com.kirich1409.viewbindingpropertydelegate:viewbindingpropertydelegate:1.0.0'
 }
 ```
 
