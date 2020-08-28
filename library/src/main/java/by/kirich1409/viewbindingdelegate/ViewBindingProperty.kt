@@ -3,6 +3,7 @@ package by.kirich1409.viewbindingdelegate
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import android.view.ViewGroup
 import androidx.annotation.IdRes
 import androidx.annotation.MainThread
 import androidx.core.app.ComponentActivity
@@ -88,6 +89,16 @@ inline fun <A : ComponentActivity, reified T : ViewBinding> A.viewBinding(
 ): ViewBindingProperty<A, T> {
     val activityViewBinder =
         ActivityViewBinder(T::class.java) { it.requireViewByIdCompat(viewBindingRootId) }
+    return viewBinding(activityViewBinder::bind)
+}
+
+/**
+ * Create new [ViewBinding] associated with the [Activity][this]
+ */
+@Suppress("unused")
+inline fun <A : ComponentActivity, reified T : ViewBinding> A.viewBinding(): ViewBindingProperty<A, T> {
+    val activityViewBinder =
+        ActivityViewBinder(T::class.java) { it.requireViewByIdCompat<ViewGroup>(android.R.id.content).getChildAt(0) }
     return viewBinding(activityViewBinder::bind)
 }
 
