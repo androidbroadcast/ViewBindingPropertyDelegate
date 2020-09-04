@@ -22,6 +22,8 @@ dependencies {
 class ProfileFragment : Fragment(R.layout.profile) {
 
     private val viewBinding: ProfileBinding by viewBinding()
+
+    private val viewBindingWithoutReflection by viewBinding(ProfileBinding::bind)
 }
 ```
 
