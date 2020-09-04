@@ -14,6 +14,7 @@ import androidx.viewbinding.ViewBinding
 import by.kirich1409.viewbindingdelegate.internal.ActivityViewBinder
 import by.kirich1409.viewbindingdelegate.internal.DialogFragmentViewBinder
 import by.kirich1409.viewbindingdelegate.internal.FragmentViewBinder
+import by.kirich1409.viewbindingdelegate.internal.ReflectingFragmentViewBinder
 import by.kirich1409.viewbindingdelegate.internal.checkIsMainThread
 import by.kirich1409.viewbindingdelegate.internal.requireViewByIdCompat
 import kotlin.properties.ReadOnlyProperty
@@ -107,7 +108,16 @@ fun <A : ComponentActivity, T : ViewBinding> A.viewBinding(viewBinder: (A) -> T)
 @Suppress("unused")
 @JvmName("viewBindingFragment")
 inline fun <F : Fragment, reified T : ViewBinding> F.viewBinding(): ViewBindingProperty<Fragment, T> {
-    return viewBinding(FragmentViewBinder(T::class.java)::bind)
+    return viewBinding(ReflectingFragmentViewBinder(T::class.java)::bind)
+}
+
+/**
+ * Create new [ViewBinding] associated with the [Fragment][this]
+ */
+@Suppress("unused")
+@JvmName("viewBindingFragment")
+fun <F : Fragment, T : ViewBinding> F.viewBinding(viewBinder: (View) -> T, viewFinder: (F) -> View = Fragment::requireView): ViewBindingProperty<F, T> {
+    return viewBinding(FragmentViewBinder(viewBinder, viewFinder)::bind)
 }
 
 /**
