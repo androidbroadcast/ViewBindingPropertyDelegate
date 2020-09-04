@@ -26,10 +26,16 @@ abstract class ViewBindingProperty<in R : Any, T : ViewBinding>(
     internal var viewBinding: T? = null
     private val lifecycleObserver = BindingLifecycleObserver()
 
+    private var thisRef: R? = null
+
     protected abstract fun getLifecycleOwner(thisRef: R): LifecycleOwner
 
     @MainThread
     override fun getValue(thisRef: R, property: KProperty<*>): T {
+        check(thisRef !== this.thisRef) {
+            "Instance of ViewBindingProperty can't be shared between different properties"
+        }
+
         checkIsMainThread()
         viewBinding?.let { return it }
 
