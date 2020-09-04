@@ -1,3 +1,5 @@
+@file:Suppress("RedundantVisibilityModifier")
+
 package by.kirich1409.viewbindingdelegate
 
 import android.view.View
@@ -20,7 +22,7 @@ internal class ActivityViewBindingProperty<A : ComponentActivity, T : ViewBindin
  * a [View] will be bounded to the view binding.
  */
 @JvmName("viewBindingActivity")
-fun <A : ComponentActivity, T : ViewBinding> A.viewBinding(viewBinder: (A) -> T): ViewBindingProperty<A, T> {
+public fun <A : ComponentActivity, T : ViewBinding> A.viewBinding(viewBinder: (A) -> T): ViewBindingProperty<A, T> {
     return ActivityViewBindingProperty(viewBinder)
 }
 
@@ -29,7 +31,7 @@ fun <A : ComponentActivity, T : ViewBinding> A.viewBinding(viewBinder: (A) -> T)
  *
  * @param viewBindingRootId Root view's id that will be used as root for the view binding
  */
-inline fun <A : ComponentActivity, reified T : ViewBinding> A.viewBinding(
+public inline fun <A : ComponentActivity, reified T : ViewBinding> A.viewBinding(
     @IdRes viewBindingRootId: Int
 ): ViewBindingProperty<A, T> {
     val activityViewBinder =
@@ -42,7 +44,7 @@ inline fun <A : ComponentActivity, reified T : ViewBinding> A.viewBinding(
  * a [View] will be bounded to the view binding.
  */
 @JvmName("viewBindingActivity")
-inline fun <A : ComponentActivity, T : ViewBinding> A.viewBinding(
+public inline fun <A : ComponentActivity, T : ViewBinding> A.viewBinding(
     crossinline vbFactory: (View) -> T,
     crossinline viewProvider: (A) -> View
 ): ViewBindingProperty<A, T> {
@@ -57,7 +59,7 @@ inline fun <A : ComponentActivity, T : ViewBinding> A.viewBinding(
  * @param viewBindingRootId Root view's id that will be used as root for the view binding
  */
 @JvmName("viewBindingActivity")
-inline fun <A : ComponentActivity, T : ViewBinding> A.viewBinding(
+public inline fun <A : ComponentActivity, T : ViewBinding> A.viewBinding(
     crossinline vbFactory: (View) -> T,
     @IdRes viewBindingRootId: Int
 ): ViewBindingProperty<A, T> {

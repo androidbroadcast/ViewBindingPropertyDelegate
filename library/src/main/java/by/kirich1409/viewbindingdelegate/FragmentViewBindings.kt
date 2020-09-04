@@ -1,3 +1,5 @@
+@file:Suppress("RedundantVisibilityModifier")
+
 package by.kirich1409.viewbindingdelegate
 
 import android.view.View
@@ -18,7 +20,7 @@ internal class FragmentViewBindingProperty<F : Fragment, T : ViewBinding>(
  * Create new [ViewBinding] associated with the [Fragment][this]
  */
 @JvmName("viewBindingFragment")
-inline fun <F : Fragment, reified T : ViewBinding> F.viewBinding(): ViewBindingProperty<Fragment, T> {
+public inline fun <F : Fragment, reified T : ViewBinding> F.viewBinding(): ViewBindingProperty<Fragment, T> {
     return viewBinding(FragmentViewBinder(T::class.java)::bind)
 }
 
@@ -26,7 +28,7 @@ inline fun <F : Fragment, reified T : ViewBinding> F.viewBinding(): ViewBindingP
  * Create new [ViewBinding] associated with the [Fragment][this]
  */
 @JvmName("viewBindingFragment")
-fun <F : Fragment, T : ViewBinding> F.viewBinding(viewBinder: (F) -> T): ViewBindingProperty<F, T> {
+public fun <F : Fragment, T : ViewBinding> F.viewBinding(viewBinder: (F) -> T): ViewBindingProperty<F, T> {
     return FragmentViewBindingProperty(viewBinder)
 }
 
@@ -37,7 +39,7 @@ fun <F : Fragment, T : ViewBinding> F.viewBinding(viewBinder: (F) -> T): ViewBin
  * @param viewProvider Provide a [View] from the Fragment. By default call [Fragment.requireView]
  */
 @JvmName("viewBindingFragment")
-inline fun <F : Fragment, T : ViewBinding> F.viewBinding(
+public inline fun <F : Fragment, T : ViewBinding> F.viewBinding(
     crossinline vbFactory: (View) -> T,
     crossinline viewProvider: (F) -> View = Fragment::requireView
 ): ViewBindingProperty<F, T> {
@@ -48,7 +50,7 @@ inline fun <F : Fragment, T : ViewBinding> F.viewBinding(
  * Create new [ViewBinding] associated with the [Fragment][this]
  */
 @JvmName("viewBindingFragment")
-inline fun <F : Fragment, T : ViewBinding> F.viewBinding(
+public inline fun <F : Fragment, T : ViewBinding> F.viewBinding(
     crossinline vbFactory: (View) -> T,
     @IdRes viewBindingRootId: Int
 ): ViewBindingProperty<F, T> {

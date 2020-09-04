@@ -1,3 +1,5 @@
+@file:Suppress("RedundantVisibilityModifier")
+
 package by.kirich1409.viewbindingdelegate
 
 import android.os.Handler
@@ -10,7 +12,7 @@ import by.kirich1409.viewbindingdelegate.internal.checkIsMainThread
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
-abstract class ViewBindingProperty<in R : Any, T : ViewBinding>(
+public abstract class ViewBindingProperty<in R : Any, T : ViewBinding>(
     private val viewBinder: (R) -> T
 ) : ReadOnlyProperty<R, T> {
 
@@ -21,7 +23,7 @@ abstract class ViewBindingProperty<in R : Any, T : ViewBinding>(
     protected abstract fun getLifecycleOwner(thisRef: R): LifecycleOwner
 
     @MainThread
-    override fun getValue(thisRef: R, property: KProperty<*>): T {
+    public override fun getValue(thisRef: R, property: KProperty<*>): T {
         check(thisRef !== this.thisRef) {
             "Instance of ViewBindingProperty can't be shared between different properties"
         }

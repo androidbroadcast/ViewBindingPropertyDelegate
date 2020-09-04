@@ -1,3 +1,5 @@
+@file:Suppress("RedundantVisibilityModifier")
+
 package by.kirich1409.viewbindingdelegate
 
 import android.view.View
@@ -22,7 +24,7 @@ internal class DialogFragmentViewBindingProperty<F : DialogFragment, T : ViewBin
  * Create new [ViewBinding] associated with the [DialogFragment][this]
  */
 @JvmName("viewBindingDialogFragment")
-fun <F : DialogFragment, T : ViewBinding> F.dialogViewBinding(
+public fun <F : DialogFragment, T : ViewBinding> F.dialogViewBinding(
     viewBinder: (F) -> T
 ): ViewBindingProperty<F, T> {
     return DialogFragmentViewBindingProperty(viewBinder)
@@ -34,7 +36,7 @@ fun <F : DialogFragment, T : ViewBinding> F.dialogViewBinding(
  * @param viewBindingRootId Id of the root view from your custom view
  */
 @JvmName("viewBindingDialogFragment")
-inline fun <reified T : ViewBinding> DialogFragment.dialogViewBinding(
+public inline fun <reified T : ViewBinding> DialogFragment.dialogViewBinding(
     @IdRes viewBindingRootId: Int
 ): ViewBindingProperty<DialogFragment, T> {
     return dialogViewBinding(DialogFragmentViewBinder(T::class.java, viewBindingRootId)::bind)
@@ -46,7 +48,7 @@ inline fun <reified T : ViewBinding> DialogFragment.dialogViewBinding(
  * @param vbFactory Function that create new instance of [ViewBinding]. `MyViewBinding::bind` can be used
  */
 @JvmName("viewBindingDialogFragment")
-inline fun <F : DialogFragment, T : ViewBinding> F.dialogViewBinding(
+public inline fun <F : DialogFragment, T : ViewBinding> F.dialogViewBinding(
     crossinline vbFactory: (View) -> T,
     crossinline viewProvider: (F) -> View
 ): ViewBindingProperty<F, T> {
@@ -60,7 +62,7 @@ inline fun <F : DialogFragment, T : ViewBinding> F.dialogViewBinding(
  * @param viewBindingRootId Id of the root view from your custom view
  */
 @JvmName("viewBindingDialogFragment")
-inline fun <F : DialogFragment, T : ViewBinding> F.dialogViewBinding(
+public inline fun <F : DialogFragment, T : ViewBinding> F.dialogViewBinding(
     crossinline vbFactory: (View) -> T,
     @IdRes viewBindingRootId: Int
 ): ViewBindingProperty<F, T> {
