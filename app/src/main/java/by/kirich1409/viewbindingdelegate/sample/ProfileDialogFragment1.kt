@@ -13,9 +13,7 @@ class ProfileDialogFragment1 : DialogFragment() {
 
     private val viewBindingUsingReflection: ProfileBinding by dialogViewBinding(R.id.container)
 
-    private val viewBindingWithoutReflection by dialogViewBinding { fragment ->
-        ProfileBinding.bind(fragment.dialog!!.window!!.decorView.findViewById(R.id.container))
-    }
+    private val viewBindingWithoutReflection by dialogViewBinding(ProfileBinding::bind, R.id.container)
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return AlertDialog.Builder(requireContext())

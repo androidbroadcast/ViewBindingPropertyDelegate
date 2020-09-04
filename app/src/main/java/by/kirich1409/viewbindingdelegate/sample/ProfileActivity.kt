@@ -10,7 +10,5 @@ class ProfileActivity : AppCompatActivity(R.layout.profile) {
 
     private val viewBindingUsingReflection: ProfileBinding by viewBinding(R.id.container)
 
-    private val viewBindingWithoutReflection by viewBinding { activity ->
-        ProfileBinding.bind(activity.findViewById(R.id.container))
-    }
+    private val viewBindingWithoutReflection by viewBinding(ProfileBinding::bind, R.id.container)
 }

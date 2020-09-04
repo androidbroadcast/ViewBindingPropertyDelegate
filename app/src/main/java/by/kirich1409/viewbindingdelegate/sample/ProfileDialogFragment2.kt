@@ -18,9 +18,7 @@ class ProfileDialogFragment2 : DialogFragment() {
     // Creating via default way will work too for that case
     // private val viewBinding: ProfileBinding by viewBinding()
 
-    private val viewBindingWithoutReflection by viewBinding { fragment ->
-        ProfileBinding.bind(fragment.requireView())
-    }
+    private val viewBindingWithoutReflection by viewBinding(ProfileBinding::bind)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.profile, container, false)

@@ -10,7 +10,5 @@ class ProfileFragment : Fragment(R.layout.profile) {
 
     private val viewBindingUsingReflection: ProfileBinding by viewBinding()
 
-    private val viewBindingWithoutReflection by viewBinding { fragment ->
-        ProfileBinding.bind(fragment.requireView())
-    }
+    private val viewBindingWithoutReflection by viewBinding(ProfileBinding::bind)
 }
