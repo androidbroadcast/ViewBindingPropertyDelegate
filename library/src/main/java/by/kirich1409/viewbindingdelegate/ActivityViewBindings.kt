@@ -1,4 +1,4 @@
-@file:Suppress("RedundantVisibilityModifier")
+@file:Suppress("RedundantVisibilityModifier", "unused")
 
 package by.kirich1409.viewbindingdelegate
 
@@ -18,37 +18,38 @@ internal class ActivityViewBindingProperty<A : ComponentActivity, T : ViewBindin
 }
 
 /**
- * Create new [ViewBinding] associated with the [Activity][this] and allow customize how
+ * Create new [ViewBinding] associated with the [Activity][ComponentActivity] and allow customize how
  * a [View] will be bounded to the view binding.
  */
 @JvmName("viewBindingActivity")
-public fun <A : ComponentActivity, T : ViewBinding> A.viewBinding(viewBinder: (A) -> T): ViewBindingProperty<A, T> {
+public fun <A : ComponentActivity, T : ViewBinding> viewBinding(viewBinder: (A) -> T): ViewBindingProperty<A, T> {
     return ActivityViewBindingProperty(viewBinder)
 }
 
 /**
- * Create new [ViewBinding] associated with the [Activity][this]
+ * Create new [ViewBinding] associated with the [Activity][ComponentActivity]
  *
  * @param viewBindingRootId Root view's id that will be used as root for the view binding
  */
-public inline fun <A : ComponentActivity, reified T : ViewBinding> A.viewBinding(
+@JvmName("viewBindingActivity")
+public inline fun <reified T : ViewBinding> viewBinding(
     @IdRes viewBindingRootId: Int
-): ViewBindingProperty<A, T> {
+): ViewBindingProperty<ComponentActivity, T> {
     val activityViewBinder =
         ActivityViewBinder(T::class.java) { it.requireViewByIdCompat(viewBindingRootId) }
     return viewBinding(activityViewBinder::bind)
 }
 
 /**
- * Create new [ViewBinding] associated with the [Activity][this] and allow customize how
+ * Create new [ViewBinding] associated with the [Activity][ComponentActivity] and allow customize how
  * a [View] will be bounded to the view binding.
  */
 @JvmName("viewBindingActivity")
-public inline fun <A : ComponentActivity, T : ViewBinding> A.viewBinding(
+public inline fun <A : ComponentActivity, T : ViewBinding> viewBinding(
     crossinline vbFactory: (View) -> T,
     crossinline viewProvider: (A) -> View
 ): ViewBindingProperty<A, T> {
-    return viewBinding { activity -> vbFactory(viewProvider(activity)) }
+    return viewBinding { activity: A -> vbFactory(viewProvider(activity)) }
 }
 
 /**
@@ -58,10 +59,11 @@ public inline fun <A : ComponentActivity, T : ViewBinding> A.viewBinding(
  * @param vbFactory Function that create new instance of [ViewBinding]. `MyViewBinding::bind` can be used
  * @param viewBindingRootId Root view's id that will be used as root for the view binding
  */
+@Suppress("unused")
 @JvmName("viewBindingActivity")
-public inline fun <A : ComponentActivity, T : ViewBinding> A.viewBinding(
+public inline fun <T : ViewBinding> ComponentActivity.viewBinding(
     crossinline vbFactory: (View) -> T,
     @IdRes viewBindingRootId: Int
-): ViewBindingProperty<A, T> {
-    return viewBinding { activity -> vbFactory(activity.findViewById(viewBindingRootId)) }
+): ViewBindingProperty<ComponentActivity, T> {
+    return viewBinding { activity: ComponentActivity -> vbFactory(activity.findViewById(viewBindingRootId)) }
 }

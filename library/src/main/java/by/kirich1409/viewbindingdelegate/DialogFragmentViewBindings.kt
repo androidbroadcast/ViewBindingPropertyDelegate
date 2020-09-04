@@ -1,4 +1,4 @@
-@file:Suppress("RedundantVisibilityModifier")
+@file:Suppress("RedundantVisibilityModifier", "unused")
 
 package by.kirich1409.viewbindingdelegate
 
@@ -21,34 +21,34 @@ internal class DialogFragmentViewBindingProperty<F : DialogFragment, T : ViewBin
 }
 
 /**
- * Create new [ViewBinding] associated with the [DialogFragment][this]
+ * Create new [ViewBinding] associated with the [DialogFragment]
  */
 @JvmName("viewBindingDialogFragment")
-public fun <F : DialogFragment, T : ViewBinding> F.dialogViewBinding(
+public fun <F : DialogFragment, T : ViewBinding> dialogViewBinding(
     viewBinder: (F) -> T
 ): ViewBindingProperty<F, T> {
     return DialogFragmentViewBindingProperty(viewBinder)
 }
 
 /**
- * Create new [ViewBinding] associated with the [DialogFragment][this]'s view
+ * Create new [ViewBinding] associated with the [DialogFragment]'s view
  *
  * @param viewBindingRootId Id of the root view from your custom view
  */
 @JvmName("viewBindingDialogFragment")
-public inline fun <reified T : ViewBinding> DialogFragment.dialogViewBinding(
+public inline fun <reified T : ViewBinding> dialogViewBinding(
     @IdRes viewBindingRootId: Int
 ): ViewBindingProperty<DialogFragment, T> {
     return dialogViewBinding(DialogFragmentViewBinder(T::class.java, viewBindingRootId)::bind)
 }
 
 /**
- * Create new [ViewBinding] associated with the [DialogFragment][this]
+ * Create new [ViewBinding] associated with the [DialogFragment]
  *
  * @param vbFactory Function that create new instance of [ViewBinding]. `MyViewBinding::bind` can be used
  */
 @JvmName("viewBindingDialogFragment")
-public inline fun <F : DialogFragment, T : ViewBinding> F.dialogViewBinding(
+public inline fun <F : DialogFragment, T : ViewBinding> dialogViewBinding(
     crossinline vbFactory: (View) -> T,
     crossinline viewProvider: (F) -> View
 ): ViewBindingProperty<F, T> {
@@ -61,12 +61,13 @@ public inline fun <F : DialogFragment, T : ViewBinding> F.dialogViewBinding(
  * @param vbFactory Function that create new instance of [ViewBinding]. `MyViewBinding::bind` can be used
  * @param viewBindingRootId Id of the root view from your custom view
  */
+@Suppress("unused")
 @JvmName("viewBindingDialogFragment")
-public inline fun <F : DialogFragment, T : ViewBinding> F.dialogViewBinding(
+public inline fun <T : ViewBinding> DialogFragment.dialogViewBinding(
     crossinline vbFactory: (View) -> T,
     @IdRes viewBindingRootId: Int
-): ViewBindingProperty<F, T> {
-    return viewBinding(vbFactory) { fragment ->
+): ViewBindingProperty<DialogFragment, T> {
+    return viewBinding(vbFactory) { fragment: DialogFragment ->
         fragment.dialog!!.window!!.decorView.findViewById(viewBindingRootId)
     }
 }

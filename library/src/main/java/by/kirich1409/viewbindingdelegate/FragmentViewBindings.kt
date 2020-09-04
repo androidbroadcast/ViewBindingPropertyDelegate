@@ -1,4 +1,4 @@
-@file:Suppress("RedundantVisibilityModifier")
+@file:Suppress("RedundantVisibilityModifier", "unused")
 
 package by.kirich1409.viewbindingdelegate
 
@@ -17,42 +17,45 @@ internal class FragmentViewBindingProperty<F : Fragment, T : ViewBinding>(
 }
 
 /**
- * Create new [ViewBinding] associated with the [Fragment][this]
+ * Create new [ViewBinding] associated with the [Fragment]
  */
 @JvmName("viewBindingFragment")
-public inline fun <F : Fragment, reified T : ViewBinding> F.viewBinding(): ViewBindingProperty<Fragment, T> {
-    return viewBinding(FragmentViewBinder(T::class.java)::bind)
-}
-
-/**
- * Create new [ViewBinding] associated with the [Fragment][this]
- */
-@JvmName("viewBindingFragment")
-public fun <F : Fragment, T : ViewBinding> F.viewBinding(viewBinder: (F) -> T): ViewBindingProperty<F, T> {
+public fun <F : Fragment, T : ViewBinding> viewBinding(viewBinder: (F) -> T): ViewBindingProperty<F, T> {
     return FragmentViewBindingProperty(viewBinder)
 }
 
 /**
- * Create new [ViewBinding] associated with the [Fragment][this]
+ * Create new [ViewBinding] associated with the [Fragment]
+ */
+@JvmName("viewBindingFragment")
+public inline fun <reified T : ViewBinding> viewBinding(): ViewBindingProperty<Fragment, T> {
+    return viewBinding(FragmentViewBinder(T::class.java)::bind)
+}
+
+/**
+ * Create new [ViewBinding] associated with the [Fragment]
  *
  * @param vbFactory Function that create new instance of [ViewBinding]. `MyViewBinding::bind` can be used
  * @param viewProvider Provide a [View] from the Fragment. By default call [Fragment.requireView]
  */
 @JvmName("viewBindingFragment")
-public inline fun <F : Fragment, T : ViewBinding> F.viewBinding(
+public inline fun <F : Fragment, T : ViewBinding> viewBinding(
     crossinline vbFactory: (View) -> T,
     crossinline viewProvider: (F) -> View = Fragment::requireView
 ): ViewBindingProperty<F, T> {
-    return viewBinding { fragment -> vbFactory(viewProvider(fragment)) }
+    return viewBinding { fragment: F -> vbFactory(viewProvider(fragment)) }
 }
 
 /**
- * Create new [ViewBinding] associated with the [Fragment][this]
+ * Create new [ViewBinding] associated with the [Fragment]
+ *
+ * @param vbFactory Function that create new instance of [ViewBinding]. `MyViewBinding::bind` can be used
+ * @param viewBindingRootId Root view's id that will be used as root for the view binding
  */
 @JvmName("viewBindingFragment")
-public inline fun <F : Fragment, T : ViewBinding> F.viewBinding(
+public inline fun <T : ViewBinding> viewBinding(
     crossinline vbFactory: (View) -> T,
     @IdRes viewBindingRootId: Int
-): ViewBindingProperty<F, T> {
-    return viewBinding { fragment -> vbFactory(fragment.requireView().findViewById(viewBindingRootId)) }
+): ViewBindingProperty<Fragment, T> {
+    return viewBinding(vbFactory) { fragment: Fragment -> fragment.requireView().findViewById(viewBindingRootId) }
 }
