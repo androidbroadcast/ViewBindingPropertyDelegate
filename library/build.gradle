@@ -32,10 +32,10 @@ android {
         buildConfig = false
         viewBinding = false
         dataBinding = false
-        aidl = true
-        renderScript = true
-        resValues = true
-        shaders = true
+        aidl = false
+        renderScript = false
+        resValues = false
+        shaders = false
     }
 }
 
