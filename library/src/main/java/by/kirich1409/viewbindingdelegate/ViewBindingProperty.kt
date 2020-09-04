@@ -19,7 +19,7 @@ import by.kirich1409.viewbindingdelegate.internal.requireViewByIdCompat
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
-abstract class ViewBindingProperty<in R, T : ViewBinding>(
+abstract class ViewBindingProperty<in R : Any, T : ViewBinding>(
     private val viewBinder: (R) -> T
 ) : ReadOnlyProperty<R, T> {
 
