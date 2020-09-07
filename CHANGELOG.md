@@ -1,3 +1,7 @@
+## 1.1.0-beta02:
+
+- Fix bugs
+
 ## 1.1.0-beta01:
 
 - Simplify API
