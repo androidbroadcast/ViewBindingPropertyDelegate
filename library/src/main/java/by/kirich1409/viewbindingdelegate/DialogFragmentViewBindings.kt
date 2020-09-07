@@ -24,7 +24,7 @@ internal class DialogFragmentViewBindingProperty<F : DialogFragment, T : ViewBin
  * Create new [ViewBinding] associated with the [DialogFragment]
  */
 @JvmName("viewBindingDialogFragment")
-public fun <F : DialogFragment, T : ViewBinding> dialogViewBinding(
+public fun <F : DialogFragment, T : ViewBinding> DialogFragment.dialogViewBinding(
     viewBinder: (F) -> T
 ): ViewBindingProperty<F, T> {
     return DialogFragmentViewBindingProperty(viewBinder)
@@ -36,7 +36,7 @@ public fun <F : DialogFragment, T : ViewBinding> dialogViewBinding(
  * @param viewBindingRootId Id of the root view from your custom view
  */
 @JvmName("viewBindingDialogFragment")
-public inline fun <reified T : ViewBinding> dialogViewBinding(
+public inline fun <reified T : ViewBinding> DialogFragment.dialogViewBinding(
     @IdRes viewBindingRootId: Int
 ): ViewBindingProperty<DialogFragment, T> {
     return dialogViewBinding(DialogFragmentViewBinder(T::class.java, viewBindingRootId)::bind)
@@ -48,7 +48,7 @@ public inline fun <reified T : ViewBinding> dialogViewBinding(
  * @param vbFactory Function that create new instance of [ViewBinding]. `MyViewBinding::bind` can be used
  */
 @JvmName("viewBindingDialogFragment")
-public inline fun <F : DialogFragment, T : ViewBinding> dialogViewBinding(
+public inline fun <F : DialogFragment, T : ViewBinding> DialogFragment.dialogViewBinding(
     crossinline vbFactory: (View) -> T,
     crossinline viewProvider: (F) -> View
 ): ViewBindingProperty<F, T> {

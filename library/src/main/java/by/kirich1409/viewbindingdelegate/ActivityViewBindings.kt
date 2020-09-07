@@ -22,7 +22,9 @@ internal class ActivityViewBindingProperty<A : ComponentActivity, T : ViewBindin
  * a [View] will be bounded to the view binding.
  */
 @JvmName("viewBindingActivity")
-public fun <A : ComponentActivity, T : ViewBinding> viewBinding(viewBinder: (A) -> T): ViewBindingProperty<A, T> {
+public fun <A : ComponentActivity, T : ViewBinding> ComponentActivity.viewBinding(
+    viewBinder: (A) -> T
+): ViewBindingProperty<A, T> {
     return ActivityViewBindingProperty(viewBinder)
 }
 
@@ -32,7 +34,7 @@ public fun <A : ComponentActivity, T : ViewBinding> viewBinding(viewBinder: (A) 
  * @param viewBindingRootId Root view's id that will be used as root for the view binding
  */
 @JvmName("viewBindingActivity")
-public inline fun <reified T : ViewBinding> viewBinding(
+public inline fun <reified T : ViewBinding> ComponentActivity.viewBinding(
     @IdRes viewBindingRootId: Int
 ): ViewBindingProperty<ComponentActivity, T> {
     val activityViewBinder =
@@ -45,7 +47,7 @@ public inline fun <reified T : ViewBinding> viewBinding(
  * a [View] will be bounded to the view binding.
  */
 @JvmName("viewBindingActivity")
-public inline fun <A : ComponentActivity, T : ViewBinding> viewBinding(
+public inline fun <A : ComponentActivity, T : ViewBinding> ComponentActivity.viewBinding(
     crossinline vbFactory: (View) -> T,
     crossinline viewProvider: (A) -> View
 ): ViewBindingProperty<A, T> {

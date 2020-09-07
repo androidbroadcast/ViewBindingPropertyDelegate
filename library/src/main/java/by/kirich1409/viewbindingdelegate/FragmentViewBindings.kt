@@ -20,7 +20,7 @@ internal class FragmentViewBindingProperty<F : Fragment, T : ViewBinding>(
  * Create new [ViewBinding] associated with the [Fragment]
  */
 @JvmName("viewBindingFragment")
-public fun <F : Fragment, T : ViewBinding> viewBinding(viewBinder: (F) -> T): ViewBindingProperty<F, T> {
+public fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(viewBinder: (F) -> T): ViewBindingProperty<F, T> {
     return FragmentViewBindingProperty(viewBinder)
 }
 
@@ -28,7 +28,7 @@ public fun <F : Fragment, T : ViewBinding> viewBinding(viewBinder: (F) -> T): Vi
  * Create new [ViewBinding] associated with the [Fragment]
  */
 @JvmName("viewBindingFragment")
-public inline fun <reified T : ViewBinding> viewBinding(): ViewBindingProperty<Fragment, T> {
+public inline fun <reified T : ViewBinding> Fragment.viewBinding(): ViewBindingProperty<Fragment, T> {
     return viewBinding(FragmentViewBinder(T::class.java)::bind)
 }
 
@@ -39,7 +39,7 @@ public inline fun <reified T : ViewBinding> viewBinding(): ViewBindingProperty<F
  * @param viewProvider Provide a [View] from the Fragment. By default call [Fragment.requireView]
  */
 @JvmName("viewBindingFragment")
-public inline fun <F : Fragment, T : ViewBinding> viewBinding(
+public inline fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
     crossinline vbFactory: (View) -> T,
     crossinline viewProvider: (F) -> View = Fragment::requireView
 ): ViewBindingProperty<F, T> {
@@ -53,7 +53,7 @@ public inline fun <F : Fragment, T : ViewBinding> viewBinding(
  * @param viewBindingRootId Root view's id that will be used as root for the view binding
  */
 @JvmName("viewBindingFragment")
-public inline fun <T : ViewBinding> viewBinding(
+public inline fun <T : ViewBinding> Fragment.viewBinding(
     crossinline vbFactory: (View) -> T,
     @IdRes viewBindingRootId: Int
 ): ViewBindingProperty<Fragment, T> {
