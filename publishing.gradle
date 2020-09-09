@@ -14,7 +14,7 @@ afterEvaluate {
                 artifact sourceJar
 
                 groupId = 'com.kirich1409.viewbindingpropertydelegate'
-                artifactId = 'viewbindingpropertydelegate'
+                artifactId = project.ext.artifactId
                 version = rootProject.ext.versionName
 
                 pom {

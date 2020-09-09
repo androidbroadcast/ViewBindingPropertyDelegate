@@ -1,4 +1,6 @@
-package by.kirich1409.viewbindingdelegate.internal
+@file:Suppress("RedundantVisibilityModifier", "unused")
+
+package by.kirich1409.viewbindingdelegate
 
 import android.view.View
 import androidx.annotation.IdRes
@@ -37,4 +39,16 @@ internal class DialogFragmentViewBinder<T : ViewBinding>(
             return window.decorView
         }
     }
+}
+
+/**
+ * Create new [ViewBinding] associated with the [DialogFragment]'s view
+ *
+ * @param viewBindingRootId Id of the root view from your custom view
+ */
+@JvmName("viewBindingDialogFragment")
+public inline fun <reified T : ViewBinding> DialogFragment.dialogViewBinding(
+    @IdRes viewBindingRootId: Int
+): ViewBindingProperty<DialogFragment, T> {
+    return dialogViewBinding(DialogFragmentViewBinder(T::class.java, viewBindingRootId)::bind)
 }

@@ -1,3 +1,4 @@
 include ':app'
-include ':library'
+include ':vbpd'
+include ':vbpd-noreflection'
 rootProject.name = "View Binding Delegate"

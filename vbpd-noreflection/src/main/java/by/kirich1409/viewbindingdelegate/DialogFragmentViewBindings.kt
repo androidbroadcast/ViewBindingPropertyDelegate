@@ -7,11 +7,8 @@ import androidx.annotation.IdRes
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.viewbinding.ViewBinding
-import by.kirich1409.viewbindingdelegate.internal.DialogFragmentViewBinder
 
-
-@PublishedApi
-internal class DialogFragmentViewBindingProperty<F : DialogFragment, T : ViewBinding>(
+private class DialogFragmentViewBindingProperty<F : DialogFragment, T : ViewBinding>(
     viewBinder: (F) -> T
 ) : ViewBindingProperty<F, T>(viewBinder) {
 
@@ -31,18 +28,6 @@ public fun <F : DialogFragment, T : ViewBinding> DialogFragment.dialogViewBindin
 }
 
 /**
- * Create new [ViewBinding] associated with the [DialogFragment]'s view
- *
- * @param viewBindingRootId Id of the root view from your custom view
- */
-@JvmName("viewBindingDialogFragment")
-public inline fun <reified T : ViewBinding> DialogFragment.dialogViewBinding(
-    @IdRes viewBindingRootId: Int
-): ViewBindingProperty<DialogFragment, T> {
-    return dialogViewBinding(DialogFragmentViewBinder(T::class.java, viewBindingRootId)::bind)
-}
-
-/**
  * Create new [ViewBinding] associated with the [DialogFragment]
  *
  * @param vbFactory Function that create new instance of [ViewBinding]. `MyViewBinding::bind` can be used
@@ -52,7 +37,7 @@ public inline fun <F : DialogFragment, T : ViewBinding> DialogFragment.dialogVie
     crossinline vbFactory: (View) -> T,
     crossinline viewProvider: (F) -> View
 ): ViewBindingProperty<F, T> {
-    return DialogFragmentViewBindingProperty { fragment -> vbFactory(viewProvider(fragment)) }
+    return dialogViewBinding { fragment -> vbFactory(viewProvider(fragment)) }
 }
 
 /**

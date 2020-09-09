@@ -6,11 +6,8 @@ import android.view.View
 import androidx.annotation.IdRes
 import androidx.core.app.ComponentActivity
 import androidx.viewbinding.ViewBinding
-import by.kirich1409.viewbindingdelegate.internal.ActivityViewBinder
-import by.kirich1409.viewbindingdelegate.internal.requireViewByIdCompat
 
-@PublishedApi
-internal class ActivityViewBindingProperty<A : ComponentActivity, T : ViewBinding>(
+private class ActivityViewBindingProperty<A : ComponentActivity, T : ViewBinding>(
     viewBinder: (A) -> T
 ) : ViewBindingProperty<A, T>(viewBinder) {
 
@@ -26,20 +23,6 @@ public fun <A : ComponentActivity, T : ViewBinding> ComponentActivity.viewBindin
     viewBinder: (A) -> T
 ): ViewBindingProperty<A, T> {
     return ActivityViewBindingProperty(viewBinder)
-}
-
-/**
- * Create new [ViewBinding] associated with the [Activity][ComponentActivity]
- *
- * @param viewBindingRootId Root view's id that will be used as root for the view binding
- */
-@JvmName("viewBindingActivity")
-public inline fun <reified T : ViewBinding> ComponentActivity.viewBinding(
-    @IdRes viewBindingRootId: Int
-): ViewBindingProperty<ComponentActivity, T> {
-    val activityViewBinder =
-        ActivityViewBinder(T::class.java) { it.requireViewByIdCompat(viewBindingRootId) }
-    return viewBinding(activityViewBinder::bind)
 }
 
 /**
