@@ -1,0 +1,50 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+}
+
+ext {
+    artifactId = "vbpd-noreflection"
+}
+
+apply from: rootProject.file('publishing.gradle')
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    // For Kotlin projects
+    kotlinOptions {
+        jvmTarget = "1.8"
+        kotlinOptions.freeCompilerArgs +=
+                ['-module-name', "com.github.kirich1409.ViewBindingPropertyDelegate.noreflection"]
+    }
+
+    buildFeatures {
+        buildConfig = false
+        viewBinding = false
+        dataBinding = false
+        aidl = false
+        renderScript = false
+        resValues = false
+        shaders = false
+    }
+}
+
+dependencies {
+    implementation rootProject.ext.dependencies.coreKtx
+    implementation rootProject.ext.dependencies.fragmentKtx
+    implementation rootProject.ext.dependencies.kotlinStdlib
+    implementation rootProject.ext.dependencies.viewBinding
+    implementation rootProject.ext.dependencies.lifecycleCommonJava8
+}
