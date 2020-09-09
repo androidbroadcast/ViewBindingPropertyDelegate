@@ -1,3 +1,7 @@
+## 1.2.0:
+
+- Add artifact `vbpd-noreflection` without reflection when create a `ViewBinding`
+
 ## 1.1.0:
 
 - Simplify API
