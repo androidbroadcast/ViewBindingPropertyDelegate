@@ -6,10 +6,8 @@ import android.view.View
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
-import by.kirich1409.viewbindingdelegate.internal.FragmentViewBinder
 
-@PublishedApi
-internal class FragmentViewBindingProperty<F : Fragment, T : ViewBinding>(
+private class FragmentViewBindingProperty<F : Fragment, T : ViewBinding>(
     viewBinder: (F) -> T
 ) : ViewBindingProperty<F, T>(viewBinder) {
 
@@ -22,14 +20,6 @@ internal class FragmentViewBindingProperty<F : Fragment, T : ViewBinding>(
 @JvmName("viewBindingFragment")
 public fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(viewBinder: (F) -> T): ViewBindingProperty<F, T> {
     return FragmentViewBindingProperty(viewBinder)
-}
-
-/**
- * Create new [ViewBinding] associated with the [Fragment]
- */
-@JvmName("viewBindingFragment")
-public inline fun <reified T : ViewBinding> Fragment.viewBinding(): ViewBindingProperty<Fragment, T> {
-    return viewBinding(FragmentViewBinder(T::class.java)::bind)
 }
 
 /**

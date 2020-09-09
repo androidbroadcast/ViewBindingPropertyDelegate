@@ -1,4 +1,6 @@
-package by.kirich1409.viewbindingdelegate.internal
+@file:Suppress("RedundantVisibilityModifier", "unused")
+
+package by.kirich1409.viewbindingdelegate
 
 import android.view.View
 import androidx.annotation.RestrictTo
@@ -23,4 +25,12 @@ internal class FragmentViewBinder<T : ViewBinding>(private val viewBindingClass:
     fun bind(fragment: Fragment): T {
         return bindViewMethod(null, fragment.requireView()) as T
     }
+}
+
+/**
+ * Create new [ViewBinding] associated with the [Fragment]
+ */
+@JvmName("viewBindingFragment")
+public inline fun <reified T : ViewBinding> Fragment.viewBinding(): ViewBindingProperty<Fragment, T> {
+    return viewBinding(FragmentViewBinder(T::class.java)::bind)
 }
