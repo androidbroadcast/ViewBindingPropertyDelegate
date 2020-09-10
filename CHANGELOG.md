@@ -1,6 +1,7 @@
 ## 1.2.0:
 
-- Add artifact `vbpd-noreflection` without reflection when create a `ViewBinding`
+- Add artifact `vbpd-noreflection` without reflection when create a `ViewBindingProperty`
+- Fix bug in Fragment
 
 ## 1.1.0:
 
