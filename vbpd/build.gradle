@@ -4,7 +4,9 @@ plugins {
 }
 
 ext {
+    groupId = 'com.kirich1409.viewbindingpropertydelegate'
     artifactId = "viewbindingpropertydelegate"
+    bintrayPackageName = "viewbindingpropertydelegate"
 }
 
 apply from: rootProject.file('publishing.gradle')

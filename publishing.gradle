@@ -13,7 +13,7 @@ afterEvaluate {
                 from components.release
                 artifact sourceJar
 
-                groupId = 'com.kirich1409.viewbindingpropertydelegate'
+                groupId = project.ext.groupId
                 artifactId = project.ext.artifactId
                 version = rootProject.ext.versionName
 
@@ -50,7 +50,7 @@ afterEvaluate {
 
         pkg {
             repo = 'maven'
-            name = 'viewbindingpropertydelegate'
+            name = project.ext.bintrayPackageName
             desc = "Make work with Android View Binding simpler"
             userOrg = System.env.BINTRAY_USER_ORGANIZATION ?: ""
             licenses = ['Apache-2.0']
