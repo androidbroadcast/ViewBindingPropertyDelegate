@@ -26,7 +26,7 @@ public abstract class ViewBindingProperty<in R : Any, T : ViewBinding>(
     public override fun getValue(thisRef: R, property: KProperty<*>): T {
         checkIsMainThread()
         viewBinding?.let { vb ->
-            check(thisRef === this.thisRef) {
+            check(this.thisRef != null && thisRef === this.thisRef) {
                 "Instance of ViewBindingProperty can't be shared between classes"
             }
             return vb
