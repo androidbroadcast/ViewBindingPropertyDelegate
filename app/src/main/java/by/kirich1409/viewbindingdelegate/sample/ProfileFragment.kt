@@ -3,12 +3,17 @@
 package by.kirich1409.viewbindingdelegate.sample
 
 import androidx.fragment.app.Fragment
-import by.kirich1409.viewbindingdelegate.sample.databinding.ProfileBinding
+import by.kirich1409.viewbindingdelegate.sample.databinding.FragmentProfileBinding
 import by.kirich1409.viewbindingdelegate.viewBinding
 
-class ProfileFragment : Fragment(R.layout.profile) {
+class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
-    private val viewBindingUsingReflection: ProfileBinding by viewBinding()
+    private val viewBindingUsingReflection: FragmentProfileBinding by viewBinding()
 
-    private val viewBindingWithoutReflection by viewBinding(ProfileBinding::bind)
+    private val viewBindingWithoutReflection by viewBinding(FragmentProfileBinding::bind)
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewBindingUsingReflection.container.visibility
+    }
 }
