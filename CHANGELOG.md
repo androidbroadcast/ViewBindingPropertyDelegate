@@ -1,3 +1,7 @@
+## 1.2.1:
+
+- Fix bugs
+
 ## 1.2.0:
 
 - Add artifact `vbpd-noreflection` without reflection when create a `ViewBindingProperty`

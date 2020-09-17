@@ -15,10 +15,10 @@ allprojects {
 }
 
 dependencies {
-    implementation 'com.kirich1409.viewbindingpropertydelegate:viewbindingpropertydelegate:1.2.0'
+    implementation 'com.kirich1409.viewbindingpropertydelegate:viewbindingpropertydelegate:1.2.1'
     
     // To use only without reflection variants of viewBinding
-    implementation 'com.kirich1409.viewbindingpropertydelegate:vbpd-noreflection:1.2.0'
+    implementation 'com.kirich1409.viewbindingpropertydelegate:vbpd-noreflection:1.2.1'
 }
 ```
 
