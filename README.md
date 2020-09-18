@@ -11,6 +11,9 @@ Every Gradle module of your project need to enable ViewBinding. How to do that y
 allprojects {
   repositories {
     jcenter()
+
+    // or for the ASAP availability
+    maven { url = 'https://dl.bintray.com/kirich1409/maven' }
   }
 }
 
