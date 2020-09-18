@@ -1,4 +1,4 @@
 include ':app'
-include ':vbpd'
-include ':vbpd-noreflection'
+include ':vbpd:vbpd-full'
+include ':vbpd:vbpd-noreflection'
 rootProject.name = "View Binding Delegate"
