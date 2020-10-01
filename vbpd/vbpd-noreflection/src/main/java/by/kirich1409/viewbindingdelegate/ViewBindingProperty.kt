@@ -6,6 +6,7 @@ import android.os.Handler
 import android.os.Looper
 import androidx.annotation.MainThread
 import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.viewbinding.ViewBinding
 import by.kirich1409.viewbindingdelegate.internal.checkIsMainThread
@@ -25,15 +26,15 @@ public abstract class ViewBindingProperty<in R : Any, T : ViewBinding>(
     @MainThread
     public override fun getValue(thisRef: R, property: KProperty<*>): T {
         checkIsMainThread()
-        viewBinding?.let { vb ->
-            check(this.thisRef != null && thisRef === this.thisRef) {
-                "Instance of ViewBindingProperty can't be shared between classes"
-            }
-            return vb
-        }
+        viewBinding?.let { return it }
 
         this.thisRef = thisRef
-        getLifecycleOwner(thisRef).lifecycle.addObserver(lifecycleObserver)
+        val lifecycle = getLifecycleOwner(thisRef).lifecycle
+        if (lifecycle.currentState == Lifecycle.State.DESTROYED) {
+            mainHandler.post { viewBinding = null }
+        } else {
+            lifecycle.addObserver(lifecycleObserver)
+        }
         return viewBinder(thisRef).also { viewBinding = it }
     }
 
@@ -44,9 +45,7 @@ public abstract class ViewBindingProperty<in R : Any, T : ViewBinding>(
         val thisRef = thisRef ?: return
         this.thisRef = null
         getLifecycleOwner(thisRef).lifecycle.removeObserver(lifecycleObserver)
-        mainHandler.post {
-            viewBinding = null
-        }
+        mainHandler.post { viewBinding = null }
     }
 
     private inner class ClearOnDestroyLifecycleObserver : DefaultLifecycleObserver {
