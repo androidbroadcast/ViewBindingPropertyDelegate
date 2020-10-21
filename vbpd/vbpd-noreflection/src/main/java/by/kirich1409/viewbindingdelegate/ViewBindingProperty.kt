@@ -9,7 +9,6 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.viewbinding.ViewBinding
-import by.kirich1409.viewbindingdelegate.internal.checkIsMainThread
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
@@ -25,7 +24,6 @@ public abstract class ViewBindingProperty<in R : Any, T : ViewBinding>(
 
     @MainThread
     public override fun getValue(thisRef: R, property: KProperty<*>): T {
-        checkIsMainThread()
         viewBinding?.let { return it }
 
         this.thisRef = thisRef
@@ -40,8 +38,6 @@ public abstract class ViewBindingProperty<in R : Any, T : ViewBinding>(
 
     @MainThread
     public fun clear() {
-        checkIsMainThread()
-
         val thisRef = thisRef ?: return
         this.thisRef = null
         getLifecycleOwner(thisRef).lifecycle.removeObserver(lifecycleObserver)
