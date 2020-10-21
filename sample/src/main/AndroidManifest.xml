@@ -11,7 +11,7 @@
         android:theme="@style/AppTheme"
         >
 
-        <activity android:name=".ProfileActivity">
+        <activity android:name=".noreflection.ProfileActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
