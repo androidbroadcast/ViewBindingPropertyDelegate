@@ -1,4 +1,6 @@
 @file:Suppress("RedundantVisibilityModifier", "unused")
+@file:JvmName("ReflectionDialogFragmentViewBindings")
+@file:JvmMultifileClass
 
 package by.kirich1409.viewbindingdelegate
 
@@ -34,7 +36,7 @@ internal class DialogFragmentViewBinder<T : ViewBinding>(
         val dialog = checkNotNull(fragment.dialog) { "Dialog hasn't been created yet" }
         val window = checkNotNull(dialog.window) { "Dialog has no window" }
         if (viewBindingRootId != 0) {
-            return window.decorView.findViewById<View>(viewBindingRootId)
+            return window.decorView.findViewById(viewBindingRootId)
         } else {
             return window.decorView
         }

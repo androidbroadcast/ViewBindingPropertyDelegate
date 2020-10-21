@@ -1,4 +1,6 @@
 @file:Suppress("RedundantVisibilityModifier", "unused")
+@file:JvmName("ReflectionActivityViewBindings")
+@file:JvmMultifileClass
 
 package by.kirich1409.viewbindingdelegate
 
