@@ -44,6 +44,7 @@ internal class DialogFragmentViewBinder<T : ViewBinding>(
 /**
  * Create new [ViewBinding] associated with the [DialogFragment]'s view
  *
+ * @param T Class of expected [ViewBinding] result class
  * @param viewBindingRootId Id of the root view from your custom view
  */
 @JvmName("viewBindingDialogFragment")
@@ -51,4 +52,18 @@ public inline fun <reified T : ViewBinding> DialogFragment.dialogViewBinding(
     @IdRes viewBindingRootId: Int
 ): ViewBindingProperty<DialogFragment, T> {
     return dialogViewBinding(DialogFragmentViewBinder(T::class.java, viewBindingRootId)::bind)
+}
+
+/**
+ * Create new [ViewBinding] associated with the [DialogFragment]'s view
+ *
+ * @param viewBindingClass Class of expected [ViewBinding] result class
+ * @param viewBindingRootId Id of the root view from your custom view
+ */
+@JvmName("viewBindingDialogFragment")
+public fun <T : ViewBinding> DialogFragment.dialogViewBinding(
+    viewBindingClass: Class<T>,
+    @IdRes viewBindingRootId: Int
+): ViewBindingProperty<DialogFragment, T> {
+    return dialogViewBinding(DialogFragmentViewBinder(viewBindingClass, viewBindingRootId)::bind)
 }

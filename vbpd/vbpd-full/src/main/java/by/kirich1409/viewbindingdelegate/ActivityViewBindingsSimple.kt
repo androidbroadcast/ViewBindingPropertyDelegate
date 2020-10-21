@@ -37,13 +37,29 @@ internal class ActivityViewBinder<T : ViewBinding>(
 /**
  * Create new [ViewBinding] associated with the [Activity][ComponentActivity]
  *
+ * @param T Class of expected [ViewBinding] result class
  * @param viewBindingRootId Root view's id that will be used as root for the view binding
  */
 @JvmName("viewBindingActivity")
 public inline fun <reified T : ViewBinding> ComponentActivity.viewBinding(
     @IdRes viewBindingRootId: Int
 ): ViewBindingProperty<ComponentActivity, T> {
+    return viewBinding(T::class.java, viewBindingRootId)
+}
+
+
+/**
+ * Create new [ViewBinding] associated with the [Activity][ComponentActivity]
+ *
+ * @param viewBindingClass Class of expected [ViewBinding] result class
+ * @param viewBindingRootId Root view's id that will be used as root for the view binding
+ */
+@JvmName("viewBindingActivity")
+public fun <T : ViewBinding> ComponentActivity.viewBinding(
+    viewBindingClass: Class<T>,
+    @IdRes viewBindingRootId: Int
+): ViewBindingProperty<ComponentActivity, T> {
     val activityViewBinder =
-        ActivityViewBinder(T::class.java) { ActivityCompat.requireViewById(this, viewBindingRootId) }
+        ActivityViewBinder(viewBindingClass) { ActivityCompat.requireViewById(this, viewBindingRootId) }
     return viewBinding(activityViewBinder::bind)
 }

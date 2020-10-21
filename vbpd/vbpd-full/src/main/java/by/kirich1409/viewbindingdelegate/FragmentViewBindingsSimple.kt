@@ -29,8 +29,20 @@ internal class FragmentViewBinder<T : ViewBinding>(private val viewBindingClass:
 
 /**
  * Create new [ViewBinding] associated with the [Fragment]
+ *
+ * @param T Class of expected [ViewBinding] result class
  */
 @JvmName("viewBindingFragment")
 public inline fun <reified T : ViewBinding> Fragment.viewBinding(): ViewBindingProperty<Fragment, T> {
     return viewBinding(FragmentViewBinder(T::class.java)::bind)
+}
+
+/**
+ * Create new [ViewBinding] associated with the [Fragment]
+ *
+ * @param T Class of expected [ViewBinding] result class
+ */
+@JvmName("viewBindingFragment")
+public fun <T : ViewBinding> Fragment.viewBinding(viewBindingClass: Class<T>): ViewBindingProperty<Fragment, T> {
+    return viewBinding(FragmentViewBinder(viewBindingClass)::bind)
 }
