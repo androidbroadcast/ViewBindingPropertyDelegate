@@ -1,3 +1,15 @@
+## 1.3.0
+
+- Added support of create `ViewBinding` using `ViewBinding.inflate(LayoutInflater)`
+- Added possibility to create `ViewBindingProperty` using `Class<ViewBinding>` instance
+- Upgrade view binding library to 4.1.0
+- Improved performance: removed check working from the main thread with `ViewBindingProperty`
+- Update sample
+
+## 1.2.2
+
+- Bug fixing
+
 ## 1.2.1:
 
 - Fix bugs
