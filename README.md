@@ -18,10 +18,10 @@ allprojects {
 }
 
 dependencies {
-    implementation 'com.kirich1409.viewbindingpropertydelegate:viewbindingpropertydelegate:1.2.2'
+    implementation 'com.kirich1409.viewbindingpropertydelegate:viewbindingpropertydelegate:1.3.0'
     
     // To use only without reflection variants of viewBinding
-    implementation 'com.kirich1409.viewbindingpropertydelegate:vbpd-noreflection:1.2.2'
+    implementation 'com.kirich1409.viewbindingpropertydelegate:vbpd-noreflection:1.3.0'
 }
 ```
 
@@ -30,8 +30,11 @@ dependencies {
 ```kotlin
 class ProfileFragment : Fragment(R.layout.profile) {
 
-    // Using reflection API under the hood
+    // Using reflection API under the hood and ViewBinding.bind
     private val viewBinding: ProfileBinding by viewBinding()
+
+    // Using reflection API under the hood and ViewBinding.inflate
+    private val viewBinding: ProfileBinding by viewBinding(createMethod = CreateMethod.INFLATE)
 
     // Without reflection
     private val viewBinding by viewBinding(ProfileBinding::bind)
