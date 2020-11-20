@@ -4,14 +4,13 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/profile_fragment_container"
         android:name="by.kirich1409.viewbindingdelegate.sample.noreflection.ProfileFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout="@layout/fragment_profile"
-        />
+        tools:layout="@layout/fragment_profile" />
 
 </LinearLayout>
