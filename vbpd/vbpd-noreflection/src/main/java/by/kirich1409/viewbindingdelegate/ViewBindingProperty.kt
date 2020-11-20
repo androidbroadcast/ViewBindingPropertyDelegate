@@ -28,12 +28,16 @@ public abstract class ViewBindingProperty<in R : Any, T : ViewBinding>(
 
         this.thisRef = thisRef
         val lifecycle = getLifecycleOwner(thisRef).lifecycle
+        val viewBinding = viewBinder(thisRef)
         if (lifecycle.currentState == Lifecycle.State.DESTROYED) {
-            mainHandler.post { viewBinding = null }
+            mainHandler.post { this.viewBinding = null }
+            // We can access to ViewBinding after on destroy,
+            // but don't save it in property to prevent memory leak
         } else {
             lifecycle.addObserver(lifecycleObserver)
+            this.viewBinding = viewBinding
         }
-        return viewBinder(thisRef).also { viewBinding = it }
+        return viewBinding
     }
 
     @MainThread
