@@ -13,7 +13,7 @@ private class DialogFragmentViewBindingProperty<F : DialogFragment, T : ViewBind
 ) : ViewBindingProperty<F, T>(viewBinder) {
 
     override fun getLifecycleOwner(thisRef: F): LifecycleOwner {
-        return if (thisRef.view == null) thisRef.viewLifecycleOwner else thisRef
+        return if (thisRef.view != null) thisRef.viewLifecycleOwner else thisRef
     }
 }
 
@@ -52,7 +52,7 @@ public inline fun <T : ViewBinding> DialogFragment.dialogViewBinding(
     crossinline vbFactory: (View) -> T,
     @IdRes viewBindingRootId: Int
 ): ViewBindingProperty<DialogFragment, T> {
-    return viewBinding(vbFactory) { fragment: DialogFragment ->
+    return dialogViewBinding(vbFactory) { fragment: DialogFragment ->
         fragment.dialog!!.window!!.decorView.findViewById(viewBindingRootId)
     }
 }
