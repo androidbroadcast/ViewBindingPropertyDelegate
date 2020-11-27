@@ -1,3 +1,7 @@
+## 1.3.1
+
+- Bug fixes
+
 ## 1.3.0
 
 - Added support of create `ViewBinding` using `ViewBinding.inflate(LayoutInflater)`
