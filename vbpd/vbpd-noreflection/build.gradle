@@ -48,4 +48,5 @@ dependencies {
     implementation rootProject.ext.dependencies.fragmentKtx
     implementation rootProject.ext.dependencies.viewBinding
     implementation rootProject.ext.dependencies.lifecycleCommonJava8
+    implementation rootProject.ext.dependencies.recyclerview
 }

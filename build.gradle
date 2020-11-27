@@ -44,4 +44,5 @@ ext {
     dependencies.fragmentKtx = 'androidx.fragment:fragment-ktx:1.2.5'
     dependencies.viewBinding = 'androidx.databinding:viewbinding:4.1.0'
     dependencies.lifecycleCommonJava8 = 'androidx.lifecycle:lifecycle-common-java8:2.2.0'
+    dependencies.recyclerview = 'androidx.recyclerview:recyclerview:1.1.0'
 }

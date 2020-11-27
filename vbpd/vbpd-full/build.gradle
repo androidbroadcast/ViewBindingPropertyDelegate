@@ -49,5 +49,6 @@ dependencies {
     implementation rootProject.ext.dependencies.coreKtx
     implementation rootProject.ext.dependencies.fragmentKtx
     implementation rootProject.ext.dependencies.viewBinding
+    implementation rootProject.ext.dependencies.recyclerview
     api project(':vbpd:vbpd-noreflection')
 }
