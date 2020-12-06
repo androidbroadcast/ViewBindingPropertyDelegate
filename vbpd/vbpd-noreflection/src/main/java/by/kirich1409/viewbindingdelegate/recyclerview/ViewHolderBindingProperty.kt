@@ -6,14 +6,14 @@ import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
 @Suppress("unused")
-class ViewHolderBindingProperty<in V : ViewHolder, T : ViewBinding>
+class ViewHolderBindingProperty<in VH : ViewHolder, T : ViewBinding>
 @PublishedApi internal constructor(
-    private val viewBinder: (V) -> T
-) : ReadOnlyProperty<V, T> {
+    private val viewBinder: (VH) -> T
+) : ReadOnlyProperty<VH, T> {
 
     private var viewBinding: T? = null
 
-    override fun getValue(thisRef: V, property: KProperty<*>): T {
+    override fun getValue(thisRef: VH, property: KProperty<*>): T {
         return viewBinding ?: viewBinder(thisRef).also { viewBinding ->
             this.viewBinding = viewBinding
         }

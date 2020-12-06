@@ -34,7 +34,8 @@ internal class ViewHolderBinder<T : ViewBinding>(private val viewBindingClass: C
  * @param T Class of expected [ViewBinding] result class
  */
 @JvmName("viewBindingFragment")
-public inline fun <reified T : ViewBinding> ViewHolder.viewBinding(): ViewHolderBindingProperty<ViewHolder, T> {
+public inline fun <reified T : ViewBinding> ViewHolder.viewBinding(
+): ViewHolderBindingProperty<ViewHolder, T> {
     return viewBinding(ViewHolderBinder(T::class.java)::bind)
 }
 

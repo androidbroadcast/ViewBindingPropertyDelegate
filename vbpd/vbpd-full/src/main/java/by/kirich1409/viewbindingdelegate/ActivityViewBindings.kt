@@ -61,7 +61,8 @@ public fun <T : ViewBinding> ComponentActivity.viewBinding(
     viewBindingClass: Class<T>,
     @IdRes viewBindingRootId: Int
 ): ViewBindingProperty<ComponentActivity, T> {
-    val activityViewBinder =
-        ActivityViewBinder(viewBindingClass) { ActivityCompat.requireViewById(this, viewBindingRootId) }
+    val activityViewBinder = ActivityViewBinder(viewBindingClass) {
+        ActivityCompat.requireViewById(this, viewBindingRootId)
+    }
     return viewBinding(activityViewBinder::bind)
 }

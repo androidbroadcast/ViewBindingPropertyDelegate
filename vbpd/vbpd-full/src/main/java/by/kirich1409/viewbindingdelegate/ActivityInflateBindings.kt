@@ -33,8 +33,8 @@ internal class ActivityInflateViewBinder<T : ViewBinding>(
 }
 
 /**
- * Create new [ViewBinding] associated with the [Activity][ComponentActivity]. You need to set [ViewBinding.getRoot] as
- * content view using [Activity.setContentView].
+ * Create new [ViewBinding] associated with the [Activity][ComponentActivity].
+ * You need to set [ViewBinding.getRoot] as content view using [Activity.setContentView].
  *
  * @param T Class of expected [ViewBinding] result class
  */
@@ -46,8 +46,8 @@ public inline fun <reified T : ViewBinding> ComponentActivity.viewBinding(
 
 
 /**
- * Create new [ViewBinding] associated with the [Activity][ComponentActivity]. You need to set [ViewBinding.getRoot] as
- * content view using [Activity.setContentView].
+ * Create new [ViewBinding] associated with the [Activity][ComponentActivity].
+ * You need to set [ViewBinding.getRoot] as content view using [Activity.setContentView].
  *
  * @param viewBindingClass Class of expected [ViewBinding] result class
  */

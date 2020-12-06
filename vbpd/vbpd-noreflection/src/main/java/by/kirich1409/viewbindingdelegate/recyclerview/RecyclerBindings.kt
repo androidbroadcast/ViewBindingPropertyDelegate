@@ -5,27 +5,43 @@ package by.kirich1409.viewbindingdelegate.recyclerview
 import android.view.View
 import androidx.annotation.IdRes
 import androidx.core.view.ViewCompat
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import androidx.viewbinding.ViewBinding
 
-fun <V : ViewHolder, T : ViewBinding> ViewHolder.viewBinding(
-    viewBinder: (V) -> T
-): ViewHolderBindingProperty<V, T> {
+/**
+ * Create new [ViewBinding] associated with the [ViewHolder]
+ */
+fun <VH : ViewHolder, T : ViewBinding> VH.viewBinding(
+    viewBinder: (VH) -> T
+): ViewHolderBindingProperty<VH, T> {
     return ViewHolderBindingProperty(viewBinder)
 }
 
-inline fun <V : ViewHolder, T : ViewBinding> ViewHolder.viewBinding(
+/**
+ * Create new [ViewBinding] associated with the [ViewHolder]
+ *
+ * @param vbFactory Function that create new instance of [ViewBinding]. `MyViewBinding::bind` can be used
+ * @param viewProvider Provide a [View] from the [ViewHolder]. By default call [ViewHolder.itemView]
+ */
+inline fun <VH : ViewHolder, T : ViewBinding> VH.viewBinding(
     crossinline vbFactory: (View) -> T,
-    crossinline viewProvider: (V) -> View = ViewHolder::itemView
-): ViewHolderBindingProperty<V, T> {
-    return ViewHolderBindingProperty { viewHolder: V -> viewProvider(viewHolder).let(vbFactory) }
+    crossinline viewProvider: (VH) -> View = ViewHolder::itemView
+): ViewHolderBindingProperty<VH, T> {
+    return ViewHolderBindingProperty { viewHolder: VH -> viewProvider(viewHolder).let(vbFactory) }
 }
 
-inline fun <V : ViewHolder, T : ViewBinding> ViewHolder.viewBinding(
+/**
+ * Create new [ViewBinding] associated with the [ViewHolder]
+ *
+ * @param vbFactory Function that create new instance of [ViewBinding]. `MyViewBinding::bind` can be used
+ * @param viewBindingRootId Root view's id that will be used as root for the view binding
+ */
+inline fun <VH : ViewHolder, T : ViewBinding> VH.viewBinding(
     crossinline vbFactory: (View) -> T,
     @IdRes viewBindingRootId: Int
-): ViewHolderBindingProperty<V, T> {
-    return ViewHolderBindingProperty { viewHolder: V ->
+): ViewHolderBindingProperty<VH, T> {
+    return ViewHolderBindingProperty { viewHolder: VH ->
         ViewCompat.requireViewById<View>(viewHolder.itemView, viewBindingRootId).let(vbFactory)
     }
 }
