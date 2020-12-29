@@ -3,6 +3,7 @@
 package by.kirich1409.viewbindingdelegate
 
 import android.view.View
+import android.view.ViewGroup
 import androidx.annotation.IdRes
 import androidx.core.app.ComponentActivity
 import androidx.viewbinding.ViewBinding
@@ -32,7 +33,7 @@ public fun <A : ComponentActivity, T : ViewBinding> ComponentActivity.viewBindin
 @JvmName("viewBindingActivity")
 public inline fun <A : ComponentActivity, T : ViewBinding> ComponentActivity.viewBinding(
     crossinline vbFactory: (View) -> T,
-    crossinline viewProvider: (A) -> View
+    crossinline viewProvider: (A) -> View = { window.findViewById<ViewGroup>(android.R.id.content).getChildAt(0) }
 ): ViewBindingProperty<A, T> {
     return viewBinding { activity: A -> vbFactory(viewProvider(activity)) }
 }

@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:text="Profile"
+        android:text="Profile Default args"
         android:textAppearance="?android:textAppearanceLarge"
         />
 
@@ -32,14 +32,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Click"
-        />
-
-    <Button
-        android:id="@+id/default_args_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Default args"
         />
 
 </LinearLayout>
