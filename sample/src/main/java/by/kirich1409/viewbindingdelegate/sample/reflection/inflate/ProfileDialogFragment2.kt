@@ -9,8 +9,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import by.kirich1409.viewbindingdelegate.CreateMethod
 import by.kirich1409.viewbindingdelegate.viewBinding
-import by.kirich1409.viewbindingdelegate.dialogViewBinding
-import by.kirich1409.viewbindingdelegate.sample.R
 import by.kirich1409.viewbindingdelegate.sample.databinding.FragmentProfileBinding
 
 class ProfileDialogFragment2 : DialogFragment() {

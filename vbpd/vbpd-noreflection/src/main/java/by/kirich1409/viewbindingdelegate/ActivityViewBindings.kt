@@ -6,6 +6,7 @@ import android.view.View
 import androidx.annotation.IdRes
 import androidx.core.app.ComponentActivity
 import androidx.viewbinding.ViewBinding
+import by.kirich1409.viewbindingdelegate.internal.DefaultActivityViewBingingRootProvider
 
 private class ActivityViewBindingProperty<A : ComponentActivity, T : ViewBinding>(
     viewBinder: (A) -> T
@@ -32,7 +33,7 @@ public fun <A : ComponentActivity, T : ViewBinding> ComponentActivity.viewBindin
 @JvmName("viewBindingActivity")
 public inline fun <A : ComponentActivity, T : ViewBinding> ComponentActivity.viewBinding(
     crossinline vbFactory: (View) -> T,
-    crossinline viewProvider: (A) -> View
+    crossinline viewProvider: (A) -> View = DefaultActivityViewBingingRootProvider::findRootView
 ): ViewBindingProperty<A, T> {
     return viewBinding { activity: A -> vbFactory(viewProvider(activity)) }
 }
@@ -52,3 +53,4 @@ public inline fun <T : ViewBinding> ComponentActivity.viewBinding(
 ): ViewBindingProperty<ComponentActivity, T> {
     return viewBinding { activity: ComponentActivity -> vbFactory(activity.findViewById(viewBindingRootId)) }
 }
+

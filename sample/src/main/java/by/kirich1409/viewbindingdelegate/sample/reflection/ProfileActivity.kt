@@ -10,7 +10,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 
 class ProfileActivity : AppCompatActivity(R.layout.activity_profile) {
 
-    private val viewBinding: ActivityProfileBinding by viewBinding(R.id.container)
+    private val viewBinding: ActivityProfileBinding by viewBinding()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
