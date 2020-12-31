@@ -1,7 +1,5 @@
 package by.kirich1409.viewbindingdelegate
 
-import androidx.viewbinding.ViewBinding
-
 /**
  * Method that will be used to create [ViewBinding].
  */

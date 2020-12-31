@@ -1,11 +1,11 @@
 @file:Suppress("unused")
+@file:JvmName("ViewHolderBindings")
 
-package by.kirich1409.viewbindingdelegate.recyclerview
+package by.kirich1409.viewbindingdelegate
 
 import android.view.View
 import androidx.annotation.IdRes
 import androidx.core.view.ViewCompat
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import androidx.viewbinding.ViewBinding
 
@@ -14,8 +14,8 @@ import androidx.viewbinding.ViewBinding
  */
 fun <VH : ViewHolder, T : ViewBinding> VH.viewBinding(
     viewBinder: (VH) -> T
-): ViewHolderBindingProperty<VH, T> {
-    return ViewHolderBindingProperty(viewBinder)
+): ViewBindingProperty<VH, T> {
+    return LazyViewBindingProperty(viewBinder)
 }
 
 /**
@@ -27,8 +27,8 @@ fun <VH : ViewHolder, T : ViewBinding> VH.viewBinding(
 inline fun <VH : ViewHolder, T : ViewBinding> VH.viewBinding(
     crossinline vbFactory: (View) -> T,
     crossinline viewProvider: (VH) -> View = ViewHolder::itemView
-): ViewHolderBindingProperty<VH, T> {
-    return ViewHolderBindingProperty { viewHolder: VH -> viewProvider(viewHolder).let(vbFactory) }
+): ViewBindingProperty<VH, T> {
+    return LazyViewBindingProperty { viewHolder: VH -> viewProvider(viewHolder).let(vbFactory) }
 }
 
 /**
@@ -40,8 +40,8 @@ inline fun <VH : ViewHolder, T : ViewBinding> VH.viewBinding(
 inline fun <VH : ViewHolder, T : ViewBinding> VH.viewBinding(
     crossinline vbFactory: (View) -> T,
     @IdRes viewBindingRootId: Int
-): ViewHolderBindingProperty<VH, T> {
-    return ViewHolderBindingProperty { viewHolder: VH ->
+): ViewBindingProperty<VH, T> {
+    return LazyViewBindingProperty { viewHolder: VH ->
         ViewCompat.requireViewById<View>(viewHolder.itemView, viewBindingRootId).let(vbFactory)
     }
 }

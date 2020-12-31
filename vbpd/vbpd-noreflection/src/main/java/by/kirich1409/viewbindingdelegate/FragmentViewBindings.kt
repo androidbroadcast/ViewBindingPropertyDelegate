@@ -1,4 +1,5 @@
 @file:Suppress("RedundantVisibilityModifier", "unused")
+@file:JvmName("FragmentViewBindings")
 
 package by.kirich1409.viewbindingdelegate
 
@@ -9,7 +10,7 @@ import androidx.viewbinding.ViewBinding
 
 private class FragmentViewBindingProperty<F : Fragment, T : ViewBinding>(
     viewBinder: (F) -> T
-) : ViewBindingProperty<F, T>(viewBinder) {
+) : LifecycleViewBindingProperty<F, T>(viewBinder) {
 
     override fun getLifecycleOwner(thisRef: F) = thisRef.viewLifecycleOwner
 }

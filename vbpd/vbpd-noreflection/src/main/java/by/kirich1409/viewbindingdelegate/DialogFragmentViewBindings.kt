@@ -1,4 +1,6 @@
 @file:Suppress("RedundantVisibilityModifier", "unused")
+@file:JvmName("DialogFragmentViewBindings")
+
 
 package by.kirich1409.viewbindingdelegate
 
@@ -10,7 +12,7 @@ import androidx.viewbinding.ViewBinding
 
 private class DialogFragmentViewBindingProperty<F : DialogFragment, T : ViewBinding>(
     viewBinder: (F) -> T
-) : ViewBindingProperty<F, T>(viewBinder) {
+) : LifecycleViewBindingProperty<F, T>(viewBinder) {
 
     override fun getLifecycleOwner(thisRef: F): LifecycleOwner {
         return if (thisRef.view != null) thisRef.viewLifecycleOwner else thisRef

@@ -5,6 +5,8 @@ package by.kirich1409.viewbindingdelegate
 import android.os.Handler
 import android.os.Looper
 import androidx.annotation.MainThread
+import androidx.annotation.RestrictTo
+import androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
@@ -12,9 +14,35 @@ import androidx.viewbinding.ViewBinding
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
-public abstract class ViewBindingProperty<in R : Any, T : ViewBinding>(
+
+interface ViewBindingProperty<in R : Any, T : ViewBinding> : ReadOnlyProperty<R, T> {
+
+    @MainThread
+    fun clear()
+}
+
+public open class LazyViewBindingProperty<in R : Any, T : ViewBinding> @RestrictTo(LIBRARY_GROUP) constructor(
+    protected val viewBinder: (R) -> T
+) : ViewBindingProperty<R, T> {
+
+    protected var viewBinding: T? = null
+
+    @MainThread
+    public override fun getValue(thisRef: R, property: KProperty<*>): T {
+        return viewBinding ?: viewBinder(thisRef).also { viewBinding ->
+            this.viewBinding = viewBinding
+        }
+    }
+
+    @MainThread
+    public override fun clear() {
+        viewBinding = null
+    }
+}
+
+public abstract class LifecycleViewBindingProperty<in R : Any, T : ViewBinding> @RestrictTo(LIBRARY_GROUP) constructor(
     private val viewBinder: (R) -> T
-) : ReadOnlyProperty<R, T> {
+) : ViewBindingProperty<R, T> {
 
     private var viewBinding: T? = null
     private val lifecycleObserver = ClearOnDestroyLifecycleObserver()
@@ -41,7 +69,7 @@ public abstract class ViewBindingProperty<in R : Any, T : ViewBinding>(
     }
 
     @MainThread
-    public fun clear() {
+    public override fun clear() {
         val thisRef = thisRef ?: return
         this.thisRef = null
         getLifecycleOwner(thisRef).lifecycle.removeObserver(lifecycleObserver)

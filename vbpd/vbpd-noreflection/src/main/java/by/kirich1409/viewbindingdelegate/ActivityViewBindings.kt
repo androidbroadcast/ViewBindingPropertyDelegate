@@ -1,4 +1,5 @@
 @file:Suppress("RedundantVisibilityModifier", "unused")
+@file:JvmName("ActivityViewBindings")
 
 package by.kirich1409.viewbindingdelegate
 
@@ -10,7 +11,7 @@ import by.kirich1409.viewbindingdelegate.internal.DefaultActivityViewBingingRoot
 
 private class ActivityViewBindingProperty<A : ComponentActivity, T : ViewBinding>(
     viewBinder: (A) -> T
-) : ViewBindingProperty<A, T>(viewBinder) {
+) : LifecycleViewBindingProperty<A, T>(viewBinder) {
 
     override fun getLifecycleOwner(thisRef: A) = thisRef
 }

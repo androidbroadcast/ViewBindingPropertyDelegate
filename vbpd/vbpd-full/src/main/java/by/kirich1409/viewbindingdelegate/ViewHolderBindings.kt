@@ -1,7 +1,7 @@
 @file:Suppress("RedundantVisibilityModifier", "unused")
-@file:JvmName("ReflectionRecyclerViewBindings")
+@file:JvmName("ReflectionViewHolderBindings")
 
-package by.kirich1409.viewbindingdelegate.recyclerview
+package by.kirich1409.viewbindingdelegate
 
 import android.view.View
 import androidx.annotation.RestrictTo
@@ -35,7 +35,7 @@ internal class ViewHolderBinder<T : ViewBinding>(private val viewBindingClass: C
  */
 @JvmName("viewBindingFragment")
 public inline fun <reified T : ViewBinding> ViewHolder.viewBinding(
-): ViewHolderBindingProperty<ViewHolder, T> {
+): ViewBindingProperty<ViewHolder, T> {
     return viewBinding(ViewHolderBinder(T::class.java)::bind)
 }
 
@@ -47,6 +47,6 @@ public inline fun <reified T : ViewBinding> ViewHolder.viewBinding(
 @JvmName("viewBindingFragment")
 public fun <T : ViewBinding> ViewHolder.viewBinding(
     viewBindingClass: Class<T>,
-): ViewHolderBindingProperty<ViewHolder, T> {
+): ViewBindingProperty<ViewHolder, T> {
     return viewBinding(ViewHolderBinder(viewBindingClass)::bind)
 }
