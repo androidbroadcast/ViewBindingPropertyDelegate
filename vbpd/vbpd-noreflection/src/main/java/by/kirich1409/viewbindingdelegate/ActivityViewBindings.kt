@@ -5,10 +5,13 @@ package by.kirich1409.viewbindingdelegate
 
 import android.view.View
 import androidx.annotation.IdRes
+import androidx.annotation.RestrictTo
+import androidx.annotation.RestrictTo.Scope.LIBRARY
 import androidx.core.app.ComponentActivity
 import androidx.viewbinding.ViewBinding
 import by.kirich1409.viewbindingdelegate.internal.DefaultActivityViewBingingRootProvider
 
+@RestrictTo(LIBRARY)
 private class ActivityViewBindingProperty<A : ComponentActivity, T : ViewBinding>(
     viewBinder: (A) -> T
 ) : LifecycleViewBindingProperty<A, T>(viewBinder) {
@@ -36,7 +39,7 @@ public inline fun <A : ComponentActivity, T : ViewBinding> ComponentActivity.vie
     crossinline vbFactory: (View) -> T,
     crossinline viewProvider: (A) -> View = DefaultActivityViewBingingRootProvider::findRootView
 ): ViewBindingProperty<A, T> {
-    return viewBinding { activity: A -> vbFactory(viewProvider(activity)) }
+    return viewBinding { activity -> vbFactory(viewProvider(activity)) }
 }
 
 /**
@@ -52,6 +55,6 @@ public inline fun <T : ViewBinding> ComponentActivity.viewBinding(
     crossinline vbFactory: (View) -> T,
     @IdRes viewBindingRootId: Int
 ): ViewBindingProperty<ComponentActivity, T> {
-    return viewBinding { activity: ComponentActivity -> vbFactory(activity.findViewById(viewBindingRootId)) }
+    return viewBinding { activity -> vbFactory(activity.findViewById(viewBindingRootId)) }
 }
 

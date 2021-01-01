@@ -13,11 +13,8 @@ import by.kirich1409.viewbindingdelegate.internal.ViewBindingCache
  * @param T Class of expected [ViewBinding] result class
  */
 @JvmName("viewBindingFragment")
-public inline fun <reified T : ViewBinding> Fragment.viewBinding(
-    createMethod: CreateMethod = CreateMethod.BIND
-): ViewBindingProperty<Fragment, T> {
-    return viewBinding(T::class.java, createMethod)
-}
+public inline fun <reified T : ViewBinding> Fragment.viewBinding(createMethod: CreateMethod = CreateMethod.BIND) =
+    viewBinding(T::class.java, createMethod)
 
 /**
  * Create new [ViewBinding] associated with the [Fragment]

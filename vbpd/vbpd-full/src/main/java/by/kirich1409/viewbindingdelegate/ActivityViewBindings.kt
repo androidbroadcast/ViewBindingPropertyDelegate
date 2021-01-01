@@ -19,11 +19,8 @@ import by.kirich1409.viewbindingdelegate.internal.ViewBindingCache
  * @param viewBindingRootId Root view's id that will be used as root for the view binding
  */
 @JvmName("viewBindingActivity")
-public inline fun <reified T : ViewBinding> ComponentActivity.viewBinding(
-    @IdRes viewBindingRootId: Int
-): ViewBindingProperty<ComponentActivity, T> {
-    return viewBinding(T::class.java, viewBindingRootId)
-}
+public inline fun <reified T : ViewBinding> ComponentActivity.viewBinding(@IdRes viewBindingRootId: Int) =
+    viewBinding(T::class.java, viewBindingRootId)
 
 
 /**

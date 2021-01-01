@@ -18,11 +18,8 @@ import by.kirich1409.viewbindingdelegate.internal.ViewBindingCache
  * @param viewBindingRootId Id of the root view from your custom view
  */
 @JvmName("viewBindingDialogFragment")
-public inline fun <reified T : ViewBinding> DialogFragment.dialogViewBinding(
-    @IdRes viewBindingRootId: Int
-): ViewBindingProperty<DialogFragment, T> {
-    return dialogViewBinding(T::class.java, viewBindingRootId)
-}
+public inline fun <reified T : ViewBinding> DialogFragment.dialogViewBinding(@IdRes viewBindingRootId: Int) =
+    dialogViewBinding(T::class.java, viewBindingRootId)
 
 /**
  * Create new [ViewBinding] associated with the [DialogFragment]'s view

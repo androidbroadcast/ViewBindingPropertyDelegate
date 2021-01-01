@@ -4,11 +4,12 @@ import android.app.Activity
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RestrictTo
+import androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP
 
 /**
  * Utility to find root view for ViewBinding in Activity
  */
-@RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+@RestrictTo(LIBRARY_GROUP)
 object DefaultActivityViewBingingRootProvider {
 
     fun findRootView(activity: Activity): View {

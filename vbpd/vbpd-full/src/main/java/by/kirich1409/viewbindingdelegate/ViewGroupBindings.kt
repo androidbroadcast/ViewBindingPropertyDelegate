@@ -30,10 +30,7 @@ public fun <T : ViewBinding> ViewGroup.viewBinding(
     createMethod: CreateMethod = CreateMethod.BIND,
 ): ViewBindingProperty<ViewGroup, T> = when (createMethod) {
     CreateMethod.BIND -> viewBinding { ViewBindingCache.getBind(viewBindingClass).bind(this) }
-    CreateMethod.INFLATE -> viewBinding { viewGroup ->
-        ViewBindingCache.getInflateWithLayoutInflater(viewBindingClass)
-            .inflate(LayoutInflater.from(context), viewGroup, true)
-    }
+    CreateMethod.INFLATE -> viewBinding(viewBindingClass, attachToRoot = true)
 }
 
 /**
