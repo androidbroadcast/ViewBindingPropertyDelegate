@@ -30,7 +30,7 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.core:core-ktx:1.3.1'
+    implementation rootProject.ext.dependencies.coreKtx
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation rootProject.ext.dependencies.recyclerview
     implementation project(':vbpd:vbpd-full')
