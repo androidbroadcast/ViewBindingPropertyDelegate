@@ -57,4 +57,3 @@ public inline fun <T : ViewBinding> ComponentActivity.viewBinding(
 ): ViewBindingProperty<ComponentActivity, T> {
     return viewBinding { activity -> vbFactory(activity.findViewById(viewBindingRootId)) }
 }
-

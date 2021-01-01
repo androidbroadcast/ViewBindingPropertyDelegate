@@ -1,7 +1,6 @@
 @file:Suppress("RedundantVisibilityModifier", "unused")
 @file:JvmName("DialogFragmentViewBindings")
 
-
 package by.kirich1409.viewbindingdelegate
 
 import android.view.View
