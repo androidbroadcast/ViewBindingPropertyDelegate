@@ -27,7 +27,7 @@ inline fun <T : ViewBinding> ViewGroup.viewBinding(
  */
 inline fun <T : ViewBinding> ViewGroup.viewBinding(
     crossinline vbFactory: (View) -> T,
-    @IdRes viewBindingRootId: Int
+    @IdRes viewBindingRootId: Int,
 ): ViewBindingProperty<ViewGroup, T> {
     return LazyViewBindingProperty { viewGroup: ViewGroup ->
         ViewCompat.requireViewById<View>(viewGroup, viewBindingRootId).let(vbFactory)

@@ -12,9 +12,7 @@ import androidx.viewbinding.ViewBinding
 /**
  * Create new [ViewBinding] associated with the [ViewHolder]
  */
-fun <VH : ViewHolder, T : ViewBinding> VH.viewBinding(
-    viewBinder: (VH) -> T
-): ViewBindingProperty<VH, T> {
+fun <VH : ViewHolder, T : ViewBinding> VH.viewBinding(viewBinder: (VH) -> T): ViewBindingProperty<VH, T> {
     return LazyViewBindingProperty(viewBinder)
 }
 
@@ -26,7 +24,7 @@ fun <VH : ViewHolder, T : ViewBinding> VH.viewBinding(
  */
 inline fun <VH : ViewHolder, T : ViewBinding> VH.viewBinding(
     crossinline vbFactory: (View) -> T,
-    crossinline viewProvider: (VH) -> View = ViewHolder::itemView
+    crossinline viewProvider: (VH) -> View = ViewHolder::itemView,
 ): ViewBindingProperty<VH, T> {
     return LazyViewBindingProperty { viewHolder: VH -> viewProvider(viewHolder).let(vbFactory) }
 }
@@ -39,7 +37,7 @@ inline fun <VH : ViewHolder, T : ViewBinding> VH.viewBinding(
  */
 inline fun <VH : ViewHolder, T : ViewBinding> VH.viewBinding(
     crossinline vbFactory: (View) -> T,
-    @IdRes viewBindingRootId: Int
+    @IdRes viewBindingRootId: Int,
 ): ViewBindingProperty<VH, T> {
     return LazyViewBindingProperty { viewHolder: VH ->
         ViewCompat.requireViewById<View>(viewHolder.itemView, viewBindingRootId).let(vbFactory)

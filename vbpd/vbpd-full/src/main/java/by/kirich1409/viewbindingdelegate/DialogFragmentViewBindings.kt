@@ -32,8 +32,8 @@ public fun <T : ViewBinding> DialogFragment.dialogViewBinding(
     viewBindingClass: Class<T>,
     @IdRes viewBindingRootId: Int
 ): ViewBindingProperty<DialogFragment, T> {
-    return dialogViewBinding {
-        ViewBindingCache.getBind(viewBindingClass).bind(this.getRootView(viewBindingRootId))
+    return dialogViewBinding { dialogFragment ->
+        ViewBindingCache.getBind(viewBindingClass).bind(dialogFragment.getRootView(viewBindingRootId))
     }
 }
 

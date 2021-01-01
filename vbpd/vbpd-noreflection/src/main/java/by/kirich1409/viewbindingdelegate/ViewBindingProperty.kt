@@ -21,7 +21,8 @@ interface ViewBindingProperty<in R : Any, T : ViewBinding> : ReadOnlyProperty<R,
     fun clear()
 }
 
-public open class LazyViewBindingProperty<in R : Any, T : ViewBinding> @RestrictTo(LIBRARY_GROUP) constructor(
+@RestrictTo(LIBRARY_GROUP)
+public open class LazyViewBindingProperty<in R : Any, T : ViewBinding>(
     protected val viewBinder: (R) -> T
 ) : ViewBindingProperty<R, T> {
 
@@ -40,7 +41,8 @@ public open class LazyViewBindingProperty<in R : Any, T : ViewBinding> @Restrict
     }
 }
 
-public abstract class LifecycleViewBindingProperty<in R : Any, T : ViewBinding> @RestrictTo(LIBRARY_GROUP) constructor(
+@RestrictTo(LIBRARY_GROUP)
+public abstract class LifecycleViewBindingProperty<in R : Any, T : ViewBinding>(
     private val viewBinder: (R) -> T
 ) : ViewBindingProperty<R, T> {
 

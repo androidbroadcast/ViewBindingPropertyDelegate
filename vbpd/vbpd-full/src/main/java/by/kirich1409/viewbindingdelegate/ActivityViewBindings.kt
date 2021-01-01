@@ -22,7 +22,6 @@ import by.kirich1409.viewbindingdelegate.internal.ViewBindingCache
 public inline fun <reified T : ViewBinding> ComponentActivity.viewBinding(@IdRes viewBindingRootId: Int) =
     viewBinding(T::class.java, viewBindingRootId)
 
-
 /**
  * Create new [ViewBinding] associated with the [Activity][ComponentActivity]
  *
@@ -34,10 +33,24 @@ public fun <T : ViewBinding> ComponentActivity.viewBinding(
     viewBindingClass: Class<T>,
     @IdRes viewBindingRootId: Int
 ): ViewBindingProperty<ComponentActivity, T> {
-    return viewBinding {
-        val rootView = ActivityCompat.requireViewById<View>(this, viewBindingRootId)
+    return viewBinding { activity ->
+        val rootView = ActivityCompat.requireViewById<View>(activity, viewBindingRootId)
         ViewBindingCache.getBind(viewBindingClass).bind(rootView)
     }
+}
+
+/**
+ * Create new [ViewBinding] associated with the [Activity]
+ *
+ * @param viewBindingClass Class of expected [ViewBinding] result class
+ * @param rootViewProvider Provider of root view for the [ViewBinding] from the [Activity][this]
+ */
+@JvmName("viewBindingActivity")
+public fun <T : ViewBinding> ComponentActivity.viewBinding(
+    viewBindingClass: Class<T>,
+    rootViewProvider: (ComponentActivity) -> View
+): ViewBindingProperty<ComponentActivity, T> {
+    return viewBinding { activity -> ViewBindingCache.getBind(viewBindingClass).bind(rootViewProvider(activity)) }
 }
 
 /**
@@ -49,9 +62,7 @@ public fun <T : ViewBinding> ComponentActivity.viewBinding(
 @JvmName("inflateViewBindingActivity")
 public inline fun <reified T : ViewBinding> ComponentActivity.viewBinding(
     createMethod: CreateMethod = CreateMethod.BIND
-): ViewBindingProperty<ComponentActivity, T> {
-    return viewBinding(T::class.java, createMethod)
-}
+) = viewBinding(T::class.java, createMethod)
 
 @JvmName("inflateViewBindingActivity")
 public fun <T : ViewBinding> ComponentActivity.viewBinding(
@@ -61,8 +72,5 @@ public fun <T : ViewBinding> ComponentActivity.viewBinding(
     CreateMethod.INFLATE -> viewBinding {
         ViewBindingCache.getInflateWithLayoutInflater(viewBindingClass).inflate(layoutInflater)
     }
-    CreateMethod.BIND -> viewBinding {
-        val rootView = DefaultActivityViewBingingRootProvider.findRootView(this)
-        ViewBindingCache.getBind(viewBindingClass).bind(rootView)
-    }
+    CreateMethod.BIND -> viewBinding(viewBindingClass, DefaultActivityViewBingingRootProvider::findRootView)
 }
