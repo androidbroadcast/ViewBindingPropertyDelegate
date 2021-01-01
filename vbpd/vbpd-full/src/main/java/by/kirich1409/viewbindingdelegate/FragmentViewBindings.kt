@@ -29,10 +29,10 @@ public fun <T : ViewBinding> Fragment.viewBinding(
     viewBindingClass: Class<T>,
     createMethod: CreateMethod = CreateMethod.BIND
 ): ViewBindingProperty<Fragment, T> = when (createMethod) {
-    CreateMethod.BIND ->  viewBinding{
+    CreateMethod.BIND -> viewBinding {
         ViewBindingCache.getBind(viewBindingClass).bind(requireView())
     }
-    CreateMethod.INFLATE ->  viewBinding{
+    CreateMethod.INFLATE -> viewBinding {
         ViewBindingCache.getInflateWithLayoutInflater(viewBindingClass).inflate(layoutInflater)
     }
 }

@@ -4,6 +4,7 @@ package by.kirich1409.viewbindingdelegate.internal
 
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.annotation.RestrictTo
 import androidx.annotation.RestrictTo.Scope.LIBRARY
 import androidx.viewbinding.ViewBinding
@@ -37,16 +38,22 @@ object ViewBindingCache {
 }
 
 /**
- * Wrapper of ViewBinding.inflate(LayoutInflater)
+ * Wrapper of ViewBinding.inflate(LayoutInflater, ViewGroup, Boolean)
  */
 @RestrictTo(LIBRARY)
 internal class InflateViewBinding<out VB : ViewBinding>(viewBindingClass: Class<VB>) {
 
-    private val inflateViewBinding = viewBindingClass.getMethod("inflate", LayoutInflater::class.java)
+    private val inflateViewBinding =
+        viewBindingClass.getMethod("inflate", LayoutInflater::class.java, ViewGroup::class.java, Boolean::class.java)
 
     @Suppress("UNCHECKED_CAST")
     fun inflate(layoutInflater: LayoutInflater): VB {
-        return inflateViewBinding(null, layoutInflater) as VB
+        return inflateViewBinding(null, layoutInflater, null, false) as VB
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    fun inflate(layoutInflater: LayoutInflater, parent: ViewGroup?, attachToParent: Boolean): VB {
+        return inflateViewBinding(null, layoutInflater, parent, attachToParent) as VB
     }
 }
 
