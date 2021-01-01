@@ -45,9 +45,6 @@ internal abstract class InflateViewBinding<out VB : ViewBinding>(
 ) {
 
     @Suppress("UNCHECKED_CAST")
-    abstract fun inflate(layoutInflater: LayoutInflater): VB
-
-    @Suppress("UNCHECKED_CAST")
     abstract fun inflate(layoutInflater: LayoutInflater, parent: ViewGroup?, attachToParent: Boolean): VB
 }
 
@@ -71,11 +68,6 @@ internal class FullInflateViewBinding<out VB : ViewBinding>(
 ) : InflateViewBinding<VB>(inflateViewBinding) {
 
     @Suppress("UNCHECKED_CAST")
-    override fun inflate(layoutInflater: LayoutInflater): VB {
-        return inflateViewBinding(null, layoutInflater, null, false) as VB
-    }
-
-    @Suppress("UNCHECKED_CAST")
     override fun inflate(layoutInflater: LayoutInflater, parent: ViewGroup?, attachToParent: Boolean): VB {
         return inflateViewBinding(null, layoutInflater, parent, attachToParent) as VB
     }
@@ -86,10 +78,6 @@ internal class FullInflateViewBinding<out VB : ViewBinding>(
 internal class MergeInflateViewBinding<out VB : ViewBinding>(
     private val inflateViewBinding: Method
 ) : InflateViewBinding<VB>(inflateViewBinding) {
-
-    @Suppress("UNCHECKED_CAST")
-    override fun inflate(layoutInflater: LayoutInflater): VB =
-        error("Specify parent to inflate ${InflateViewBinding::class.java.simpleName}")
 
     @Suppress("UNCHECKED_CAST")
     override fun inflate(layoutInflater: LayoutInflater, parent: ViewGroup?, attachToParent: Boolean): VB {

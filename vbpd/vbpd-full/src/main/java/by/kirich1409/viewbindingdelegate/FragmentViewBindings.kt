@@ -30,6 +30,6 @@ public fun <T : ViewBinding> Fragment.viewBinding(
         ViewBindingCache.getBind(viewBindingClass).bind(requireView())
     }
     CreateMethod.INFLATE -> viewBinding {
-        ViewBindingCache.getInflateWithLayoutInflater(viewBindingClass).inflate(layoutInflater)
+        ViewBindingCache.getInflateWithLayoutInflater(viewBindingClass).inflate(layoutInflater, null, false)
     }
 }
