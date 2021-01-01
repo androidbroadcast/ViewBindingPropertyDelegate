@@ -1,3 +1,14 @@
+## 1.4.0
+
+- Added support of `RecyclerView.ViewHolder`
+- Added support of `ViewGroup`
+- Added possibility to use the `viewBinding` delegate without specifying rootView.
+- Improved speed of usage `viewBinding` with reflection
+- More ways of creating `ViewBinding` using `ViewBinding.inflate` instead of `ViewBinding.bind`
+- *Breaking changes* `viewBinding()` in Activities use `ViewBinding.bind` instead of `ViewBinding.inflate`. To return previous behaviour use `viewBinding(CreateMethod.INFLATE)`
+- Split implementation of lazy `viewBinding` delegate and implementation with lifecycle
+- Minor improvements and bugfixes
+
 ## 1.3.1
 
 - Bug fixes
