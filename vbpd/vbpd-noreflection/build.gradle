@@ -41,6 +41,10 @@ android {
         resValues = false
         shaders = false
     }
+
+    dexOptions {
+        preDexLibraries = preDexEnabled && !travisBuild
+    }
 }
 
 dependencies {

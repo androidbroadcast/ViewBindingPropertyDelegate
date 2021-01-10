@@ -35,13 +35,17 @@ android {
     }
 
     buildFeatures {
-        buildConfig = false
-        viewBinding = false
-        dataBinding = false
         aidl = false
+        buildConfig = false
+        dataBinding = false
         renderScript = false
         resValues = false
         shaders = false
+        viewBinding = false
+    }
+
+    dexOptions {
+        preDexLibraries = preDexEnabled && !travisBuild
     }
 }
 

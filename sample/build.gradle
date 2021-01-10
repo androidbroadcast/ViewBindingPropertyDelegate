@@ -27,6 +27,10 @@ android {
     buildFeatures {
         viewBinding = true
     }
+
+    dexOptions {
+        preDexLibraries = preDexEnabled && !travisBuild
+    }
 }
 
 dependencies {
