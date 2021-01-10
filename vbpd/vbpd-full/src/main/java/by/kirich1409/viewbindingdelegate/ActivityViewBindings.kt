@@ -5,9 +5,9 @@ package by.kirich1409.viewbindingdelegate
 
 import android.app.Activity
 import android.view.View
+import androidx.activity.ComponentActivity
 import androidx.annotation.IdRes
 import androidx.core.app.ActivityCompat
-import androidx.core.app.ComponentActivity
 import androidx.viewbinding.ViewBinding
 import by.kirich1409.viewbindingdelegate.internal.DefaultActivityViewBingingRootProvider
 import by.kirich1409.viewbindingdelegate.internal.ViewBindingCache

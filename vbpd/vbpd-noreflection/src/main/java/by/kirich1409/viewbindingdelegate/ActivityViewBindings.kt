@@ -4,10 +4,10 @@
 package by.kirich1409.viewbindingdelegate
 
 import android.view.View
+import androidx.activity.ComponentActivity
 import androidx.annotation.IdRes
 import androidx.annotation.RestrictTo
 import androidx.annotation.RestrictTo.Scope.LIBRARY
-import androidx.core.app.ComponentActivity
 import androidx.viewbinding.ViewBinding
 import by.kirich1409.viewbindingdelegate.internal.DefaultActivityViewBingingRootProvider
 
