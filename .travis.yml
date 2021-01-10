@@ -25,4 +25,4 @@ cache:
     - $HOME/.gradle/wrapper/
 
 script:
-  - ./gradlew :vbpd:bintrayUpload
+  - ./gradlew bintrayUpload
