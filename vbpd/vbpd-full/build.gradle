@@ -34,16 +34,6 @@ android {
                 ['-module-name', "com.github.kirich1409.ViewBindingPropertyDelegate"]
     }
 
-    buildFeatures {
-        aidl = false
-        buildConfig = false
-        dataBinding = false
-        renderScript = false
-        resValues = false
-        shaders = false
-        viewBinding = false
-    }
-
     dexOptions {
         preDexLibraries = preDexEnabled && !travisBuild
     }
