@@ -36,7 +36,7 @@ ext {
     minSdkVersion = 14
     targetSdkVersion = 29
 
-    versionName = "1.4.0"
+    versionName = "1.4.1"
 
     dependencies = [:]
     dependencies.kotlinStdlib = "org.jetbrains.kotlin:kotlin-stdlib"
