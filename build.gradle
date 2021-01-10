@@ -47,6 +47,5 @@ ext {
     dependencies.recyclerview = 'androidx.recyclerview:recyclerview:1.1.0'
 
     travisBuild = System.getenv("TRAVIS") == "true"
-    // allows for -Dpre-dex=false to be set
-    preDexEnabled = "true" == System.getProperty("pre-dex", "true")
+    preDexEnabled = "true" != System.getenv("PRE_DEX_DISABLED")
 }
