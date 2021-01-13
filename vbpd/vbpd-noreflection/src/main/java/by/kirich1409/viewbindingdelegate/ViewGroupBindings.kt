@@ -5,8 +5,8 @@ package by.kirich1409.viewbindingdelegate
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.IdRes
-import androidx.core.view.ViewCompat
 import androidx.viewbinding.ViewBinding
+import by.kirich1409.viewbindingdelegate.internal.requireViewByIdCompat
 
 /**
  * Create new [ViewBinding] associated with the [ViewGroup]
@@ -30,6 +30,6 @@ inline fun <T : ViewBinding> ViewGroup.viewBinding(
     @IdRes viewBindingRootId: Int,
 ): ViewBindingProperty<ViewGroup, T> {
     return LazyViewBindingProperty { viewGroup: ViewGroup ->
-        ViewCompat.requireViewById<View>(viewGroup, viewBindingRootId).let(vbFactory)
+        vbFactory(viewGroup.requireViewByIdCompat(viewBindingRootId))
     }
 }

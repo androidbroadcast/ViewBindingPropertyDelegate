@@ -8,13 +8,14 @@ import androidx.annotation.IdRes
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.viewbinding.ViewBinding
+import by.kirich1409.viewbindingdelegate.internal.requireViewByIdCompat
 
-private class DialogFragmentViewBindingProperty<F : DialogFragment, T : ViewBinding>(
+private class DialogFragmentViewBindingProperty<in F : DialogFragment, out T : ViewBinding>(
     viewBinder: (F) -> T
 ) : LifecycleViewBindingProperty<F, T>(viewBinder) {
 
     override fun getLifecycleOwner(thisRef: F): LifecycleOwner {
-        return if (thisRef.view != null) thisRef.viewLifecycleOwner else thisRef
+        return if (thisRef.showsDialog) thisRef else thisRef.viewLifecycleOwner
     }
 }
 
@@ -53,7 +54,7 @@ public inline fun <T : ViewBinding> DialogFragment.dialogViewBinding(
     crossinline vbFactory: (View) -> T,
     @IdRes viewBindingRootId: Int
 ): ViewBindingProperty<DialogFragment, T> {
-    return dialogViewBinding(vbFactory) { fragment: DialogFragment ->
-        fragment.dialog!!.window!!.decorView.findViewById(viewBindingRootId)
+    return dialogViewBinding(vbFactory) { fragment ->
+        fragment.dialog!!.window!!.decorView.requireViewByIdCompat(viewBindingRootId)
     }
 }

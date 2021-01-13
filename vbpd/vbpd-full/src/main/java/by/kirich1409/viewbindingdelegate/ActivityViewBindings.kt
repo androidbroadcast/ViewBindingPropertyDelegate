@@ -9,8 +9,8 @@ import androidx.activity.ComponentActivity
 import androidx.annotation.IdRes
 import androidx.core.app.ActivityCompat
 import androidx.viewbinding.ViewBinding
-import by.kirich1409.viewbindingdelegate.internal.DefaultActivityViewBingingRootProvider
 import by.kirich1409.viewbindingdelegate.internal.ViewBindingCache
+import by.kirich1409.viewbindingdelegate.internal.findRootView
 
 /**
  * Create new [ViewBinding] associated with the [Activity][ComponentActivity]
@@ -69,7 +69,7 @@ public fun <T : ViewBinding> ComponentActivity.viewBinding(
     viewBindingClass: Class<T>,
     createMethod: CreateMethod = CreateMethod.BIND
 ): ViewBindingProperty<ComponentActivity, T> = when (createMethod) {
-    CreateMethod.BIND -> viewBinding(viewBindingClass, DefaultActivityViewBingingRootProvider::findRootView)
+    CreateMethod.BIND -> viewBinding(viewBindingClass, ::findRootView)
     CreateMethod.INFLATE -> viewBinding {
         ViewBindingCache.getInflateWithLayoutInflater(viewBindingClass).inflate(layoutInflater, null, false)
     }
