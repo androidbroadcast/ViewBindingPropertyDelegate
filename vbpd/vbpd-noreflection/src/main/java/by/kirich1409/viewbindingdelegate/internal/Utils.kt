@@ -9,18 +9,17 @@ import androidx.annotation.IdRes
 import androidx.annotation.RestrictTo
 import androidx.core.app.ActivityCompat
 import androidx.core.view.ViewCompat
+import androidx.fragment.app.DialogFragment
 
 @Suppress("NOTHING_TO_INLINE")
-@PublishedApi
 @RestrictTo(RestrictTo.Scope.LIBRARY)
-internal inline fun <V : View> View.requireViewByIdCompat(@IdRes id: Int): V {
+inline fun <V : View> View.requireViewByIdCompat(@IdRes id: Int): V {
     return ViewCompat.requireViewById(this, id)
 }
 
 @Suppress("NOTHING_TO_INLINE")
-@PublishedApi
 @RestrictTo(RestrictTo.Scope.LIBRARY)
-internal inline fun <V : View> Activity.requireViewByIdCompat(@IdRes id: Int): V {
+inline fun <V : View> Activity.requireViewByIdCompat(@IdRes id: Int): V {
     return ActivityCompat.requireViewById(this, id)
 }
 
@@ -36,4 +35,13 @@ fun findRootView(activity: Activity): View {
         0 -> error("Content view has no children. Provide root view explicitly")
         else -> error("More than one child view found in Activity content view")
     }
+}
+
+@RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+fun DialogFragment.getRootView(viewBindingRootId: Int): View {
+    val dialog = checkNotNull(dialog) {
+        "DialogFragment doesn't have dialog. Use viewBinding delegate after onCreateDialog"
+    }
+    val window = checkNotNull(dialog.window) { "Fragment's Dialog has no window" }
+    return with(window.decorView) { if (viewBindingRootId != 0) requireViewByIdCompat(viewBindingRootId) else this }
 }
