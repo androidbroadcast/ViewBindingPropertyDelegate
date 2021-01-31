@@ -47,7 +47,6 @@ public abstract class LifecycleViewBindingProperty<in R : Any, T : ViewBinding>(
 ) : ViewBindingProperty<R, T> {
 
     private var viewBinding: T? = null
-    private var thisRef: R? = null
 
     protected abstract fun getLifecycleOwner(thisRef: R): LifecycleOwner
 
@@ -55,7 +54,6 @@ public abstract class LifecycleViewBindingProperty<in R : Any, T : ViewBinding>(
     public override fun getValue(thisRef: R, property: KProperty<*>): T {
         viewBinding?.let { return it }
 
-        this.thisRef = thisRef
         val lifecycle = getLifecycleOwner(thisRef).lifecycle
         val viewBinding = viewBinder(thisRef)
         if (lifecycle.currentState == Lifecycle.State.DESTROYED) {
@@ -69,8 +67,6 @@ public abstract class LifecycleViewBindingProperty<in R : Any, T : ViewBinding>(
 
     @MainThread
     public override fun clear() {
-        thisRef ?: return
-        thisRef = null
         mainHandler.post { viewBinding = null }
     }
 
