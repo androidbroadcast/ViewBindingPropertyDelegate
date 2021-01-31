@@ -47,8 +47,6 @@ public abstract class LifecycleViewBindingProperty<in R : Any, T : ViewBinding>(
 ) : ViewBindingProperty<R, T> {
 
     private var viewBinding: T? = null
-    private val lifecycleObserver = ClearOnDestroyLifecycleObserver()
-    private var thisRef: R? = null
 
     protected abstract fun getLifecycleOwner(thisRef: R): LifecycleOwner
 
@@ -56,13 +54,12 @@ public abstract class LifecycleViewBindingProperty<in R : Any, T : ViewBinding>(
     public override fun getValue(thisRef: R, property: KProperty<*>): T {
         viewBinding?.let { return it }
 
-        this.thisRef = thisRef
         val lifecycle = getLifecycleOwner(thisRef).lifecycle
         val viewBinding = viewBinder(thisRef)
         if (lifecycle.currentState == Lifecycle.State.DESTROYED) {
             // We can access to ViewBinding after on destroy, but don't save to prevent memory leak
         } else {
-            lifecycle.addObserver(lifecycleObserver)
+            lifecycle.addObserver(ClearOnDestroyLifecycleObserver())
             this.viewBinding = viewBinding
         }
         return viewBinding
@@ -70,9 +67,6 @@ public abstract class LifecycleViewBindingProperty<in R : Any, T : ViewBinding>(
 
     @MainThread
     public override fun clear() {
-        val thisRef = thisRef ?: return
-        this.thisRef = null
-        getLifecycleOwner(thisRef).lifecycle.removeObserver(lifecycleObserver)
         mainHandler.post { viewBinding = null }
     }
 
