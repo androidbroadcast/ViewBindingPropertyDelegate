@@ -5,6 +5,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import by.kirich1409.viewbindingdelegate.sample.R
 import by.kirich1409.viewbindingdelegate.sample.databinding.FragmentProfileBinding
+import by.kirich1409.viewbindingdelegate.sample.dialog.noreflection.ProfileDialogFragment2
 import by.kirich1409.viewbindingdelegate.viewBinding
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
@@ -15,7 +16,9 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         super.onViewCreated(view, savedInstanceState)
         with(viewBinding) {
             button.setOnClickListener {
-                // TODO Handle on click
+                if (childFragmentManager.findFragmentByTag("dialog") == null) {
+                    ProfileDialogFragment2().show(childFragmentManager, "dialog")
+                }
             }
         }
     }
