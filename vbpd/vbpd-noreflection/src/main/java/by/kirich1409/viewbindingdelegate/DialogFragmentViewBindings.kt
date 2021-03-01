@@ -6,26 +6,20 @@ package by.kirich1409.viewbindingdelegate
 import android.view.View
 import androidx.annotation.IdRes
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.LifecycleOwner
 import androidx.viewbinding.ViewBinding
-
-private class DialogFragmentViewBindingProperty<F : DialogFragment, T : ViewBinding>(
-    viewBinder: (F) -> T
-) : LifecycleViewBindingProperty<F, T>(viewBinder) {
-
-    override fun getLifecycleOwner(thisRef: F): LifecycleOwner {
-        return if (thisRef.view != null) thisRef.viewLifecycleOwner else thisRef
-    }
-}
 
 /**
  * Create new [ViewBinding] associated with the [DialogFragment]
  */
 @JvmName("viewBindingDialogFragment")
+@Deprecated(
+    "Use viewBinding delegate",
+    ReplaceWith("viewBinding(viewBinder)", "by.kirich1409.viewbindingdelegate.viewBinding")
+)
 public fun <F : DialogFragment, T : ViewBinding> DialogFragment.dialogViewBinding(
     viewBinder: (F) -> T
 ): ViewBindingProperty<F, T> {
-    return DialogFragmentViewBindingProperty(viewBinder)
+    return viewBinding(viewBinder)
 }
 
 /**
@@ -34,11 +28,15 @@ public fun <F : DialogFragment, T : ViewBinding> DialogFragment.dialogViewBindin
  * @param vbFactory Function that create new instance of [ViewBinding]. `MyViewBinding::bind` can be used
  */
 @JvmName("viewBindingDialogFragment")
+@Deprecated(
+    "Use viewBinding delegate",
+    ReplaceWith("viewBinding(vbFactory, viewProvider)", "by.kirich1409.viewbindingdelegate.viewBinding")
+)
 public inline fun <F : DialogFragment, T : ViewBinding> DialogFragment.dialogViewBinding(
     crossinline vbFactory: (View) -> T,
     crossinline viewProvider: (F) -> View
 ): ViewBindingProperty<F, T> {
-    return dialogViewBinding { fragment -> vbFactory(viewProvider(fragment)) }
+    return viewBinding(vbFactory, viewProvider)
 }
 
 /**
@@ -49,11 +47,13 @@ public inline fun <F : DialogFragment, T : ViewBinding> DialogFragment.dialogVie
  */
 @Suppress("unused")
 @JvmName("viewBindingDialogFragment")
+@Deprecated(
+    "Use viewBinding delegate",
+    ReplaceWith("viewBinding(vbFactory, viewBindingRootId)", "by.kirich1409.viewbindingdelegate.viewBinding"),
+)
 public inline fun <T : ViewBinding> DialogFragment.dialogViewBinding(
     crossinline vbFactory: (View) -> T,
     @IdRes viewBindingRootId: Int
 ): ViewBindingProperty<DialogFragment, T> {
-    return dialogViewBinding(vbFactory) { fragment: DialogFragment ->
-        fragment.dialog!!.window!!.decorView.findViewById(viewBindingRootId)
-    }
+    return viewBinding(vbFactory, viewBindingRootId)
 }

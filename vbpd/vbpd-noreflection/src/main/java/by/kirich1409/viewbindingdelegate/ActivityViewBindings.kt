@@ -8,15 +8,19 @@ import androidx.activity.ComponentActivity
 import androidx.annotation.IdRes
 import androidx.annotation.RestrictTo
 import androidx.annotation.RestrictTo.Scope.LIBRARY
+import androidx.lifecycle.LifecycleOwner
 import androidx.viewbinding.ViewBinding
-import by.kirich1409.viewbindingdelegate.internal.DefaultActivityViewBingingRootProvider
+import by.kirich1409.viewbindingdelegate.internal.findRootView
+import by.kirich1409.viewbindingdelegate.internal.requireViewByIdCompat
 
 @RestrictTo(LIBRARY)
-private class ActivityViewBindingProperty<A : ComponentActivity, T : ViewBinding>(
+private class ActivityViewBindingProperty<in A : ComponentActivity, out T : ViewBinding>(
     viewBinder: (A) -> T
 ) : LifecycleViewBindingProperty<A, T>(viewBinder) {
 
-    override fun getLifecycleOwner(thisRef: A) = thisRef
+    override fun getLifecycleOwner(thisRef: A): LifecycleOwner {
+        return thisRef
+    }
 }
 
 /**
@@ -37,7 +41,7 @@ public fun <A : ComponentActivity, T : ViewBinding> ComponentActivity.viewBindin
 @JvmName("viewBindingActivity")
 public inline fun <A : ComponentActivity, T : ViewBinding> ComponentActivity.viewBinding(
     crossinline vbFactory: (View) -> T,
-    crossinline viewProvider: (A) -> View = DefaultActivityViewBingingRootProvider::findRootView
+    crossinline viewProvider: (A) -> View = ::findRootView
 ): ViewBindingProperty<A, T> {
     return viewBinding { activity -> vbFactory(viewProvider(activity)) }
 }
@@ -55,5 +59,5 @@ public inline fun <T : ViewBinding> ComponentActivity.viewBinding(
     crossinline vbFactory: (View) -> T,
     @IdRes viewBindingRootId: Int
 ): ViewBindingProperty<ComponentActivity, T> {
-    return viewBinding { activity -> vbFactory(activity.findViewById(viewBindingRootId)) }
+    return viewBinding { activity -> vbFactory(activity.requireViewByIdCompat(viewBindingRootId)) }
 }

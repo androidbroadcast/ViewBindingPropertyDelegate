@@ -11,13 +11,24 @@
         android:theme="@style/AppTheme"
         >
 
-        <activity android:name=".noreflection.ProfileActivity">
+        <activity android:name=".activity.noreflection.ProfileActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".activity.reflection.ProfileActivity"
+            android:exported="true"
+            />
+
+        <activity
+            android:name=".activity.reflection.inflate.ProfileActivity"
+            android:exported="true"
+            />
+
     </application>
 
 </manifest>

@@ -5,9 +5,9 @@ package by.kirich1409.viewbindingdelegate
 
 import android.view.View
 import androidx.annotation.IdRes
-import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import androidx.viewbinding.ViewBinding
+import by.kirich1409.viewbindingdelegate.internal.requireViewByIdCompat
 
 /**
  * Create new [ViewBinding] associated with the [ViewHolder]
@@ -40,6 +40,6 @@ inline fun <VH : ViewHolder, T : ViewBinding> VH.viewBinding(
     @IdRes viewBindingRootId: Int,
 ): ViewBindingProperty<VH, T> {
     return LazyViewBindingProperty { viewHolder: VH ->
-        ViewCompat.requireViewById<View>(viewHolder.itemView, viewBindingRootId).let(vbFactory)
+        vbFactory(viewHolder.itemView.requireViewByIdCompat(viewBindingRootId))
     }
 }
