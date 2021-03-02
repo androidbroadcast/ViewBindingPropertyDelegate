@@ -29,7 +29,7 @@ android {
     }
 
     dexOptions {
-        preDexLibraries = preDexEnabled && !travisBuild
+        preDexLibraries = preDexEnabled
     }
 }
 
