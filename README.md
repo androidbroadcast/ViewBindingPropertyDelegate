@@ -86,7 +86,7 @@ class ProfileDialogFragment : DialogFragment() {
 
 # License
 
-   Copyright 2020 Kirill Rozov
+   Copyright 2020-2021 Kirill Rozov
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
