@@ -4,9 +4,8 @@ plugins {
 }
 
 ext {
-    groupId = 'com.kirich1409.viewbindingpropertydelegate'
-    bintrayPackageName = "viewbindingpropertydelegate"
-    artifactId = "vbpd-noreflection"
+    groupId = 'com.github.kirich1409'
+    artifactId = "viewbindingpropertydelegate-noreflection"
 }
 
 apply from: rootProject.file('publishing.gradle')

@@ -10,18 +10,15 @@ Every Gradle module of your project need to enable ViewBinding. How to do that y
 ```groovy
 allprojects {
   repositories {
-    jcenter()
-
-    // or for the ASAP availability
-    maven { url = 'https://dl.bintray.com/kirich1409/maven' }
+    mavenCentral()
   }
 }
 
 dependencies {
-    implementation 'com.kirich1409.viewbindingpropertydelegate:viewbindingpropertydelegate:1.4.1'
+    implementation 'com.github.kirich1409:viewbindingpropertydelegate:1.4.2'
     
     // To use only without reflection variants of viewBinding
-    implementation 'com.kirich1409.viewbindingpropertydelegate:vbpd-noreflection:1.4.1'
+    implementation 'com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.4.2'
 }
 ```
 
@@ -89,7 +86,7 @@ class ProfileDialogFragment : DialogFragment() {
 
 # License
 
-   Copyright 2020 Kirill Rozov
+   Copyright 2020-2021 Kirill Rozov
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
