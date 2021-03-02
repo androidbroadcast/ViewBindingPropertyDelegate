@@ -1,3 +1,12 @@
+## 1.4.2
+
+- Migrate to Maven Central. This is the latest releases available via JCenter.
+- Artifacts group and id were changed
+- Support of [ViewTreeLifecycleOwner](https://d.android.com/reference/androidx/lifecycle/ViewTreeLifecycleOwner) for `ViewGroup` bindings
+- `LifecycleViewBindingProperty` lifecycle management improvements
+- Improvements in viewBinding work for `DialogFragment`
+- Bugfixes
+
 ## 1.4.0
 
 - Added support of `RecyclerView.ViewHolder`
