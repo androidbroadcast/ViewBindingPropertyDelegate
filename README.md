@@ -18,7 +18,7 @@ dependencies {
     implementation 'com.github.kirich1409:viewbindingpropertydelegate:1.4.2'
     
     // To use only without reflection variants of viewBinding
-    implementation 'com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.4.1'
+    implementation 'com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.4.2'
 }
 ```
 
