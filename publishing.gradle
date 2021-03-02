@@ -1,10 +1,20 @@
 apply plugin: 'maven-publish'
-apply plugin: 'com.jfrog.bintray'
+apply plugin: 'signing'
 
 tasks.register("sourceJar", Jar) {
     from android.sourceSets.main.java.srcDirs
     archiveClassifier.set('sources')
 }
+
+Properties localProps = new Properties()
+File localProperties = new File(rootProject.rootDir, "local.properties")
+if (localProperties.exists() && localProperties.isFile()) {
+    localProperties.withInputStream { localProps.load(it) }
+}
+
+project.ext["signing.keyId"] = localProps.getProperty("signing.keyId")
+project.ext["signing.secretKeyRingFile"] = localProps.getProperty("signing.secretKeyRingFile")
+project.ext["signing.password"] = localProps.getProperty("signing.password")
 
 afterEvaluate {
     publishing {
@@ -21,12 +31,14 @@ afterEvaluate {
                     name = 'View Binding Property Delegate'
                     description = 'Make work with Android View Binding simpler'
                     url = 'https://github.com/kirich1409/ViewBindingPropertyDelegate'
+
                     licenses {
                         license {
                             name = 'The Apache License, Version 2.0'
                             url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
                         }
                     }
+
                     developers {
                         developer {
                             id = 'kirich1409'
@@ -34,37 +46,36 @@ afterEvaluate {
                             email = 'krl.rozov@gmail.com'
                         }
                     }
+
                     scm {
                         url = 'https://github.com/kirich1409/ViewBindingPropertyDelegate'
                     }
                 }
             }
         }
-    }
 
-    bintray {
-        user = rootProject.hasProperty('user') ? rootProject.property('user') : System.getenv('BINTRAY_USER')
-        key = rootProject.hasProperty('apiKey') ? rootProject.property('apiKey') : System.getenv('BINTRAY_API_KEY')
+        repositories {
+            maven {
+                name = "sonatypeStaging"
+                url = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+                credentials {
+                    username = localProps.getProperty("ossrhUsername")
+                    password = localProps.getProperty("ossrhPassword")
+                }
+            }
 
-        publications = ["releaseAar"]
-
-        pkg {
-            repo = 'maven'
-            name = project.ext.bintrayPackageName
-            desc = "Make work with Android View Binding simpler"
-            userOrg = System.env.BINTRAY_USER_ORGANIZATION ?: ""
-            licenses = ['Apache-2.0']
-            vcsUrl = 'https://github.com/kirich1409/ViewBindingPropertyDelegate.git'
-            websiteUrl = 'https://github.com/kirich1409/ViewBindingPropertyDelegate'
-            issueTrackerUrl = 'https://github.com/kirich1409/ViewBindingPropertyDelegate/issues'
-            labels = ['view binding', 'kotlin']
-
-            githubRepo = 'kirich1409/ViewBindingPropertyDelegate' //Optional Github repository
-
-            version {
-                name = rootProject.ext.versionName
-                vcsTag = rootProject.ext.versionName
+            maven {
+                name = "sonatypeSnapshots"
+                url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+                credentials {
+                    username = localProps.getProperty("ossrhUsername")
+                    password = localProps.getProperty("ossrhPassword")
+                }
             }
         }
+    }
+
+    signing {
+        sign(publishing.publications)
     }
 }

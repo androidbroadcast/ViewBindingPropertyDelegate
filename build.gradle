@@ -16,7 +16,6 @@ buildscript {
 
 plugins {
     id 'maven-publish'
-    id "com.jfrog.bintray" version "1.8.4"
 }
 
 allprojects {
