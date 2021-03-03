@@ -49,41 +49,6 @@ class ProfileActivity : AppCompatActivity(R.layout.profile) {
 }
 ```
 
-It's very important that for some cases in `DialogFragment` you need to use `dialogViewBinding`
-instead of `viewBinding`
-
-```kotlin
-class ProfileDialogFragment : DialogFragment() {
-
-    // Using reflection API under the hood
-    private val viewBinding: ProfileBinding by dialogViewBinding(R.id.container)
-
-    // Without reflection
-    private val viewBinding by dialogViewBinding(ProfileBinding::bind, R.id.container)
-
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return AlertDialog.Builder(requireContext())
-            .setView(R.layout.profile)
-            .create()
-    }
-}
-```
-
-```kotlin
-class ProfileDialogFragment : DialogFragment() {
-
-    // Using reflection API under the hood
-    private val viewBinding: ProfileBinding by viewBinding()
-
-    // Without reflection
-    private val viewBinding by viewBinding(ProfileBinding::bind)
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.profile, container, false)
-    }
-}
-```
-
 # License
 
    Copyright 2020-2021 Kirill Rozov
