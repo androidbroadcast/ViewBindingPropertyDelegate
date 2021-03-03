@@ -1,3 +1,7 @@
+## 1.4.3
+
+- Update ProGuard rules
+
 ## 1.4.2
 
 - Migrate to Maven Central. This is the latest releases available via JCenter.
