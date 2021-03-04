@@ -17,8 +17,14 @@ private class DialogFragmentViewBindingProperty<in F : DialogFragment, out T : V
 ) : LifecycleViewBindingProperty<F, T>(viewBinder) {
 
     override fun getLifecycleOwner(thisRef: F): LifecycleOwner {
-        return if (thisRef.showsDialog) thisRef else checkNotNull(thisRef.viewLifecycleOwnerLiveData.value) {
-            "DialogFragment doesn't have view associated with it or the view has been destroyed"
+        if (thisRef.showsDialog) {
+            return thisRef
+        } else {
+            try {
+                return thisRef.viewLifecycleOwner
+            } catch (ignored: IllegalStateException) {
+                error("Fragment doesn't have view associated with it or the view has been destroyed")
+            }
         }
     }
 }
@@ -28,8 +34,10 @@ private class FragmentViewBindingProperty<in F : Fragment, out T : ViewBinding>(
 ) : LifecycleViewBindingProperty<F, T>(viewBinder) {
 
     override fun getLifecycleOwner(thisRef: F): LifecycleOwner {
-        return checkNotNull(thisRef.viewLifecycleOwnerLiveData.value) {
-            "Fragment doesn't have view associated with it or the view has been destroyed"
+        try {
+            return thisRef.viewLifecycleOwner
+        } catch (ignored: IllegalStateException) {
+            error("Fragment doesn't have view associated with it or the view has been destroyed")
         }
     }
 }

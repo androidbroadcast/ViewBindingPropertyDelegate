@@ -4,6 +4,7 @@ package by.kirich1409.viewbindingdelegate
 
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.annotation.MainThread
 import androidx.annotation.RestrictTo
 import androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP
@@ -57,6 +58,10 @@ public abstract class LifecycleViewBindingProperty<in R : Any, out T : ViewBindi
         val lifecycle = getLifecycleOwner(thisRef).lifecycle
         val viewBinding = viewBinder(thisRef)
         if (lifecycle.currentState == Lifecycle.State.DESTROYED) {
+            Log.w(
+                TAG, "Access to viewBinding after Lifecycle is destroyed or hasn't created yet. " +
+                        "The instance of viewBinding will be not cached."
+            )
             // We can access to ViewBinding after Fragment.onDestroyView(), but don't save it to prevent memory leak
         } else {
             lifecycle.addObserver(ClearOnDestroyLifecycleObserver())
@@ -81,3 +86,5 @@ public abstract class LifecycleViewBindingProperty<in R : Any, out T : ViewBindi
         private val mainHandler = Handler(Looper.getMainLooper())
     }
 }
+
+private const val TAG = "ViewBindingProperty"
