@@ -1,3 +1,7 @@
+## 1.4.4
+
+- Improve checking of `Fragment`'s `ViewLifecycleOwner`
+
 ## 1.4.3
 
 - Update ProGuard rules
