@@ -32,7 +32,7 @@ internal class ViewGroupViewBindingProperty<in V : ViewGroup, out T : ViewBindin
 inline fun <T : ViewBinding> ViewGroup.viewBinding(
     crossinline vbFactory: (ViewGroup) -> T,
 ): ViewBindingProperty<ViewGroup, T> {
-    return viewBinding(lifecycleAware = false, vbFactory = vbFactory)
+    return viewBinding(lifecycleAware = false, vbFactory)
 }
 
 /**
@@ -45,10 +45,10 @@ inline fun <T : ViewBinding> ViewGroup.viewBinding(
     lifecycleAware: Boolean,
     crossinline vbFactory: (ViewGroup) -> T,
 ): ViewBindingProperty<ViewGroup, T> {
-    return if (lifecycleAware) {
-        ViewGroupViewBindingProperty { viewGroup -> vbFactory(viewGroup) }
+    if (lifecycleAware) {
+        return ViewGroupViewBindingProperty { viewGroup -> vbFactory(viewGroup) }
     } else {
-        LazyViewBindingProperty { viewGroup -> vbFactory(viewGroup) }
+        return LazyViewBindingProperty { viewGroup -> vbFactory(viewGroup) }
     }
 }
 
@@ -70,7 +70,7 @@ inline fun <T : ViewBinding> ViewGroup.viewBinding(
     @IdRes viewBindingRootId: Int,
     crossinline vbFactory: (View) -> T,
 ): ViewBindingProperty<ViewGroup, T> {
-    return viewBinding(viewBindingRootId = viewBindingRootId, lifecycleAware = false, vbFactory = vbFactory)
+    return viewBinding(viewBindingRootId, lifecycleAware = false, vbFactory)
 }
 
 /**
@@ -85,10 +85,10 @@ inline fun <T : ViewBinding> ViewGroup.viewBinding(
     lifecycleAware: Boolean,
     crossinline vbFactory: (View) -> T,
 ): ViewBindingProperty<ViewGroup, T> {
-    return if (lifecycleAware) {
-        ViewGroupViewBindingProperty { viewGroup -> vbFactory(viewGroup) }
+    if (lifecycleAware) {
+        return ViewGroupViewBindingProperty { viewGroup -> vbFactory(viewGroup) }
     } else {
-        LazyViewBindingProperty { viewGroup: ViewGroup ->
+        return LazyViewBindingProperty { viewGroup: ViewGroup ->
             vbFactory(viewGroup.requireViewByIdCompat(viewBindingRootId))
         }
     }
