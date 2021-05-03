@@ -1,3 +1,7 @@
+## 1.4.6
+
+- Bug fixing
+
 ## 1.4.5
 
 - Update builtin ProGuard rules
