@@ -17,11 +17,11 @@ private class DialogFragmentViewBindingProperty<in F : DialogFragment, out T : V
 ) : LifecycleViewBindingProperty<F, T>(viewBinder) {
 
     override fun getLifecycleOwner(thisRef: F): LifecycleOwner {
-        if (thisRef.showsDialog) {
-            return thisRef
+        return if (thisRef.showsDialog) {
+            thisRef
         } else {
             try {
-                return thisRef.viewLifecycleOwner
+                thisRef.viewLifecycleOwner
             } catch (ignored: IllegalStateException) {
                 error("Fragment doesn't have view associated with it or the view has been destroyed")
             }
@@ -51,7 +51,8 @@ public fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
     viewBinder: (F) -> T
 ): ViewBindingProperty<F, T> {
     return when (this) {
-        is DialogFragment -> DialogFragmentViewBindingProperty(viewBinder) as ViewBindingProperty<F, T>
+        is DialogFragment ->
+            DialogFragmentViewBindingProperty(viewBinder as (DialogFragment) -> T) as ViewBindingProperty<F, T>
         else -> FragmentViewBindingProperty(viewBinder)
     }
 }
