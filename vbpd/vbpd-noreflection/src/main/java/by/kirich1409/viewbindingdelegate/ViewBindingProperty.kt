@@ -43,6 +43,22 @@ public open class LazyViewBindingProperty<in R : Any, out T : ViewBinding>(
 }
 
 @RestrictTo(LIBRARY_GROUP)
+public open class EagerViewBindingProperty<in R : Any, out T : ViewBinding>(
+    private val viewBinding: T
+) : ViewBindingProperty<R, T> {
+
+    @MainThread
+    public override fun getValue(thisRef: R, property: KProperty<*>): T {
+        return viewBinding
+    }
+
+    @MainThread
+    public override fun clear() {
+        // Do nothing
+    }
+}
+
+@RestrictTo(LIBRARY_GROUP)
 public abstract class LifecycleViewBindingProperty<in R : Any, out T : ViewBinding>(
     private val viewBinder: (R) -> T
 ) : ViewBindingProperty<R, T> {
