@@ -80,7 +80,7 @@ public abstract class LifecycleViewBindingProperty<in R : Any, out T : ViewBindi
             )
             // We can access to ViewBinding after Fragment.onDestroyView(), but don't save it to prevent memory leak
         } else {
-            lifecycle.addObserver(ClearOnDestroyLifecycleObserver())
+            lifecycle.addObserver(ClearOnDestroyLifecycleObserver(this))
             this.viewBinding = viewBinding
         }
         return viewBinding
@@ -88,18 +88,24 @@ public abstract class LifecycleViewBindingProperty<in R : Any, out T : ViewBindi
 
     @MainThread
     public override fun clear() {
-        mainHandler.post { viewBinding = null }
+        viewBinding = null
     }
 
-    private inner class ClearOnDestroyLifecycleObserver : DefaultLifecycleObserver {
+    private class ClearOnDestroyLifecycleObserver(
+        private val property: LifecycleViewBindingProperty<*, *>
+    ) : DefaultLifecycleObserver {
 
         @MainThread
-        override fun onDestroy(owner: LifecycleOwner): Unit = clear()
-    }
+        override fun onDestroy(owner: LifecycleOwner) {
+            if (!mainHandler.post { property.clear() }) {
+                property.clear()
+            }
+        }
 
-    private companion object {
+        private companion object {
 
-        private val mainHandler = Handler(Looper.getMainLooper())
+            private val mainHandler = Handler(Looper.getMainLooper())
+        }
     }
 }
 
