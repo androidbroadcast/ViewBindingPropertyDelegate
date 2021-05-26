@@ -7,10 +7,12 @@ import android.view.View
 import androidx.annotation.IdRes
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import androidx.viewbinding.ViewBinding
 import by.kirich1409.viewbindingdelegate.internal.getRootView
 import by.kirich1409.viewbindingdelegate.internal.requireViewByIdCompat
+import kotlin.reflect.KProperty
 
 private class DialogFragmentViewBindingProperty<in F : DialogFragment, out T : ViewBinding>(
     viewBinder: (F) -> T
@@ -33,11 +35,42 @@ private class FragmentViewBindingProperty<in F : Fragment, out T : ViewBinding>(
     viewBinder: (F) -> T
 ) : LifecycleViewBindingProperty<F, T>(viewBinder) {
 
+    private var fragmentLifecycleCallbacks: FragmentManager.FragmentLifecycleCallbacks? = null
+
+    override fun getValue(thisRef: F, property: KProperty<*>): T {
+        registerFragmentLifecycleCallbacks(thisRef)
+        return super.getValue(thisRef, property)
+    }
+
+    private fun registerFragmentLifecycleCallbacks(fragment: Fragment) {
+        if (fragmentLifecycleCallbacks != null) {
+            return
+        }
+
+        fragmentLifecycleCallbacks = ClearOnDestroy().also { callbacks ->
+            fragment.parentFragmentManager
+                .registerFragmentLifecycleCallbacks(callbacks, false)
+        }
+    }
+
+    override fun clear() {
+        super.clear()
+        fragmentLifecycleCallbacks = null
+    }
+
     override fun getLifecycleOwner(thisRef: F): LifecycleOwner {
         try {
             return thisRef.viewLifecycleOwner
         } catch (ignored: IllegalStateException) {
             error("Fragment doesn't have view associated with it or the view has been destroyed")
+        }
+    }
+
+    private inner class ClearOnDestroy : FragmentManager.FragmentLifecycleCallbacks() {
+
+        override fun onFragmentDestroyed(fm: FragmentManager, f: Fragment) {
+            // Fix for destroying view for case with issue of navigation
+            postClear()
         }
     }
 }

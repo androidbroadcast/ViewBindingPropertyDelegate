@@ -5,6 +5,7 @@ package by.kirich1409.viewbindingdelegate
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import androidx.annotation.CallSuper
 import androidx.annotation.MainThread
 import androidx.annotation.RestrictTo
 import androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP
@@ -37,6 +38,7 @@ public open class LazyViewBindingProperty<in R : Any, out T : ViewBinding>(
     }
 
     @MainThread
+    @CallSuper
     public override fun clear() {
         viewBinding = null
     }
@@ -87,8 +89,15 @@ public abstract class LifecycleViewBindingProperty<in R : Any, out T : ViewBindi
     }
 
     @MainThread
+    @CallSuper
     public override fun clear() {
         viewBinding = null
+    }
+
+    internal fun postClear() {
+        if (!mainHandler.post { clear() }) {
+            clear()
+        }
     }
 
     private class ClearOnDestroyLifecycleObserver(
@@ -97,15 +106,13 @@ public abstract class LifecycleViewBindingProperty<in R : Any, out T : ViewBindi
 
         @MainThread
         override fun onDestroy(owner: LifecycleOwner) {
-            if (!mainHandler.post { property.clear() }) {
-                property.clear()
-            }
+            property.postClear()
         }
+    }
 
-        private companion object {
+    private companion object {
 
-            private val mainHandler = Handler(Looper.getMainLooper())
-        }
+        private val mainHandler = Handler(Looper.getMainLooper())
     }
 }
 
