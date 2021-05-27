@@ -14,9 +14,9 @@ import by.kirich1409.viewbindingdelegate.internal.ViewBindingCache
  * @param T Class of expected [ViewBinding] result class
  * @param viewProvider Provide a [View] from the [Any].
  */
-@JvmName("lazyViewBindingAny")
-public inline fun <reified T : ViewBinding> Any.lazyViewBinding(crossinline viewProvider: (Any) -> View) =
-    lazyViewBinding(T::class.java) { viewProvider(it) }
+@JvmName("viewBindingLazyAny")
+public inline fun <reified T : ViewBinding> Any.viewBindingLazy(crossinline viewProvider: (Any) -> View) =
+    viewBindingLazy(T::class.java) { viewProvider(it) }
 
 /**
  * Create new [ViewBinding] associated with the [Any]
@@ -24,10 +24,10 @@ public inline fun <reified T : ViewBinding> Any.lazyViewBinding(crossinline view
  * @param viewBindingClass Class of expected [ViewBinding] result class
  * @param viewProvider Provide a [View] from the [Any].
  */
-@JvmName("lazyViewBindingAny")
-public fun <T : ViewBinding> Any.lazyViewBinding(
+@JvmName("viewBindingLazyAny")
+public fun <T : ViewBinding> Any.viewBindingLazy(
     viewBindingClass: Class<T>,
     viewProvider: (Any) -> View
 ): ViewBindingProperty<RecyclerView.ViewHolder, T> {
-    return lazyViewBinding<Any, T> { ViewBindingCache.getBind(viewBindingClass).bind(viewProvider(it)) }
+    return viewBindingLazy<Any, T> { ViewBindingCache.getBind(viewBindingClass).bind(viewProvider(it)) }
 }
