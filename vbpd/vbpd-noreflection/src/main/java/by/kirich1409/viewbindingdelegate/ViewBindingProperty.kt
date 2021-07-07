@@ -5,6 +5,7 @@ package by.kirich1409.viewbindingdelegate
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import androidx.annotation.CallSuper
 import androidx.annotation.MainThread
 import androidx.annotation.RestrictTo
 import androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP
@@ -37,8 +38,25 @@ public open class LazyViewBindingProperty<in R : Any, out T : ViewBinding>(
     }
 
     @MainThread
+    @CallSuper
     public override fun clear() {
         viewBinding = null
+    }
+}
+
+@RestrictTo(LIBRARY_GROUP)
+public open class EagerViewBindingProperty<in R : Any, out T : ViewBinding>(
+    private val viewBinding: T
+) : ViewBindingProperty<R, T> {
+
+    @MainThread
+    public override fun getValue(thisRef: R, property: KProperty<*>): T {
+        return viewBinding
+    }
+
+    @MainThread
+    public override fun clear() {
+        // Do nothing
     }
 }
 
@@ -64,21 +82,32 @@ public abstract class LifecycleViewBindingProperty<in R : Any, out T : ViewBindi
             )
             // We can access to ViewBinding after Fragment.onDestroyView(), but don't save it to prevent memory leak
         } else {
-            lifecycle.addObserver(ClearOnDestroyLifecycleObserver())
+            lifecycle.addObserver(ClearOnDestroyLifecycleObserver(this))
             this.viewBinding = viewBinding
         }
         return viewBinding
     }
 
     @MainThread
+    @CallSuper
     public override fun clear() {
-        mainHandler.post { viewBinding = null }
+        viewBinding = null
     }
 
-    private inner class ClearOnDestroyLifecycleObserver : DefaultLifecycleObserver {
+    internal fun postClear() {
+        if (!mainHandler.post { clear() }) {
+            clear()
+        }
+    }
+
+    private class ClearOnDestroyLifecycleObserver(
+        private val property: LifecycleViewBindingProperty<*, *>
+    ) : DefaultLifecycleObserver {
 
         @MainThread
-        override fun onDestroy(owner: LifecycleOwner): Unit = clear()
+        override fun onDestroy(owner: LifecycleOwner) {
+            property.postClear()
+        }
     }
 
     private companion object {

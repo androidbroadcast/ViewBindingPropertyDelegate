@@ -45,10 +45,10 @@ inline fun <T : ViewBinding> ViewGroup.viewBinding(
     lifecycleAware: Boolean,
     crossinline vbFactory: (ViewGroup) -> T,
 ): ViewBindingProperty<ViewGroup, T> {
-    if (lifecycleAware) {
-        return ViewGroupViewBindingProperty { viewGroup -> vbFactory(viewGroup) }
-    } else {
-        return LazyViewBindingProperty { viewGroup -> vbFactory(viewGroup) }
+    return when {
+        isInEditMode -> EagerViewBindingProperty(vbFactory(this))
+        lifecycleAware -> ViewGroupViewBindingProperty { viewGroup -> vbFactory(viewGroup) }
+        else -> LazyViewBindingProperty { viewGroup -> vbFactory(viewGroup) }
     }
 }
 
@@ -85,10 +85,10 @@ inline fun <T : ViewBinding> ViewGroup.viewBinding(
     lifecycleAware: Boolean,
     crossinline vbFactory: (View) -> T,
 ): ViewBindingProperty<ViewGroup, T> {
-    if (lifecycleAware) {
-        return ViewGroupViewBindingProperty { viewGroup -> vbFactory(viewGroup) }
-    } else {
-        return LazyViewBindingProperty { viewGroup: ViewGroup ->
+    return when {
+        isInEditMode -> EagerViewBindingProperty(vbFactory(this))
+        lifecycleAware -> ViewGroupViewBindingProperty { viewGroup -> vbFactory(viewGroup) }
+        else -> LazyViewBindingProperty { viewGroup: ViewGroup ->
             vbFactory(viewGroup.requireViewByIdCompat(viewBindingRootId))
         }
     }
