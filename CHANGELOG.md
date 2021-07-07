@@ -1,6 +1,10 @@
+## 1.4.7
+
+- Bugs fixing
+
 ## 1.4.6
 
-- Bug fixing
+- Bugs fixing
 
 ## 1.4.5
 
