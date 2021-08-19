@@ -1,3 +1,25 @@
+## 1.5.0
+19 Aug 2021
+
+**New feature "Strict mode"**
+New library mode to check correct usage of `ViewBinding`. Enabled by default. To return previous 
+  behaviour call `ViewBindingPropertyDelegate.strcitMode = false`
+  
+- Callback when a `ViewBinding` in `ViewBindingPropertyDelegate` will be destroyed
+Instead of overriding `Fragment.onDestroyView()` use
+```kotlin  
+viewBinding(
+    ..., 
+    onViewDestroyed = { vb: ViewBinding ->
+        // reset views inside the ViewBinding 
+    }
+)
+``` 
+- `ViewBindingPropertyDelegate` throws an exception when it will be used before host 
+  (`Fragment`, `Activity`, etc.) be ready to create a `ViewBinding`. As an example, access to 
+  `ViewBindingPropertyDelegate` in a `Fragment` before `onViewCreated()` will be called now throw 
+  an zException`
+
 ## 1.4.7
 
 - Bugs fixing
