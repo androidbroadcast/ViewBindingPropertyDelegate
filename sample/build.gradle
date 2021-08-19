@@ -27,10 +27,6 @@ android {
     buildFeatures {
         viewBinding = true
     }
-
-    dexOptions {
-        preDexLibraries = preDexEnabled
-    }
 }
 
 dependencies {

@@ -32,10 +32,6 @@ android {
         kotlinOptions.freeCompilerArgs +=
                 ['-module-name', "com.github.kirich1409.ViewBindingPropertyDelegate"]
     }
-
-    dexOptions {
-        preDexLibraries = preDexEnabled
-    }
 }
 
 dependencies {
