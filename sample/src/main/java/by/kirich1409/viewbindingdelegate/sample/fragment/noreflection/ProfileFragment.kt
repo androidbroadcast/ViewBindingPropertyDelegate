@@ -2,6 +2,7 @@ package by.kirich1409.viewbindingdelegate.sample.fragment.noreflection
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import by.kirich1409.viewbindingdelegate.sample.R
 import by.kirich1409.viewbindingdelegate.sample.databinding.FragmentProfileBinding

@@ -8,7 +8,7 @@ import androidx.activity.ComponentActivity
 import androidx.annotation.IdRes
 import androidx.annotation.RestrictTo
 import androidx.annotation.RestrictTo.Scope.LIBRARY
-import androidx.lifecycle.Lifecycle
+import androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP
 import androidx.lifecycle.LifecycleOwner
 import androidx.viewbinding.ViewBinding
 import by.kirich1409.viewbindingdelegate.internal.emptyVbCallback
@@ -18,6 +18,7 @@ import by.kirich1409.viewbindingdelegate.internal.requireViewByIdCompat
 @RestrictTo(LIBRARY)
 private class ActivityViewBindingProperty<in A : ComponentActivity, out T : ViewBinding>(
     onViewDestroyed: (T) -> Unit,
+    private val viewNeedInitialization: Boolean = true,
     viewBinder: (A) -> T
 ) : LifecycleViewBindingProperty<A, T>(viewBinder, onViewDestroyed) {
 
@@ -26,7 +27,7 @@ private class ActivityViewBindingProperty<in A : ComponentActivity, out T : View
     }
 
     override fun isViewInitialized(thisRef: A): Boolean {
-        return getLifecycleOwner(thisRef).lifecycle.currentState.isAtLeast(Lifecycle.State.CREATED)
+        return viewNeedInitialization && thisRef.window != null
     }
 }
 
@@ -50,7 +51,7 @@ public fun <A : ComponentActivity, T : ViewBinding> ComponentActivity.viewBindin
     onViewDestroyed: (T) -> Unit = {},
     viewBinder: (A) -> T
 ): ViewBindingProperty<A, T> {
-    return ActivityViewBindingProperty(onViewDestroyed, viewBinder)
+    return ActivityViewBindingProperty(onViewDestroyed, viewBinder = viewBinder)
 }
 
 /**
@@ -111,4 +112,13 @@ public inline fun <T : ViewBinding> ComponentActivity.viewBinding(
     return viewBinding(onViewDestroyed) { activity ->
         vbFactory(activity.requireViewByIdCompat(viewBindingRootId))
     }
+}
+
+@RestrictTo(LIBRARY_GROUP)
+fun <A : ComponentActivity, T : ViewBinding>  activityViewBinding(
+    onViewDestroyed: (T) -> Unit,
+    viewNeedInitialization: Boolean = true,
+    viewBinder: (A) -> T
+): ViewBindingProperty<A, T> {
+    return ActivityViewBindingProperty(onViewDestroyed, viewNeedInitialization, viewBinder)
 }

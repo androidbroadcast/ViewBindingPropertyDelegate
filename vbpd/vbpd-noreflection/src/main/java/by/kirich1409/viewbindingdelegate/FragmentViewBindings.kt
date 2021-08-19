@@ -5,6 +5,7 @@ package by.kirich1409.viewbindingdelegate
 
 import android.view.View
 import androidx.annotation.IdRes
+import androidx.annotation.RestrictTo
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -16,8 +17,10 @@ import by.kirich1409.viewbindingdelegate.internal.requireViewByIdCompat
 import kotlin.reflect.KProperty
 
 private class DialogFragmentViewBindingProperty<in F : DialogFragment, out T : ViewBinding>(
-    viewBinder: (F) -> T
-) : LifecycleViewBindingProperty<F, T>(viewBinder) {
+    private val viewNeedInitialization: Boolean,
+    viewBinder: (F) -> T,
+    onViewDestroyed: (T) -> Unit,
+) : LifecycleViewBindingProperty<F, T>(viewBinder, onViewDestroyed) {
 
     override fun getLifecycleOwner(thisRef: F): LifecycleOwner {
         if (thisRef.showsDialog) {
@@ -30,12 +33,25 @@ private class DialogFragmentViewBindingProperty<in F : DialogFragment, out T : V
             }
         }
     }
+
+    override fun isViewInitialized(thisRef: F): Boolean {
+        if (!viewNeedInitialization) {
+            return true
+        }
+
+        if (thisRef.showsDialog) {
+            return thisRef.dialog != null
+        } else {
+            return thisRef.view != null
+        }
+    }
 }
 
 private class FragmentViewBindingProperty<in F : Fragment, out T : ViewBinding>(
+    private val viewNeedInitialization: Boolean,
     viewBinder: (F) -> T,
-    private val onViewDestroyed: (T) -> Unit,
-) : LifecycleViewBindingProperty<F, T>(viewBinder) {
+    onViewDestroyed: (T) -> Unit,
+) : LifecycleViewBindingProperty<F, T>(viewBinder, onViewDestroyed) {
 
     private var fragmentLifecycleCallbacks: FragmentManager.FragmentLifecycleCallbacks? = null
 
@@ -56,6 +72,8 @@ private class FragmentViewBindingProperty<in F : Fragment, out T : ViewBinding>(
     }
 
     override fun isViewInitialized(thisRef: F): Boolean {
+        if (!viewNeedInitialization) return true
+
         if (thisRef !is DialogFragment) {
             return thisRef.view != null
         } else {
@@ -106,8 +124,8 @@ public fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
     onViewDestroyed: (T) -> Unit = {},
 ): ViewBindingProperty<F, T> {
     return when (this) {
-        is DialogFragment -> DialogFragmentViewBindingProperty(viewBinder) as ViewBindingProperty<F, T>
-        else -> FragmentViewBindingProperty(viewBinder, onViewDestroyed)
+        is DialogFragment -> dialogFragmentViewBinding(onViewDestroyed, viewBinder)
+        else -> fragmentViewBinding(onViewDestroyed, viewBinder)
     }
 }
 
@@ -180,4 +198,26 @@ public inline fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
             }, onViewDestroyed)
         }
     }
+}
+
+@RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+fun <F : Fragment, T : ViewBinding> fragmentViewBinding(
+    onViewDestroyed: (T) -> Unit,
+    viewBinder: (F) -> T,
+    viewNeedInitialization: Boolean = true
+): ViewBindingProperty<F, T> {
+    return FragmentViewBindingProperty(viewNeedInitialization, viewBinder, onViewDestroyed)
+}
+
+@RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+fun <F : Fragment, T : ViewBinding> dialogFragmentViewBinding(
+    onViewDestroyed: (T) -> Unit,
+    viewBinder: (F) -> T,
+    viewNeedInitialization: Boolean = true
+): ViewBindingProperty<F, T> {
+    return DialogFragmentViewBindingProperty(
+        viewNeedInitialization,
+        viewBinder,
+        onViewDestroyed
+    ) as ViewBindingProperty<F, T>
 }

@@ -70,8 +70,22 @@ public fun <T : ViewBinding> Fragment.viewBinding(
     CreateMethod.BIND -> viewBinding({
         ViewBindingCache.getBind(viewBindingClass).bind(requireView())
     }, onViewDestroyed)
-    CreateMethod.INFLATE -> viewBinding({
-        ViewBindingCache.getInflateWithLayoutInflater(viewBindingClass)
-            .inflate(layoutInflater, null, false)
-    }, onViewDestroyed)
+    CreateMethod.INFLATE -> when (this) {
+        is DialogFragment -> dialogFragmentViewBinding(
+            onViewDestroyed,
+            {
+                ViewBindingCache.getInflateWithLayoutInflater(viewBindingClass)
+                    .inflate(layoutInflater, null, false)
+            },
+            viewNeedInitialization = false
+        )
+        else -> fragmentViewBinding(
+            onViewDestroyed,
+            {
+                ViewBindingCache.getInflateWithLayoutInflater(viewBindingClass)
+                    .inflate(layoutInflater, null, false)
+            },
+            viewNeedInitialization = false
+        )
+    }
 }

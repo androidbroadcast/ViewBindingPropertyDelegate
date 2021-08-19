@@ -74,8 +74,6 @@ public abstract class LifecycleViewBindingProperty<in R : Any, out T : ViewBindi
     private val onViewDestroyed: (T) -> Unit,
 ) : ViewBindingProperty<R, T> {
 
-    constructor(viewBinder: (R) -> T) : this(viewBinder, {})
-
     private var viewBinding: T? = null
 
     protected abstract fun getLifecycleOwner(thisRef: R): LifecycleOwner
@@ -94,6 +92,7 @@ public abstract class LifecycleViewBindingProperty<in R : Any, out T : ViewBindi
 
         val lifecycle = getLifecycleOwner(thisRef).lifecycle
         if (lifecycle.currentState == Lifecycle.State.DESTROYED) {
+            this.viewBinding = null
             Log.w(TAG, ERROR_ACCESS_AFTER_DESTROY)
             // We can access to ViewBinding after Fragment.onDestroyView(),
             // but don't save it to prevent memory leak
@@ -123,11 +122,13 @@ public abstract class LifecycleViewBindingProperty<in R : Any, out T : ViewBindi
     @MainThread
     @CallSuper
     public override fun clear() {
-        val viewBinding = this.viewBinding
         if (viewBinding != null) {
-            onViewDestroyed(viewBinding)
+            val viewBinding = viewBinding
+            if (viewBinding != null) {
+                onViewDestroyed(viewBinding)
+            }
+            this.viewBinding = null
         }
-        this.viewBinding = null
     }
 
     internal fun postClear() {
