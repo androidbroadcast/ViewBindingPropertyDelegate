@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import androidx.viewbinding.ViewBinding
+import by.kirich1409.viewbindingdelegate.internal.emptyVbCallback
 import by.kirich1409.viewbindingdelegate.internal.getRootView
 import by.kirich1409.viewbindingdelegate.internal.requireViewByIdCompat
 import kotlin.reflect.KProperty
@@ -32,7 +33,8 @@ private class DialogFragmentViewBindingProperty<in F : DialogFragment, out T : V
 }
 
 private class FragmentViewBindingProperty<in F : Fragment, out T : ViewBinding>(
-    viewBinder: (F) -> T
+    viewBinder: (F) -> T,
+    private val onViewDestroyed: (T) -> Unit,
 ) : LifecycleViewBindingProperty<F, T>(viewBinder) {
 
     private var fragmentLifecycleCallbacks: FragmentManager.FragmentLifecycleCallbacks? = null
@@ -81,11 +83,23 @@ private class FragmentViewBindingProperty<in F : Fragment, out T : ViewBinding>(
 @Suppress("UNCHECKED_CAST")
 @JvmName("viewBindingFragment")
 public fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
-    viewBinder: (F) -> T
+    viewBinder: (F) -> T,
+): ViewBindingProperty<F, T> {
+    return viewBinding(viewBinder, emptyVbCallback())
+}
+
+/**
+ * Create new [ViewBinding] associated with the [Fragment]
+ */
+@Suppress("UNCHECKED_CAST")
+@JvmName("viewBindingFragmentWithCallbacks")
+public fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
+    viewBinder: (F) -> T,
+    onViewDestroyed: (T) -> Unit = {},
 ): ViewBindingProperty<F, T> {
     return when (this) {
         is DialogFragment -> DialogFragmentViewBindingProperty(viewBinder) as ViewBindingProperty<F, T>
-        else -> FragmentViewBindingProperty(viewBinder)
+        else -> FragmentViewBindingProperty(viewBinder, onViewDestroyed)
     }
 }
 
@@ -98,9 +112,24 @@ public fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
 @JvmName("viewBindingFragment")
 public inline fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
     crossinline vbFactory: (View) -> T,
-    crossinline viewProvider: (F) -> View = Fragment::requireView
+    crossinline viewProvider: (F) -> View = Fragment::requireView,
 ): ViewBindingProperty<F, T> {
-    return viewBinding { fragment: F -> vbFactory(viewProvider(fragment)) }
+    return viewBinding(vbFactory, viewProvider, emptyVbCallback())
+}
+
+/**
+ * Create new [ViewBinding] associated with the [Fragment]
+ *
+ * @param vbFactory Function that create new instance of [ViewBinding]. `MyViewBinding::bind` can be used
+ * @param viewProvider Provide a [View] from the Fragment. By default call [Fragment.requireView]
+ */
+@JvmName("viewBindingFragmentWithCallbacks")
+public inline fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
+    crossinline vbFactory: (View) -> T,
+    crossinline viewProvider: (F) -> View = Fragment::requireView,
+    noinline onViewDestroyed: (T) -> Unit = {},
+): ViewBindingProperty<F, T> {
+    return viewBinding({ fragment: F -> vbFactory(viewProvider(fragment)) }, onViewDestroyed)
 }
 
 /**
@@ -113,18 +142,34 @@ public inline fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
 @JvmName("viewBindingFragment")
 public inline fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
     crossinline vbFactory: (View) -> T,
-    @IdRes viewBindingRootId: Int
+    @IdRes viewBindingRootId: Int,
+): ViewBindingProperty<F, T> {
+    return viewBinding(vbFactory, viewBindingRootId, emptyVbCallback())
+}
+
+/**
+ * Create new [ViewBinding] associated with the [Fragment]
+ *
+ * @param vbFactory Function that create new instance of [ViewBinding]. `MyViewBinding::bind` can be used
+ * @param viewBindingRootId Root view's id that will be used as root for the view binding
+ */
+@Suppress("UNCHECKED_CAST")
+@JvmName("viewBindingFragmentWithCallbacks")
+public inline fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
+    crossinline vbFactory: (View) -> T,
+    @IdRes viewBindingRootId: Int,
+    noinline onViewDestroyed: (T) -> Unit,
 ): ViewBindingProperty<F, T> {
     return when (this) {
         is DialogFragment -> {
-            viewBinding<DialogFragment, T>(vbFactory) { fragment ->
+            viewBinding<DialogFragment, T>(vbFactory, { fragment ->
                 fragment.getRootView(viewBindingRootId)
-            } as ViewBindingProperty<F, T>
+            }, onViewDestroyed) as ViewBindingProperty<F, T>
         }
         else -> {
-            viewBinding(vbFactory) { fragment: F ->
+            viewBinding(vbFactory, { fragment: F ->
                 fragment.requireView().requireViewByIdCompat(viewBindingRootId)
-            }
+            }, onViewDestroyed)
         }
     }
 }

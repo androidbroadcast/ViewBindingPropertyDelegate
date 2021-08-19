@@ -10,7 +10,10 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
-    private val viewBinding by viewBinding(FragmentProfileBinding::bind)
+    private val viewBinding by viewBinding(FragmentProfileBinding::bind,
+        onViewDestroyed = { vb: FragmentProfileBinding ->
+            // reset view
+        })
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

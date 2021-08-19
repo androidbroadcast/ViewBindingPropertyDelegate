@@ -10,6 +10,7 @@ import androidx.annotation.RestrictTo
 import androidx.core.app.ActivityCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.DialogFragment
+import androidx.viewbinding.ViewBinding
 
 @Suppress("NOTHING_TO_INLINE")
 @RestrictTo(RestrictTo.Scope.LIBRARY)
@@ -44,4 +45,11 @@ fun DialogFragment.getRootView(viewBindingRootId: Int): View {
     }
     val window = checkNotNull(dialog.window) { "Fragment's Dialog has no window" }
     return with(window.decorView) { if (viewBindingRootId != 0) requireViewByIdCompat(viewBindingRootId) else this }
+}
+
+internal val EMPTY_VB_CALLBACK: (ViewBinding) -> Unit = { _ -> }
+
+@RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
+fun <T : ViewBinding> emptyVbCallback():(T) -> Unit {
+    return EMPTY_VB_CALLBACK
 }

@@ -24,8 +24,11 @@ interface ViewBindingProperty<in R : Any, out T : ViewBinding> : ReadOnlyPropert
 
 @RestrictTo(LIBRARY_GROUP)
 public open class LazyViewBindingProperty<in R : Any, out T : ViewBinding>(
-    protected val viewBinder: (R) -> T
+    private val onViewDestroyed: (T) -> Unit,
+    protected val viewBinder: (R) -> T,
 ) : ViewBindingProperty<R, T> {
+
+    constructor(viewBinder: (R) -> T) : this({}, viewBinder)
 
     protected var viewBinding: Any? = null
 
@@ -37,10 +40,15 @@ public open class LazyViewBindingProperty<in R : Any, out T : ViewBinding>(
         }
     }
 
+    @Suppress("UNCHECKED_CAST")
     @MainThread
     @CallSuper
     public override fun clear() {
-        viewBinding = null
+        val viewBinding = this.viewBinding as T?
+        if (viewBinding != null) {
+            onViewDestroyed(viewBinding)
+        }
+        this.viewBinding = null
     }
 }
 
@@ -62,8 +70,11 @@ public open class EagerViewBindingProperty<in R : Any, out T : ViewBinding>(
 
 @RestrictTo(LIBRARY_GROUP)
 public abstract class LifecycleViewBindingProperty<in R : Any, out T : ViewBinding>(
-    private val viewBinder: (R) -> T
+    private val viewBinder: (R) -> T,
+    private val onViewDestroyed: (T) -> Unit,
 ) : ViewBindingProperty<R, T> {
+
+    constructor(viewBinder: (R) -> T) : this(viewBinder, {})
 
     private var viewBinding: T? = null
 
@@ -91,7 +102,11 @@ public abstract class LifecycleViewBindingProperty<in R : Any, out T : ViewBindi
     @MainThread
     @CallSuper
     public override fun clear() {
-        viewBinding = null
+        val viewBinding = this.viewBinding
+        if (viewBinding != null) {
+            onViewDestroyed(viewBinding)
+        }
+        this.viewBinding = null
     }
 
     internal fun postClear() {

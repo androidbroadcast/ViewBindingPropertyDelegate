@@ -10,6 +10,7 @@ import androidx.annotation.IdRes
 import androidx.core.app.ActivityCompat
 import androidx.viewbinding.ViewBinding
 import by.kirich1409.viewbindingdelegate.internal.ViewBindingCache
+import by.kirich1409.viewbindingdelegate.internal.emptyVbCallback
 import by.kirich1409.viewbindingdelegate.internal.findRootView
 
 /**
@@ -19,8 +20,12 @@ import by.kirich1409.viewbindingdelegate.internal.findRootView
  * @param viewBindingRootId Root view's id that will be used as root for the view binding
  */
 @JvmName("viewBindingActivity")
-public inline fun <reified T : ViewBinding> ComponentActivity.viewBinding(@IdRes viewBindingRootId: Int) =
-    viewBinding(T::class.java, viewBindingRootId)
+public inline fun <reified T : ViewBinding> ComponentActivity.viewBinding(
+    @IdRes viewBindingRootId: Int,
+    noinline onViewDestroyed: (T) -> Unit = emptyVbCallback(),
+): ViewBindingProperty<ComponentActivity, T> {
+    return viewBinding(T::class.java, viewBindingRootId, onViewDestroyed)
+}
 
 /**
  * Create new [ViewBinding] associated with the [Activity][ComponentActivity]
@@ -31,9 +36,10 @@ public inline fun <reified T : ViewBinding> ComponentActivity.viewBinding(@IdRes
 @JvmName("viewBindingActivity")
 public fun <T : ViewBinding> ComponentActivity.viewBinding(
     viewBindingClass: Class<T>,
-    @IdRes viewBindingRootId: Int
+    @IdRes viewBindingRootId: Int,
+    onViewDestroyed: (T) -> Unit = emptyVbCallback(),
 ): ViewBindingProperty<ComponentActivity, T> {
-    return viewBinding { activity ->
+    return viewBinding(onViewDestroyed) { activity ->
         val rootView = ActivityCompat.requireViewById<View>(activity, viewBindingRootId)
         ViewBindingCache.getBind(viewBindingClass).bind(rootView)
     }
@@ -48,9 +54,12 @@ public fun <T : ViewBinding> ComponentActivity.viewBinding(
 @JvmName("viewBindingActivity")
 public fun <T : ViewBinding> ComponentActivity.viewBinding(
     viewBindingClass: Class<T>,
-    rootViewProvider: (ComponentActivity) -> View
+    rootViewProvider: (ComponentActivity) -> View,
+    onViewDestroyed: (T) -> Unit = emptyVbCallback(),
 ): ViewBindingProperty<ComponentActivity, T> {
-    return viewBinding { activity -> ViewBindingCache.getBind(viewBindingClass).bind(rootViewProvider(activity)) }
+    return viewBinding(onViewDestroyed) { activity ->
+        ViewBindingCache.getBind(viewBindingClass).bind(rootViewProvider(activity))
+    }
 }
 
 /**
@@ -61,16 +70,19 @@ public fun <T : ViewBinding> ComponentActivity.viewBinding(
  */
 @JvmName("inflateViewBindingActivity")
 public inline fun <reified T : ViewBinding> ComponentActivity.viewBinding(
-    createMethod: CreateMethod = CreateMethod.BIND
-) = viewBinding(T::class.java, createMethod)
+    createMethod: CreateMethod = CreateMethod.BIND,
+    noinline onViewDestroyed: (T) -> Unit = emptyVbCallback(),
+) = viewBinding(T::class.java, createMethod, onViewDestroyed)
 
 @JvmName("inflateViewBindingActivity")
 public fun <T : ViewBinding> ComponentActivity.viewBinding(
     viewBindingClass: Class<T>,
-    createMethod: CreateMethod = CreateMethod.BIND
+    createMethod: CreateMethod = CreateMethod.BIND,
+    onViewDestroyed: (T) -> Unit = emptyVbCallback(),
 ): ViewBindingProperty<ComponentActivity, T> = when (createMethod) {
-    CreateMethod.BIND -> viewBinding(viewBindingClass, ::findRootView)
-    CreateMethod.INFLATE -> viewBinding {
-        ViewBindingCache.getInflateWithLayoutInflater(viewBindingClass).inflate(layoutInflater, null, false)
+    CreateMethod.BIND -> viewBinding(viewBindingClass, ::findRootView, onViewDestroyed)
+    CreateMethod.INFLATE -> viewBinding(onViewDestroyed) {
+        ViewBindingCache.getInflateWithLayoutInflater(viewBindingClass)
+            .inflate(layoutInflater, null, false)
     }
 }
