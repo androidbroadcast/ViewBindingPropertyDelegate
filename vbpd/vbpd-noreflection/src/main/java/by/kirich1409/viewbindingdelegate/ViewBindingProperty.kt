@@ -85,13 +85,16 @@ public abstract class LifecycleViewBindingProperty<in R : Any, out T : ViewBindi
         viewBinding?.let { return it }
 
         val lifecycle = getLifecycleOwner(thisRef).lifecycle
+        val currentState = lifecycle.currentState
+        if (currentState == Lifecycle.State.DESTROYED && ViewBindingPropertyDelegate.strictMode) {
+            error(ERROR_ACCESS_AFTER_DESTROY)
+        }
+
         val viewBinding = viewBinder(thisRef)
-        if (lifecycle.currentState == Lifecycle.State.DESTROYED) {
-            Log.w(
-                TAG, "Access to viewBinding after Lifecycle is destroyed or hasn't created yet. " +
-                        "The instance of viewBinding will be not cached."
-            )
-            // We can access to ViewBinding after Fragment.onDestroyView(), but don't save it to prevent memory leak
+        if (currentState == Lifecycle.State.DESTROYED) {
+            Log.w(TAG, ERROR_ACCESS_AFTER_DESTROY)
+            // We can access to ViewBinding after Fragment.onDestroyView(),
+            // but don't save it to prevent memory leak
         } else {
             lifecycle.addObserver(ClearOnDestroyLifecycleObserver(this))
             this.viewBinding = viewBinding
@@ -132,3 +135,6 @@ public abstract class LifecycleViewBindingProperty<in R : Any, out T : ViewBindi
 }
 
 private const val TAG = "ViewBindingProperty"
+private const val ERROR_ACCESS_AFTER_DESTROY =
+    "Access to viewBinding after Lifecycle is destroyed or hasn't created yet. " +
+            "The instance of viewBinding will be not cached."
