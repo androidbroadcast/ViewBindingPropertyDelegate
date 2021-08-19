@@ -55,6 +55,14 @@ private class FragmentViewBindingProperty<in F : Fragment, out T : ViewBinding>(
         }
     }
 
+    override fun isViewInitialized(thisRef: F): Boolean {
+        if (thisRef !is DialogFragment) {
+            return thisRef.view != null
+        } else {
+            return super.isViewInitialized(thisRef)
+        }
+    }
+
     override fun clear() {
         super.clear()
         fragmentLifecycleCallbacks = null

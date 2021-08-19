@@ -8,6 +8,7 @@ import androidx.activity.ComponentActivity
 import androidx.annotation.IdRes
 import androidx.annotation.RestrictTo
 import androidx.annotation.RestrictTo.Scope.LIBRARY
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.viewbinding.ViewBinding
 import by.kirich1409.viewbindingdelegate.internal.emptyVbCallback
@@ -22,6 +23,10 @@ private class ActivityViewBindingProperty<in A : ComponentActivity, out T : View
 
     override fun getLifecycleOwner(thisRef: A): LifecycleOwner {
         return thisRef
+    }
+
+    override fun isViewInitialized(thisRef: A): Boolean {
+        return getLifecycleOwner(thisRef).lifecycle.currentState.isAtLeast(Lifecycle.State.CREATED)
     }
 }
 

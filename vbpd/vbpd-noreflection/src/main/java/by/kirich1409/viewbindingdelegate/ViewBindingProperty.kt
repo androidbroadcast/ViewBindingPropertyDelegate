@@ -84,22 +84,40 @@ public abstract class LifecycleViewBindingProperty<in R : Any, out T : ViewBindi
     public override fun getValue(thisRef: R, property: KProperty<*>): T {
         viewBinding?.let { return it }
 
-        val lifecycle = getLifecycleOwner(thisRef).lifecycle
-        val currentState = lifecycle.currentState
-        if (currentState == Lifecycle.State.DESTROYED && ViewBindingPropertyDelegate.strictMode) {
-            error(ERROR_ACCESS_AFTER_DESTROY)
+        if (!isViewInitialized(thisRef)) {
+            error(ERROR_ACCESS_BEFORE_VIEW_READY)
         }
 
-        val viewBinding = viewBinder(thisRef)
-        if (currentState == Lifecycle.State.DESTROYED) {
+        if (ViewBindingPropertyDelegate.strictMode) {
+            runStrictModeChecks(thisRef)
+        }
+
+        val lifecycle = getLifecycleOwner(thisRef).lifecycle
+        if (lifecycle.currentState == Lifecycle.State.DESTROYED) {
             Log.w(TAG, ERROR_ACCESS_AFTER_DESTROY)
             // We can access to ViewBinding after Fragment.onDestroyView(),
             // but don't save it to prevent memory leak
+            return viewBinder(thisRef)
         } else {
+            val viewBinding = viewBinder(thisRef)
             lifecycle.addObserver(ClearOnDestroyLifecycleObserver(this))
             this.viewBinding = viewBinding
+            return viewBinding
         }
-        return viewBinding
+    }
+
+    private fun runStrictModeChecks(thisRef: R) {
+        val lifecycle = getLifecycleOwner(thisRef).lifecycle
+        if (lifecycle.currentState == Lifecycle.State.DESTROYED) {
+            error(ERROR_ACCESS_AFTER_DESTROY)
+        }
+    }
+
+    /**
+     * Check is host view ready to create viewBinding
+     */
+    protected open fun isViewInitialized(thisRef: R): Boolean {
+        return true
     }
 
     @MainThread
@@ -135,6 +153,8 @@ public abstract class LifecycleViewBindingProperty<in R : Any, out T : ViewBindi
 }
 
 private const val TAG = "ViewBindingProperty"
+private const val ERROR_ACCESS_BEFORE_VIEW_READY =
+    "Host view isn't ready to create a ViedBinding instance"
 private const val ERROR_ACCESS_AFTER_DESTROY =
     "Access to viewBinding after Lifecycle is destroyed or hasn't created yet. " +
             "The instance of viewBinding will be not cached."
