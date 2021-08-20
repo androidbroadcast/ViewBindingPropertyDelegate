@@ -72,6 +72,15 @@ afterEvaluate {
                     password = localProps.getProperty("ossrhPassword")
                 }
             }
+
+            maven {
+                name = "githubPackages"
+                url = uri("https://maven.pkg.github.com/androidbroadcast/ViewBindingPropertyDelegate")
+                credentials {
+                    username = localProps.getProperty("githubUsername")
+                    password = localProps.getProperty("githubToken")
+                }
+            }
         }
     }
 
