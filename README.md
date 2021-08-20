@@ -2,13 +2,15 @@
 
 # ViewBindingPropertyDelegate
 
-Make work with [Android View Binding](https://developer.android.com/topic/libraries/view-binding) simpler. The library do:
+Make work with [Android View Binding](https://d.android.com/topic/libraries/view-binding) simpler. The library do:
 - managing ViewBinding lifecycle and clear reference to it to prevent memory leaks
 - you don't need to keep nullable reference to Views or ViewBindings
 - create ViewBinding lazy
 
+The library has two variants: relection and without it. They were divided in separate artifacts: `viewbindingpropertydelegate` and `viewbindingpropertydelegate-noreflection`. **Prefer to use variant without reflection for better performance**
+
 ## IMPORTANT: Enable ViewBinding before use the library
-Every Gradle module of your project need to enable ViewBinding. How to do that you can find in the [official guide](https://d.android.com/topic/libraries/view-binding)
+Every Gradle module of your project where you need use ViewBinding must be configured properly. How to do that you can find in the [official guide](https://d.android.com/topic/libraries/view-binding)
 
 ## Add library to a project
 
