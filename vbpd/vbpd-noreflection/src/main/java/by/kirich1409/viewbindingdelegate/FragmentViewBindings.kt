@@ -54,20 +54,24 @@ private class FragmentViewBindingProperty<in F : Fragment, out T : ViewBinding>(
 ) : LifecycleViewBindingProperty<F, T>(viewBinder, onViewDestroyed) {
 
     private var fragmentLifecycleCallbacks: FragmentManager.FragmentLifecycleCallbacks? = null
+    private var fragmentManager: FragmentManager? = null
 
     override fun getValue(thisRef: F, property: KProperty<*>): T {
-        registerFragmentLifecycleCallbacks(thisRef)
-        return super.getValue(thisRef, property)
+        val viewBinding = super.getValue(thisRef, property)
+        registerFragmentLifecycleCallbacksIfNeeded(thisRef)
+        return viewBinding
     }
 
-    private fun registerFragmentLifecycleCallbacks(fragment: Fragment) {
+    private fun registerFragmentLifecycleCallbacksIfNeeded(fragment: Fragment) {
         if (fragmentLifecycleCallbacks != null) {
             return
         }
 
+        val fragmentManager = fragment.parentFragmentManager.also { fm ->
+            this.fragmentManager = fm
+        }
         fragmentLifecycleCallbacks = ClearOnDestroy().also { callbacks ->
-            fragment.parentFragmentManager
-                .registerFragmentLifecycleCallbacks(callbacks, false)
+            fragmentManager.registerFragmentLifecycleCallbacks(callbacks, false)
         }
     }
 
@@ -83,6 +87,10 @@ private class FragmentViewBindingProperty<in F : Fragment, out T : ViewBinding>(
 
     override fun clear() {
         super.clear()
+        fragmentManager?.also { fragmentManager ->
+            fragmentLifecycleCallbacks?.let(fragmentManager::unregisterFragmentLifecycleCallbacks)
+            this.fragmentManager = null
+        }
         fragmentLifecycleCallbacks = null
     }
 
