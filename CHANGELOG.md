@@ -1,3 +1,6 @@
+## 1.5.1
+- Fix memory leaks
+
 ## 1.5.0
 19 Aug 2021
 
