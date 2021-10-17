@@ -13,6 +13,7 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.viewbinding.ViewBinding
+import by.kirich1409.viewbindingdelegate.internal.checkMainThread
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
@@ -122,12 +123,11 @@ public abstract class LifecycleViewBindingProperty<in R : Any, out T : ViewBindi
     @MainThread
     @CallSuper
     public override fun clear() {
+        checkMainThread()
+        val viewBinding = viewBinding
+        this.viewBinding = null
         if (viewBinding != null) {
-            val viewBinding = viewBinding
-            if (viewBinding != null) {
-                onViewDestroyed(viewBinding)
-            }
-            this.viewBinding = null
+            onViewDestroyed(viewBinding)
         }
     }
 
