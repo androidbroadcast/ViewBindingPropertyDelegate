@@ -155,7 +155,7 @@ public abstract class LifecycleViewBindingProperty<in R : Any, out T : ViewBindi
 
 private const val TAG = "ViewBindingProperty"
 private const val ERROR_ACCESS_BEFORE_VIEW_READY =
-    "Host view isn't ready to create a ViedBinding instance"
+    "Host view isn't ready to create a ViewBinding instance"
 private const val ERROR_ACCESS_AFTER_DESTROY =
     "Access to viewBinding after Lifecycle is destroyed or hasn't created yet. " +
             "The instance of viewBinding will be not cached."
