@@ -137,9 +137,29 @@ public abstract class LifecycleViewBindingProperty<in R : Any, out T : ViewBindi
         }
     }
 
+    /**
+     * Overriding all DefaultLifecycleObserver functions with an empty body to fix a bug in some
+     * versions Android Gradle plugin - https://issuetracker.google.com/issues/194289155#comment21
+     * Solution - https://stackoverflow.com/a/60873211/9560412
+     */
     private class ClearOnDestroyLifecycleObserver(
         private val property: LifecycleViewBindingProperty<*, *>
     ) : DefaultLifecycleObserver {
+
+        override fun onCreate(owner: LifecycleOwner) {
+        }
+
+        override fun onStart(owner: LifecycleOwner) {
+        }
+
+        override fun onResume(owner: LifecycleOwner) {
+        }
+
+        override fun onPause(owner: LifecycleOwner) {
+        }
+
+        override fun onStop(owner: LifecycleOwner) {
+        }
 
         @MainThread
         override fun onDestroy(owner: LifecycleOwner) {
