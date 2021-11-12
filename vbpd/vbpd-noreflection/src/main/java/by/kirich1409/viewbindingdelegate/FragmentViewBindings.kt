@@ -217,6 +217,7 @@ fun <F : Fragment, T : ViewBinding> fragmentViewBinding(
     return FragmentViewBindingProperty(viewNeedInitialization, viewBinder, onViewDestroyed)
 }
 
+@Suppress("UNCHECKED_CAST")
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
 fun <F : Fragment, T : ViewBinding> dialogFragmentViewBinding(
     onViewDestroyed: (T) -> Unit,
