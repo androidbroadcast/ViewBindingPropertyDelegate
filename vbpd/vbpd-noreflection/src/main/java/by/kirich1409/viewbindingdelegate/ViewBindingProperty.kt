@@ -141,6 +141,33 @@ public abstract class LifecycleViewBindingProperty<in R : Any, out T : ViewBindi
         private val property: LifecycleViewBindingProperty<*, *>
     ) : DefaultLifecycleObserver {
 
+        /**
+         * Problem with desugaring in some AGP versions: https://issuetracker.google.com/issues/194289155#comment21
+         * Solution 1 - override ALL DefaultLifecycleObserver's methods -
+         * https://stackoverflow.com/questions/59067743/what-is-this-error-and-why-this-doesnt-happen-when-i-dont-use-library-like-a-c/60873211#60873211
+         * Solution 2 - replace DefaultLifecycleObserver with LifecycleObserver
+         */
+
+        override fun onCreate(owner: LifecycleOwner) {
+            // Do nothing
+        }
+
+        override fun onStart(owner: LifecycleOwner) {
+            // Do nothing
+        }
+
+        override fun onResume(owner: LifecycleOwner) {
+            // Do nothing
+        }
+
+        override fun onPause(owner: LifecycleOwner) {
+            // Do nothing
+        }
+
+        override fun onStop(owner: LifecycleOwner) {
+            // Do nothing
+        }
+
         @MainThread
         override fun onDestroy(owner: LifecycleOwner) {
             property.postClear()
