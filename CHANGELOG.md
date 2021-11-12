@@ -1,3 +1,6 @@
+## 1.5.2
+- Bug fixing
+
 ## 1.5.1
 - Fix memory leaks
 
