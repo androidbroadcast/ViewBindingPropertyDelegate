@@ -1,35 +1,32 @@
 ## 1.5.2
-- Bug fixing
+November 13, 2021
 
-## 1.5.1
-- Fix memory leaks
+### New feature "Strict mode"
+New library mode to check correct usage of ViewBinding. Enabled by default. To return previous
+behaviour call ViewBindingPropertyDelegate.strcitMode = false
 
-## 1.5.0
-19 Aug 2021
+### Added callback when ViewBinding inside ViewBindingProperty will be destroyed
+Callback when a ViewBinding in ViewBindingPropertyDelegate will be destroyed
+Instead of overriding Fragment.onDestroyView() use
 
-- New feature "Strict mode"
-
-New library mode to check correct usage of `ViewBinding`. Enabled by default. To return previous 
-  behaviour call `ViewBindingPropertyDelegate.strcitMode = false`
-  
-- Proper clear view using `ViewBindingPropertyDelegate`
-
-Callback when a `ViewBinding` in `ViewBindingPropertyDelegate` will be destroyed
-Instead of overriding `Fragment.onDestroyView()` use
-```kotlin  
+```kotlin
 viewBinding(
     ..., 
     onViewDestroyed = { vb: ViewBinding ->
         // reset views inside the ViewBinding 
     }
 )
-``` 
-- Check for host ready ccreate a ViewBinding
+```
 
-`ViewBindingPropertyDelegate` throws an exception when it will be used before host 
-  (`Fragment`, `Activity`, etc.) be ready to create a `ViewBinding`. As an example, access to 
-  `ViewBindingPropertyDelegate` in a `Fragment` before `onViewCreated()` will be called now throw 
-  an zException`
+### ViewBindingProperty will throw error when it will be created before host ready
+ViewBindingPropertyDelegate throws an exception when it will be used before host
+(Fragment, Activity, etc.) be ready to create a ViewBinding. As an example, access to
+ViewBindingPropertyDelegate in a Fragment before onViewCreated() will be called now throw
+an Exception.
+
+### Other
+- Fix memory leaks
+- Fix bugs
 
 ## 1.4.7
 
