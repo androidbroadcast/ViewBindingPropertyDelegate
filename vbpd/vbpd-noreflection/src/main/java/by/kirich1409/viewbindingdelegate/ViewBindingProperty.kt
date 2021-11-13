@@ -13,6 +13,7 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.viewbinding.ViewBinding
+import by.kirich1409.viewbindingdelegate.internal.checkMainThread
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
@@ -122,12 +123,11 @@ public abstract class LifecycleViewBindingProperty<in R : Any, out T : ViewBindi
     @MainThread
     @CallSuper
     public override fun clear() {
+        checkMainThread()
+        val viewBinding = viewBinding
+        this.viewBinding = null
         if (viewBinding != null) {
-            val viewBinding = viewBinding
-            if (viewBinding != null) {
-                onViewDestroyed(viewBinding)
-            }
-            this.viewBinding = null
+            onViewDestroyed(viewBinding)
         }
     }
 
@@ -140,6 +140,33 @@ public abstract class LifecycleViewBindingProperty<in R : Any, out T : ViewBindi
     private class ClearOnDestroyLifecycleObserver(
         private val property: LifecycleViewBindingProperty<*, *>
     ) : DefaultLifecycleObserver {
+
+        /**
+         * Problem with desugaring in some AGP versions: https://issuetracker.google.com/issues/194289155#comment21
+         * Solution 1 - override ALL DefaultLifecycleObserver's methods -
+         * https://stackoverflow.com/questions/59067743/what-is-this-error-and-why-this-doesnt-happen-when-i-dont-use-library-like-a-c/60873211#60873211
+         * Solution 2 - replace DefaultLifecycleObserver with LifecycleObserver
+         */
+
+        override fun onCreate(owner: LifecycleOwner) {
+            // Do nothing
+        }
+
+        override fun onStart(owner: LifecycleOwner) {
+            // Do nothing
+        }
+
+        override fun onResume(owner: LifecycleOwner) {
+            // Do nothing
+        }
+
+        override fun onPause(owner: LifecycleOwner) {
+            // Do nothing
+        }
+
+        override fun onStop(owner: LifecycleOwner) {
+            // Do nothing
+        }
 
         @MainThread
         override fun onDestroy(owner: LifecycleOwner) {
@@ -155,7 +182,7 @@ public abstract class LifecycleViewBindingProperty<in R : Any, out T : ViewBindi
 
 private const val TAG = "ViewBindingProperty"
 private const val ERROR_ACCESS_BEFORE_VIEW_READY =
-    "Host view isn't ready to create a ViedBinding instance"
+    "Host view isn't ready to create a ViewBinding instance"
 private const val ERROR_ACCESS_AFTER_DESTROY =
     "Access to viewBinding after Lifecycle is destroyed or hasn't created yet. " +
             "The instance of viewBinding will be not cached."
