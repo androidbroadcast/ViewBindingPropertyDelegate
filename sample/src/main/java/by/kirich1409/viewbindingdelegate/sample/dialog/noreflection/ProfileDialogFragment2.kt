@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import by.kirich1409.viewbindingdelegate.sample.R
 import by.kirich1409.viewbindingdelegate.sample.databinding.FragmentProfileBinding
+import by.kirich1409.viewbindingdelegate.sample.fragment.noreflection.ProfileFragment
 import by.kirich1409.viewbindingdelegate.viewBinding
 
 class ProfileDialogFragment2 : DialogFragment() {
@@ -28,7 +29,11 @@ class ProfileDialogFragment2 : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         with(viewBinding) {
             button.setOnClickListener {
-                // TODO Handle on click
+                parentFragment?.parentFragmentManager?.beginTransaction()?.apply {
+                    replace(R.id.profile_fragment_container, ProfileFragment())
+                    addToBackStack(null)
+                    commit()
+                }
             }
         }
     }
