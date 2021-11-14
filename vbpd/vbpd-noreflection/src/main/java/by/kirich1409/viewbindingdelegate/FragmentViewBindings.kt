@@ -22,11 +22,16 @@ private class DialogFragmentViewBindingProperty<in F : DialogFragment, out T : V
     onViewDestroyed: (T) -> Unit,
 ) : LifecycleViewBindingProperty<F, T>(viewBinder, onViewDestroyed) {
 
-    override fun getLifecycleOwner(thisRef: F): LifecycleOwner = try {
-        thisRef.viewLifecycleOwner
-    } catch (ignored: IllegalStateException) {
-        error("Fragment doesn't have view associated with it or the view has been destroyed")
-    }
+    override fun getLifecycleOwner(thisRef: F): LifecycleOwner =
+        if (thisRef.view == null) {
+            thisRef
+        } else {
+            try {
+                thisRef.viewLifecycleOwner
+            } catch (ignored: IllegalStateException) {
+                error("Fragment doesn't have view associated with it or the view has been destroyed")
+            }
+        }
 
     override fun isViewInitialized(thisRef: F): Boolean {
         if (!viewNeedInitialization) {
