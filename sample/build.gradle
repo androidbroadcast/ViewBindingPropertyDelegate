@@ -34,4 +34,5 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation rootProject.ext.dependencies.recyclerview
     implementation project(':vbpd:vbpd-full')
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
 }
