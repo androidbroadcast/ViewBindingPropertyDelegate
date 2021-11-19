@@ -22,10 +22,10 @@ allprojects {
 }
 
 dependencies {
-    implementation 'com.github.kirich1409:viewbindingpropertydelegate:1.5.2'
+    implementation 'com.github.kirich1409:viewbindingpropertydelegate:1.5.3'
     
     // To use only without reflection variants of viewBinding
-    implementation 'com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.5.2'
+    implementation 'com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.5.3'
 }
 ```
 
