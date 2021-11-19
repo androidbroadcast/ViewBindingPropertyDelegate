@@ -12,7 +12,7 @@ import by.kirich1409.viewbindingdelegate.internal.ViewBindingCache
  *
  * @param T Class of expected [ViewBinding] result class
  */
-@JvmName("viewBindingFragment")
+@JvmName("viewBindingViewHolder")
 public inline fun <reified T : ViewBinding> ViewHolder.viewBinding() = viewBinding(T::class.java)
 
 /**
@@ -20,7 +20,7 @@ public inline fun <reified T : ViewBinding> ViewHolder.viewBinding() = viewBindi
  *
  * @param viewBindingClass Class of expected [ViewBinding] result class
  */
-@JvmName("viewBindingFragment")
+@JvmName("viewBindingViewHolder")
 public fun <T : ViewBinding> ViewHolder.viewBinding(
     viewBindingClass: Class<T>,
 ): ViewBindingProperty<ViewHolder, T> {
