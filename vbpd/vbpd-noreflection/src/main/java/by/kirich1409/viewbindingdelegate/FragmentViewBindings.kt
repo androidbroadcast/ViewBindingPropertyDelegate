@@ -14,6 +14,8 @@ import androidx.viewbinding.ViewBinding
 import by.kirich1409.viewbindingdelegate.internal.emptyVbCallback
 import by.kirich1409.viewbindingdelegate.internal.getRootView
 import by.kirich1409.viewbindingdelegate.internal.requireViewByIdCompat
+import java.lang.ref.Reference
+import java.lang.ref.WeakReference
 import kotlin.reflect.KProperty
 
 private class DialogFragmentViewBindingProperty<in F : DialogFragment, out T : ViewBinding>(
@@ -54,7 +56,7 @@ private class FragmentViewBindingProperty<in F : Fragment, out T : ViewBinding>(
 ) : LifecycleViewBindingProperty<F, T>(viewBinder, onViewDestroyed) {
 
     private var fragmentLifecycleCallbacks: FragmentManager.FragmentLifecycleCallbacks? = null
-    private var fragmentManager: FragmentManager? = null
+    private var fragmentManager: Reference<FragmentManager>? = null
 
     override fun getValue(thisRef: F, property: KProperty<*>): T {
         val viewBinding = super.getValue(thisRef, property)
@@ -63,14 +65,12 @@ private class FragmentViewBindingProperty<in F : Fragment, out T : ViewBinding>(
     }
 
     private fun registerFragmentLifecycleCallbacksIfNeeded(fragment: Fragment) {
-        if (fragmentLifecycleCallbacks != null) {
-            return
-        }
+        if (fragmentLifecycleCallbacks != null) return
 
         val fragmentManager = fragment.parentFragmentManager.also { fm ->
-            this.fragmentManager = fm
+            this.fragmentManager = WeakReference(fm)
         }
-        fragmentLifecycleCallbacks = ClearOnDestroy().also { callbacks ->
+        fragmentLifecycleCallbacks = ClearOnDestroy(fragment).also { callbacks ->
             fragmentManager.registerFragmentLifecycleCallbacks(callbacks, false)
         }
     }
@@ -87,10 +87,11 @@ private class FragmentViewBindingProperty<in F : Fragment, out T : ViewBinding>(
 
     override fun clear() {
         super.clear()
-        fragmentManager?.also { fragmentManager ->
+        fragmentManager?.get()?.let { fragmentManager ->
             fragmentLifecycleCallbacks?.let(fragmentManager::unregisterFragmentLifecycleCallbacks)
-            this.fragmentManager = null
         }
+
+        fragmentManager = null
         fragmentLifecycleCallbacks = null
     }
 
@@ -102,11 +103,17 @@ private class FragmentViewBindingProperty<in F : Fragment, out T : ViewBinding>(
         }
     }
 
-    private inner class ClearOnDestroy : FragmentManager.FragmentLifecycleCallbacks() {
+    private inner class ClearOnDestroy(
+        fragment: Fragment
+    ) : FragmentManager.FragmentLifecycleCallbacks() {
+
+        private var fragment: Reference<Fragment> = WeakReference(fragment)
 
         override fun onFragmentDestroyed(fm: FragmentManager, f: Fragment) {
             // Fix for destroying view for case with issue of navigation
-            postClear()
+            if (fragment.get() === f) {
+                postClear()
+            }
         }
     }
 }
