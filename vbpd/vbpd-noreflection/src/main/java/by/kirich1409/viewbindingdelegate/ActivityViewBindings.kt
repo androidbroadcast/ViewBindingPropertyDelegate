@@ -25,7 +25,7 @@ private class ActivityViewBindingProperty<in A : ComponentActivity, out T : View
     override fun getLifecycleOwner(thisRef: A): LifecycleOwner = thisRef
 
     override fun isViewInitialized(thisRef: A): Boolean {
-        return viewNeedInitialization && thisRef.window != null
+        return !viewNeedInitialization || thisRef.window != null
     }
 }
 
