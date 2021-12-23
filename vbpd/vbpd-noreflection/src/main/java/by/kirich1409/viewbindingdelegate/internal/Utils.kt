@@ -3,6 +3,8 @@
 package by.kirich1409.viewbindingdelegate.internal
 
 import android.app.Activity
+import android.content.Context
+import android.content.pm.ApplicationInfo
 import android.os.Looper
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +14,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.DialogFragment
 import androidx.viewbinding.ViewBinding
+
 
 @Suppress("NOTHING_TO_INLINE")
 @RestrictTo(RestrictTo.Scope.LIBRARY)
@@ -55,8 +58,14 @@ fun <T : ViewBinding> emptyVbCallback():(T) -> Unit {
     return EMPTY_VB_CALLBACK
 }
 
-internal inline fun checkMainThread() {
+internal fun checkMainThread() {
     check(Looper.getMainLooper() === Looper.myLooper()) {
         "The method must be called on the main thread"
+    }
+}
+
+internal fun checkMainThread(reason: String) {
+    check(Looper.getMainLooper() === Looper.myLooper()) {
+        "The method must be called on the main thread. Reason: $reason."
     }
 }

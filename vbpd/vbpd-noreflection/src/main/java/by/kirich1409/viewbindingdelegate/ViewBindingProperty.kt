@@ -81,6 +81,7 @@ public abstract class LifecycleViewBindingProperty<in R : Any, out T : ViewBindi
 
     @MainThread
     public override fun getValue(thisRef: R, property: KProperty<*>): T {
+        checkMainThread("access to ViewBinding from non UI (Main) thread")
         viewBinding?.let { return it }
 
         if (!isViewInitialized(thisRef)) {

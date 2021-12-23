@@ -57,19 +57,11 @@ private class FragmentViewBindingProperty<in F : Fragment, out T : ViewBinding>(
     private var fragmentLifecycleCallbacks: FragmentManager.FragmentLifecycleCallbacks? = null
     private var fragmentManager: Reference<FragmentManager>? = null
 
+    @MainThread
     override fun getValue(thisRef: F, property: KProperty<*>): T {
-        checkFragment(thisRef)
         val viewBinding = super.getValue(thisRef, property)
         registerFragmentLifecycleCallbacksIfNeeded(thisRef)
         return viewBinding
-    }
-
-    private fun checkFragment(fragment: Fragment) {
-        require(fragment.isAdded && !fragment.isDetached) {
-            "To get Fragment's view it must be attached. " +
-                    "It seems that you try to get Fragment's view outside when it doesn't exist" +
-                    "(before onViewCreated() or after onDestroyView())"
-        }
     }
 
     private fun registerFragmentLifecycleCallbacksIfNeeded(fragment: Fragment) {

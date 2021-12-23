@@ -22,9 +22,7 @@ private class ActivityViewBindingProperty<in A : ComponentActivity, out T : View
     viewBinder: (A) -> T
 ) : LifecycleViewBindingProperty<A, T>(viewBinder, onViewDestroyed) {
 
-    override fun getLifecycleOwner(thisRef: A): LifecycleOwner {
-        return thisRef
-    }
+    override fun getLifecycleOwner(thisRef: A): LifecycleOwner = thisRef
 
     override fun isViewInitialized(thisRef: A): Boolean {
         return viewNeedInitialization && thisRef.window != null
@@ -115,7 +113,7 @@ public inline fun <T : ViewBinding> ComponentActivity.viewBinding(
 }
 
 @RestrictTo(LIBRARY_GROUP)
-fun <A : ComponentActivity, T : ViewBinding>  activityViewBinding(
+fun <A : ComponentActivity, T : ViewBinding> activityViewBinding(
     onViewDestroyed: (T) -> Unit,
     viewNeedInitialization: Boolean = true,
     viewBinder: (A) -> T
