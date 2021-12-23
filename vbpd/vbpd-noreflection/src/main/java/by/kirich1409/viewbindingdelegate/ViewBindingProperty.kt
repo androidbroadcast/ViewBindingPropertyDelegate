@@ -85,7 +85,7 @@ public abstract class LifecycleViewBindingProperty<in R : Any, out T : ViewBindi
         viewBinding?.let { return it }
 
         if (!isViewInitialized(thisRef)) {
-            error(ERROR_ACCESS_BEFORE_VIEW_READY)
+            error(viewNotInitializedReadableErrorMessage(thisRef))
         }
 
         if (ViewBindingPropertyDelegate.strictMode) {
@@ -117,9 +117,11 @@ public abstract class LifecycleViewBindingProperty<in R : Any, out T : ViewBindi
     /**
      * Check is host view ready to create viewBinding
      */
-    protected open fun isViewInitialized(thisRef: R): Boolean {
-        return true
-    }
+    protected open fun isViewInitialized(thisRef: R): Boolean = true
+
+    protected open fun viewNotInitializedReadableErrorMessage(
+        thisRef: R
+    ): String = ERROR_VIEW_NOT_INITIALIZED
 
     @MainThread
     @CallSuper
@@ -182,6 +184,8 @@ public abstract class LifecycleViewBindingProperty<in R : Any, out T : ViewBindi
 }
 
 private const val TAG = "ViewBindingProperty"
+private const val ERROR_VIEW_NOT_INITIALIZED =
+    "Host view isn't ready. LifecycleViewBindingProperty.isViewInitialized return false"
 private const val ERROR_ACCESS_BEFORE_VIEW_READY =
     "Host view isn't ready to create a ViewBinding instance"
 private const val ERROR_ACCESS_AFTER_DESTROY =
