@@ -4,6 +4,7 @@ import android.os.Looper
 import androidx.annotation.MainThread
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
+import by.kirich1409.viewbindingdelegate.internal.checkMainThread
 
 /**
  * Setting for ViewBindingPropertyDelegate library
@@ -21,7 +22,7 @@ object ViewBindingPropertyDelegate {
     @set:MainThread
     var strictMode = true
         set(value) {
-            check(Looper.getMainLooper() == Looper.myLooper())
+            checkMainThread()
             field = value
         }
 }
