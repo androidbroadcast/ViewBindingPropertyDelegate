@@ -1,6 +1,5 @@
 package by.kirich1409.viewbindingdelegate
 
-import android.os.Looper
 import androidx.annotation.MainThread
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
