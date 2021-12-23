@@ -1,4 +1,10 @@
-## 1.5.3
+## 1.5.4
+December 23, 2021
+
+- Bug fixes
+- Improve error messages
+
+## 1.4.3
 November 19, 2021
 
 - Fix clear Fragment when it will be destroyed 
