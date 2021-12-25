@@ -17,6 +17,7 @@ object ViewBindingCache {
 
     @Suppress("UNCHECKED_CAST")
     @RestrictTo(LIBRARY)
+    @PublishedApi
     internal fun <T : ViewBinding> getInflateWithLayoutInflater(viewBindingClass: Class<T>): InflateViewBinding<T> {
         return inflateCache.getOrPut(viewBindingClass) { InflateViewBinding(viewBindingClass) } as InflateViewBinding<T>
     }
@@ -40,6 +41,7 @@ object ViewBindingCache {
  * Wrapper of ViewBinding.inflate(LayoutInflater, ViewGroup, Boolean)
  */
 @RestrictTo(LIBRARY)
+@PublishedApi
 internal abstract class InflateViewBinding<out VB : ViewBinding>(
     private val inflateViewBinding: Method
 ) {

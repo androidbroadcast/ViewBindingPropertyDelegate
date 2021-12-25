@@ -23,7 +23,6 @@ interface ViewBindingProperty<in R : Any, out T : ViewBinding> : ReadOnlyPropert
     fun clear()
 }
 
-@RestrictTo(LIBRARY_GROUP)
 public open class LazyViewBindingProperty<in R : Any, out T : ViewBinding>(
     private val onViewDestroyed: (T) -> Unit,
     protected val viewBinder: (R) -> T,
@@ -72,7 +71,7 @@ public open class EagerViewBindingProperty<in R : Any, out T : ViewBinding>(
 @RestrictTo(LIBRARY_GROUP)
 public abstract class LifecycleViewBindingProperty<in R : Any, out T : ViewBinding>(
     private val viewBinder: (R) -> T,
-    private val onViewDestroyed: (T) -> Unit,
+    private val onViewDestroyed: (T) -> Unit = {},
 ) : ViewBindingProperty<R, T> {
 
     private var viewBinding: T? = null
