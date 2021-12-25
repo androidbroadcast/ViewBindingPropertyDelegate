@@ -141,6 +141,8 @@ public fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
 
 /**
  * Create new [ViewBinding] associated with the [Fragment]
+ *
+ * @param onViewDestroyed Called when the [ViewBinding] will be destroyed
  */
 @Suppress("UNCHECKED_CAST")
 @JvmName("viewBindingFragmentWithCallbacks")
@@ -173,6 +175,7 @@ public inline fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
  *
  * @param vbFactory Function that create new instance of [ViewBinding]. `MyViewBinding::bind` can be used
  * @param viewProvider Provide a [View] from the Fragment. By default call [Fragment.requireView]
+ * @param onViewDestroyed Called when the [ViewBinding] will be destroyed
  */
 @JvmName("viewBindingFragmentWithCallbacks")
 public inline fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
