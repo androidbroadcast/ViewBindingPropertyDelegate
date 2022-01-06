@@ -41,7 +41,7 @@ object ViewBindingPropertyDelegate {
  */
 fun <R : Any, VB : ViewBinding> viewBindingLazy(
     viewBinder: (R) -> VB,
-    onViewDestroyed: (VB) -> Unit,
+    onViewDestroyed: (VB) -> Unit = {},
 ): LazyViewBindingProperty<R, VB> {
     return LazyViewBindingProperty(onViewDestroyed, viewBinder)
 }
@@ -57,7 +57,7 @@ fun <R : Any, VB : ViewBinding> viewBindingLazy(
 fun <R : Any, VB : ViewBinding> viewBindingWithLifecycle(
     lifecycleOwner: LifecycleOwner,
     viewBinder: (R) -> VB,
-    onViewDestroyed: (VB) -> Unit,
+    onViewDestroyed: (VB) -> Unit = {},
 ): LifecycleViewBindingProperty<R, VB> {
     return object : LifecycleViewBindingProperty<R, VB>(viewBinder, onViewDestroyed) {
 
@@ -76,7 +76,7 @@ fun <R : Any, VB : ViewBinding> viewBindingWithLifecycle(
 fun <R : Any, VB : ViewBinding> viewBindingWithLifecycle(
     lifecycle: Lifecycle,
     viewBinder: (R) -> VB,
-    onViewDestroyed: (VB) -> Unit,
+    onViewDestroyed: (VB) -> Unit = {},
 ): LifecycleViewBindingProperty<R, VB> {
     return object : LifecycleViewBindingProperty<R, VB>(viewBinder, onViewDestroyed) {
 
