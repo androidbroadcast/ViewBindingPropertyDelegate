@@ -1,4 +1,5 @@
 @file:Suppress("unused")
+@file:JvmName("ViewBindingPropertyDelegateUtils")
 
 package by.kirich1409.viewbindingdelegate
 
