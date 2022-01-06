@@ -35,7 +35,7 @@ ext {
     minSdkVersion = 14
     targetSdkVersion = 29
 
-    versionName = "1.5.5"
+    versionName = "1.5.6"
 
     dependencies = [:]
     dependencies.coreKtx = 'androidx.core:core-ktx:1.7.0'
