@@ -1,11 +1,6 @@
 apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
-tasks.register("sourceJar", Jar) {
-    from android.sourceSets.main.java.srcDirs
-    archiveClassifier.set('sources')
-}
-
 Properties localProps = new Properties()
 File localProperties = new File(rootProject.rootDir, "local.properties")
 if (localProperties.exists() && localProperties.isFile()) {
@@ -19,9 +14,9 @@ project.ext["signing.password"] = localProps.getProperty("signing.password")
 afterEvaluate {
     publishing {
         publications {
-            releaseAar(MavenPublication) {
-                from components.release
-                artifact sourceJar
+            release(MavenPublication) {
+                from components.kotlin
+                artifact(sourcesJar)
 
                 groupId = project.ext.groupId
                 artifactId = project.ext.artifactId

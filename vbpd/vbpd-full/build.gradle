@@ -1,43 +1,46 @@
 plugins {
-    id 'com.android.library'
-    id 'kotlin-android'
+    id 'java-library'
+    id "org.jetbrains.kotlin.jvm"
+    id 'com.stepango.aar2jar'
 }
 
 ext {
     groupId = 'com.github.kirich1409'
-    artifactId = "viewbindingpropertydelegate"
+    artifactId = "viewbindingpropertydelegate-full"
 }
 
-apply from: rootProject.file('publishing.gradle')
+//apply from: rootProject.file('publishing.gradle')
 
-android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
-
-    defaultConfig {
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
-
-        consumerProguardFiles 'proguard-rules.pro'
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    // For Kotlin projects
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile) {
     kotlinOptions {
         jvmTarget = "1.8"
         kotlinOptions.freeCompilerArgs +=
-                ['-module-name', "com.github.kirich1409.ViewBindingPropertyDelegate"]
+                ['-module-name', "com.github.kirich1409.ViewBindingPropertyDelegate.core"]
     }
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+
+    withSourcesJar()
+}
+
 dependencies {
-    implementation rootProject.ext.dependencies.coreKtx
-    implementation rootProject.ext.dependencies.fragmentKtx
-    compileOnly rootProject.ext.dependencies.viewBinding
-    implementation rootProject.ext.dependencies.recyclerview
+    implementationAar rootProject.ext.dependencies.coreKtx
+    implementationAar rootProject.ext.dependencies.core
+    implementationAar rootProject.ext.dependencies.fragmentKtx
+    implementationAar rootProject.ext.dependencies.fragment
+    compileOnlyAar rootProject.ext.dependencies.viewBinding
+    implementationAar rootProject.ext.dependencies.lifecycleCommon
+    implementationAar rootProject.ext.dependencies.recyclerview
+    compileOnly rootProject.ext.dependencies.annotations
+    compileOnlyAar rootProject.ext.dependencies.activity
+    compileOnlyAar rootProject.ext.dependencies.savedstate
+    compileOnlyAar rootProject.ext.dependencies.lifecycleViewmodel
+    compileOnlyAar rootProject.ext.dependencies.lifecycleRuntime
+    compileOnly androidJar
     api project(':vbpd:vbpd-noreflection')
 }
+
+apply from: rootProject.file('publishing.gradle')

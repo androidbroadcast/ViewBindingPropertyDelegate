@@ -18,7 +18,7 @@ import by.kirich1409.viewbindingdelegate.internal.ViewBindingCache
  *
  * @param onViewDestroyed Called when the [ViewBinding] will be destroyed
  */
-inline fun <reified VB : ViewBinding> viewBindingLazy(
+inline fun <R : Any, reified VB : ViewBinding> viewBindingLazy(
     layoutInflater: LayoutInflater,
     parent: ViewGroup? = null,
     attachToParent: Boolean = false,

@@ -7,8 +7,6 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.0.4'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -17,6 +15,8 @@ buildscript {
 plugins {
     id 'maven-publish'
     id 'org.jetbrains.kotlin.jvm' version '1.6.20' apply false
+    id 'com.stepango.aar2jar' version "0.6" apply false
+    id 'com.stepango.androidjar' version "0.1"
 }
 
 allprojects {
@@ -36,14 +36,25 @@ ext {
     minSdkVersion = 14
     targetSdkVersion = 29
 
-    versionName = "1.5.6"
+    versionName = "1.5.7"
 
     dependencies = [:]
     dependencies.coreKtx = 'androidx.core:core-ktx:1.7.0'
+    dependencies.core = 'androidx.core:core:1.7.0'
     dependencies.fragmentKtx = 'androidx.fragment:fragment-ktx:1.4.0'
+    dependencies.fragment = 'androidx.fragment:fragment:1.4.0'
     dependencies.viewBinding = 'androidx.databinding:viewbinding:7.0.4'
     dependencies.lifecycleCommonJava8 = 'androidx.lifecycle:lifecycle-common-java8:2.4.0'
+    dependencies.lifecycleCommon = 'androidx.lifecycle:lifecycle-common:2.4.0'
+    dependencies.lifecycleViewmodel = 'androidx.lifecycle:lifecycle-viewmodel:2.4.0'
+    dependencies.lifecycleRuntime = 'androidx.lifecycle:lifecycle-runtime:2.4.0'
     dependencies.recyclerview = 'androidx.recyclerview:recyclerview:1.2.1'
+    dependencies.annotations = 'androidx.annotation:annotation:1.3.0'
+    dependencies.savedstate = 'androidx.savedstate:savedstate:1.1.0'
+    dependencies.activity = 'androidx.activity:activity:1.4.0'
+    dependencies.appcompat = 'androidx.appcompat:appcompat:1.4.1'
 
     preDexEnabled = "true" != System.getenv("PRE_DEX_DISABLED")
+
+    androidJar = androidjar.find(targetSdkVersion)
 }

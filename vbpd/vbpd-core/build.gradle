@@ -1,6 +1,7 @@
 plugins {
-    id 'com.android.library'
-    id 'kotlin-android'
+    id "org.jetbrains.kotlin.jvm"
+    id 'com.stepango.aar2jar'
+    id 'java-library'
 }
 
 ext {
@@ -8,23 +9,7 @@ ext {
     artifactId = "viewbindingpropertydelegate-core"
 }
 
-apply from: rootProject.file('publishing.gradle')
-
-android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
-
-    defaultConfig {
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    // For Kotlin projects
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile) {
     kotlinOptions {
         jvmTarget = "1.8"
         kotlinOptions.freeCompilerArgs +=
@@ -32,7 +17,19 @@ android {
     }
 }
 
-dependencies {
-    compileOnly rootProject.ext.dependencies.viewBinding
-    implementation rootProject.ext.dependencies.lifecycleCommonJava8
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+
+    withSourcesJar()
 }
+
+dependencies {
+    compileOnlyAar rootProject.ext.dependencies.viewBinding
+    implementationAar rootProject.ext.dependencies.lifecycleCommonJava8
+    implementationAar rootProject.ext.dependencies.lifecycleCommon
+    compileOnly androidJar
+    compileOnly rootProject.ext.dependencies.annotations
+}
+
+apply from: rootProject.file('publishing.gradle')

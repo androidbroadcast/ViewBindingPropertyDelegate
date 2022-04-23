@@ -4,11 +4,10 @@
 package by.kirich1409.viewbindingdelegate
 
 import androidx.annotation.MainThread
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.viewbinding.ViewBinding
-import by.kirich1409.viewbindingdelegate.internal.checkMainThread
+import by.kirich1409.viewbindingdelegate.internal.core.checkMainThread
 
 /**
  * Setting for ViewBindingPropertyDelegate library
