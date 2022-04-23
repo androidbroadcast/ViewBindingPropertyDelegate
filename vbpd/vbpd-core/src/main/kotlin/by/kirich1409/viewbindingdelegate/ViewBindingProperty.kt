@@ -13,7 +13,7 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.viewbinding.ViewBinding
-import by.kirich1409.viewbindingdelegate.internal.checkMainThread
+import by.kirich1409.viewbindingdelegate.internal.core.checkMainThread
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
@@ -133,7 +133,8 @@ public abstract class LifecycleViewBindingProperty<in R : Any, out T : ViewBindi
         }
     }
 
-    internal fun postClear() {
+    @RestrictTo(LIBRARY_GROUP)
+    protected fun postClear() {
         if (!mainHandler.post { clear() }) {
             clear()
         }

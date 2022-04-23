@@ -5,7 +5,7 @@ plugins {
 
 ext {
     groupId = 'com.github.kirich1409'
-    artifactId = "viewbindingpropertydelegate-noreflection"
+    artifactId = "viewbindingpropertydelegate-core"
 }
 
 apply from: rootProject.file('publishing.gradle')
@@ -28,15 +28,11 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
         kotlinOptions.freeCompilerArgs +=
-                ['-module-name', "com.github.kirich1409.ViewBindingPropertyDelegate.noreflection"]
+                ['-module-name', "com.github.kirich1409.ViewBindingPropertyDelegate.core"]
     }
 }
 
 dependencies {
-    implementation rootProject.ext.dependencies.coreKtx
-    implementation rootProject.ext.dependencies.fragmentKtx
     compileOnly rootProject.ext.dependencies.viewBinding
     implementation rootProject.ext.dependencies.lifecycleCommonJava8
-    implementation rootProject.ext.dependencies.recyclerview
-    api project(':vbpd:vbpd-core')
 }

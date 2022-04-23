@@ -57,15 +57,3 @@ internal val EMPTY_VB_CALLBACK: (ViewBinding) -> Unit = { _ -> }
 fun <T : ViewBinding> emptyVbCallback():(T) -> Unit {
     return EMPTY_VB_CALLBACK
 }
-
-internal fun checkMainThread() {
-    check(Looper.getMainLooper() === Looper.myLooper()) {
-        "The method must be called on the main thread"
-    }
-}
-
-internal fun checkMainThread(reason: String) {
-    check(Looper.getMainLooper() === Looper.myLooper()) {
-        "The method must be called on the main thread. Reason: $reason."
-    }
-}
