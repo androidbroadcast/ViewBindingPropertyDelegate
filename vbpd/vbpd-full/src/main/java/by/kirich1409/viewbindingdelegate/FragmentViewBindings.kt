@@ -77,7 +77,7 @@ public fun <T : ViewBinding> Fragment.viewBinding(
                 ViewBindingCache.getInflateWithLayoutInflater(viewBindingClass)
                     .inflate(layoutInflater, null, false)
             },
-            viewNeedInitialization = false
+            viewNeedsInitialization = false
         )
         else -> fragmentViewBinding(
             onViewDestroyed,
@@ -85,7 +85,7 @@ public fun <T : ViewBinding> Fragment.viewBinding(
                 ViewBindingCache.getInflateWithLayoutInflater(viewBindingClass)
                     .inflate(layoutInflater, null, false)
             },
-            viewNeedInitialization = false
+            viewNeedsInitialization = false
         )
     }
 }
