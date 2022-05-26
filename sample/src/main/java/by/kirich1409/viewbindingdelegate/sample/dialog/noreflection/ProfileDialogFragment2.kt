@@ -12,7 +12,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 
 class ProfileDialogFragment2 : DialogFragment() {
 
-    // Creating via default way will work too for that case
+    // Creating it the default way would also work for this case
     // private val viewBinding: ProfileBinding by viewBinding()
 
     private val viewBinding by viewBinding(FragmentProfileBinding::bind)
