@@ -2,17 +2,17 @@
 
 # ViewBindingPropertyDelegate
 
-Make work with [Android View Binding](https://d.android.com/topic/libraries/view-binding) simpler. The library do:
-- managing ViewBinding lifecycle and clear reference to it to prevent memory leaks
-- you don't need to keep nullable reference to Views or ViewBindings
-- create ViewBinding lazy
+Make work with [Android View Binding](https://d.android.com/topic/libraries/view-binding) simpler. The library:
+- manages ViewBinding lifecycle and clears the reference to it to prevent memory leaks
+- eliminates the need to keep nullable references to Views or ViewBindings
+- creates ViewBinding lazily
 
-The library has two variants: reflection and without it. They were divided in separate artifacts: `viewbindingpropertydelegate` and `viewbindingpropertydelegate-noreflection`. **Prefer to use variant without reflection for better performance**
+The library comes in two flavors: with and without reflection. The artifacts are respectively: `viewbindingpropertydelegate` and `viewbindingpropertydelegate-noreflection`. **Prefer to use the one without reflection for better performance**
 
-## IMPORTANT: Enable ViewBinding before use the library
-Every Gradle module of your project where you need use ViewBinding must be configured properly. How to do that you can find in the [official guide](https://d.android.com/topic/libraries/view-binding)
+## IMPORTANT: Enable ViewBinding before using the library
+Each Gradle module in your project where you need to use ViewBinding must be properly configured. Refer to the [official guide](https://d.android.com/topic/libraries/view-binding) on how to do that 
 
-## Add library to a project
+## Add the library to a project
 
 ```groovy
 allprojects {
@@ -22,10 +22,11 @@ allprojects {
 }
 
 dependencies {
-    implementation 'com.github.kirich1409:viewbindingpropertydelegate:1.5.3'
+    // reflection-based flavor
+    implementation 'com.github.kirich1409:viewbindingpropertydelegate:1.5.6'
     
-    // To use only without reflection variants of viewBinding
-    implementation 'com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.5.3'
+    // reflection-free flavor
+    implementation 'com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.5.6'
 }
 ```
 
@@ -34,13 +35,13 @@ dependencies {
 ```kotlin
 class ProfileFragment : Fragment(R.layout.profile) {
 
-    // Using reflection API under the hood and ViewBinding.bind
+    // reflection API and ViewBinding.bind are used under the hood
     private val viewBinding: ProfileBinding by viewBinding()
 
-    // Using reflection API under the hood and ViewBinding.inflate
+    // reflection API and ViewBinding.inflate are used under the hood
     private val viewBinding: ProfileBinding by viewBinding(createMethod = CreateMethod.INFLATE)
 
-    // Without reflection
+    // no reflection API is used under the hood
     private val viewBinding by viewBinding(ProfileBinding::bind)
 }
 ```
@@ -48,17 +49,17 @@ class ProfileFragment : Fragment(R.layout.profile) {
 ```kotlin
 class ProfileActivity : AppCompatActivity(R.layout.profile) {
 
-    // Using reflection API under the hood
+    // reflection API is used under the hood
     private val viewBinding: ProfileBinding by viewBinding(R.id.container)
 
-    // Without reflection
+    // no reflection API is used under the hood
     private val viewBinding by viewBinding(ProfileBinding::bind, R.id.container)
 }
 ```
 
 # License
 
-   Copyright 2020-2021 Kirill Rozov
+   Copyright 2020-2022 Kirill Rozov
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
