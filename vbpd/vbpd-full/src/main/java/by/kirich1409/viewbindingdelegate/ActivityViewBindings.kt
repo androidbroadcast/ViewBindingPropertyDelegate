@@ -17,7 +17,7 @@ import by.kirich1409.viewbindingdelegate.internal.findRootView
  * Create new [ViewBinding] associated with the [Activity][ComponentActivity]
  *
  * @param T Class of expected [ViewBinding] result class
- * @param viewBindingRootId Root view's id that will be used as root for the view binding
+ * @param viewBindingRootId Root view's id that will be used as a root for the view binding
  */
 @JvmName("viewBindingActivity")
 public inline fun <reified T : ViewBinding> ComponentActivity.viewBinding(
@@ -31,7 +31,7 @@ public inline fun <reified T : ViewBinding> ComponentActivity.viewBinding(
  * Create new [ViewBinding] associated with the [Activity][ComponentActivity]
  *
  * @param viewBindingClass Class of expected [ViewBinding] result class
- * @param viewBindingRootId Root view's id that will be used as root for the view binding
+ * @param viewBindingRootId Root view's id that will be used as a root for the view binding
  */
 @JvmName("viewBindingActivity")
 public fun <T : ViewBinding> ComponentActivity.viewBinding(
@@ -46,10 +46,10 @@ public fun <T : ViewBinding> ComponentActivity.viewBinding(
 }
 
 /**
- * Create new [ViewBinding] associated with the [Activity]
+ * Create new [ViewBinding] associated with the [Activity][ComponentActivity]
  *
  * @param viewBindingClass Class of expected [ViewBinding] result class
- * @param rootViewProvider Provider of root view for the [ViewBinding] from the [Activity][this]
+ * @param rootViewProvider Provider of a root view from the [Activity][this] for [ViewBinding]
  */
 @JvmName("viewBindingActivity")
 public fun <T : ViewBinding> ComponentActivity.viewBinding(
@@ -64,7 +64,7 @@ public fun <T : ViewBinding> ComponentActivity.viewBinding(
 
 /**
  * Create new [ViewBinding] associated with the [Activity][ComponentActivity].
- * You need to set [ViewBinding.getRoot] as content view using [Activity.setContentView].
+ * You need to set [ViewBinding.getRoot] as a content view using [Activity.setContentView].
  *
  * @param T Class of expected [ViewBinding] result class
  */
