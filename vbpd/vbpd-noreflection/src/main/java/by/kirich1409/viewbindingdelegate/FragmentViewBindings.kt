@@ -218,9 +218,9 @@ public inline fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
 fun <F : Fragment, T : ViewBinding> fragmentViewBinding(
     onViewDestroyed: (T) -> Unit,
     viewBinder: (F) -> T,
-    viewNeedInitialization: Boolean = true
+    viewNeedsInitialization: Boolean = true
 ): ViewBindingProperty<F, T> {
-    return FragmentViewBindingProperty(viewNeedInitialization, viewBinder, onViewDestroyed)
+    return FragmentViewBindingProperty(viewNeedsInitialization, viewBinder, onViewDestroyed)
 }
 
 @Suppress("UNCHECKED_CAST")
@@ -228,10 +228,10 @@ fun <F : Fragment, T : ViewBinding> fragmentViewBinding(
 fun <F : Fragment, T : ViewBinding> dialogFragmentViewBinding(
     onViewDestroyed: (T) -> Unit,
     viewBinder: (F) -> T,
-    viewNeedInitialization: Boolean = true
+    viewNeedsInitialization: Boolean = true
 ): ViewBindingProperty<F, T> {
     return DialogFragmentViewBindingProperty(
-        viewNeedInitialization,
+        viewNeedsInitialization,
         viewBinder,
         onViewDestroyed
     ) as ViewBindingProperty<F, T>
