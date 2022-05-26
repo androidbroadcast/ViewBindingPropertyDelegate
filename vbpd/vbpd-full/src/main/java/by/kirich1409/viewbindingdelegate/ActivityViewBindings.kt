@@ -82,7 +82,7 @@ public fun <T : ViewBinding> ComponentActivity.viewBinding(
 ): ViewBindingProperty<ComponentActivity, T> = when (createMethod) {
     CreateMethod.BIND -> viewBinding(viewBindingClass, ::findRootView, onViewDestroyed)
     CreateMethod.INFLATE -> {
-        activityViewBinding(onViewDestroyed, viewNeedInitialization = false) {
+        activityViewBinding(onViewDestroyed, viewNeedsInitialization = false) {
             ViewBindingCache.getInflateWithLayoutInflater(viewBindingClass)
                 .inflate(layoutInflater, null, false)
         }
