@@ -11,7 +11,7 @@ import androidx.viewbinding.ViewBinding
  * Create new [ViewBinding] associated with the [DialogFragment]'s view
  *
  * @param T Class of expected [ViewBinding] result class
- * @param viewBindingRootId Id of the root view from your custom view
+ * @param viewBindingRootId Id of the root view of your custom view
  */
 @JvmName("viewBindingDialogFragment")
 @Deprecated(

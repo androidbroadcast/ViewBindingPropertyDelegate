@@ -15,7 +15,7 @@ import by.kirich1409.viewbindingdelegate.internal.emptyVbCallback
  * Create new [ViewBinding] associated with the [ViewGroup]
  *
  * @param T Class of expected [ViewBinding] result class
- * @param createMethod Way of how create [ViewBinding]
+ * @param createMethod Way of creating [ViewBinding]
  * @param lifecycleAware Get [LifecycleOwner] from the [ViewGroup][this] using [ViewTreeLifecycleOwner]
  */
 @JvmName("viewBindingFragment")
@@ -31,7 +31,7 @@ public inline fun <reified T : ViewBinding> ViewGroup.viewBinding(
  * Create new [ViewBinding] associated with the [ViewGroup]
  *
  * @param viewBindingClass Class of expected [ViewBinding] result class
- * @param createMethod Way of how create [ViewBinding]
+ * @param createMethod Way of creating [ViewBinding]
  * @param lifecycleAware Get [LifecycleOwner] from the [ViewGroup][this] using [ViewTreeLifecycleOwner]
  */
 @JvmName("viewBindingFragment")
@@ -50,7 +50,7 @@ public fun <T : ViewBinding> ViewGroup.viewBinding(
 }
 
 /**
- * Inflate new [ViewBinding] with the [ViewGroup][this] as parent
+ * Inflate new [ViewBinding] with the [ViewGroup][this] as a parent
  *
  * @param lifecycleAware Get [LifecycleOwner] from the [ViewGroup][this] using [ViewTreeLifecycleOwner]
  */
@@ -65,7 +65,7 @@ public inline fun <reified T : ViewBinding> ViewGroup.viewBinding(
 }
 
 /**
- * Inflate new [ViewBinding] with the [ViewGroup][this] as parent
+ * Inflate new [ViewBinding] with the [ViewGroup][this] as a parent
  *
  * @param lifecycleAware Get [LifecycleOwner] from the [ViewGroup][this] using [ViewTreeLifecycleOwner]
  */
