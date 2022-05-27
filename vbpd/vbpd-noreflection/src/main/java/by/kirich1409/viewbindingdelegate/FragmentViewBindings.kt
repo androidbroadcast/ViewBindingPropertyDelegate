@@ -19,7 +19,7 @@ import java.lang.ref.WeakReference
 import kotlin.reflect.KProperty
 
 private class DialogFragmentViewBindingProperty<in F : DialogFragment, out T : ViewBinding>(
-    private val viewNeedInitialization: Boolean,
+    private val viewNeedsInitialization: Boolean,
     viewBinder: (F) -> T,
     onViewDestroyed: (T) -> Unit,
 ) : LifecycleViewBindingProperty<F, T>(viewBinder, onViewDestroyed) {
@@ -36,7 +36,7 @@ private class DialogFragmentViewBindingProperty<in F : DialogFragment, out T : V
         }
 
     override fun isViewInitialized(thisRef: F): Boolean {
-        if (!viewNeedInitialization) {
+        if (!viewNeedsInitialization) {
             return true
         }
 
@@ -49,7 +49,7 @@ private class DialogFragmentViewBindingProperty<in F : DialogFragment, out T : V
 }
 
 private class FragmentViewBindingProperty<in F : Fragment, out T : ViewBinding>(
-    private val viewNeedInitialization: Boolean,
+    private val viewNeedsInitialization: Boolean,
     viewBinder: (F) -> T,
     onViewDestroyed: (T) -> Unit,
 ) : LifecycleViewBindingProperty<F, T>(viewBinder, onViewDestroyed) {
@@ -75,7 +75,7 @@ private class FragmentViewBindingProperty<in F : Fragment, out T : ViewBinding>(
     }
 
     override fun isViewInitialized(thisRef: F): Boolean {
-        if (!viewNeedInitialization) return true
+        if (!viewNeedsInitialization) return true
 
         if (thisRef !is DialogFragment) {
             return thisRef.view != null

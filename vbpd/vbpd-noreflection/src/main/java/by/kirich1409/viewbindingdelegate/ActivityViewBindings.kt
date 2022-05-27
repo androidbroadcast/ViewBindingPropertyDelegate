@@ -18,7 +18,7 @@ import by.kirich1409.viewbindingdelegate.internal.requireViewByIdCompat
 @RestrictTo(LIBRARY)
 private class ActivityViewBindingProperty<in A : ComponentActivity, out T : ViewBinding>(
     onViewDestroyed: (T) -> Unit,
-    private val viewNeedInitialization: Boolean = true,
+    private val viewNeedsInitialization: Boolean = true,
     viewBinder: (A) -> T
 ) : LifecycleViewBindingProperty<A, T>(viewBinder, onViewDestroyed) {
 
@@ -27,7 +27,7 @@ private class ActivityViewBindingProperty<in A : ComponentActivity, out T : View
     }
 
     override fun isViewInitialized(thisRef: A): Boolean {
-        return viewNeedInitialization && thisRef.window != null
+        return viewNeedsInitialization && thisRef.window != null
     }
 }
 
