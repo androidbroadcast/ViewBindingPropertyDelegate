@@ -32,8 +32,8 @@ private class ActivityViewBindingProperty<in A : ComponentActivity, out T : View
 }
 
 /**
- * Create new [ViewBinding] associated with the [Activity][ComponentActivity] and allow customize how
- * a [View] will be bounded to the view binding.
+ * Create new [ViewBinding] associated with the [Activity][ComponentActivity] and allow customization
+ * of how a [View] will be bound to the view binding
  */
 @JvmName("viewBindingActivity")
 public fun <A : ComponentActivity, T : ViewBinding> ComponentActivity.viewBinding(
@@ -43,8 +43,8 @@ public fun <A : ComponentActivity, T : ViewBinding> ComponentActivity.viewBindin
 }
 
 /**
- * Create new [ViewBinding] associated with the [Activity][ComponentActivity] and allow customize how
- * a [View] will be bounded to the view binding.
+ * Create new [ViewBinding] associated with the [Activity][ComponentActivity] and allow customization
+ * of how a [View] will be bound to the view binding
  */
 @JvmName("viewBindingActivityWithCallbacks")
 public fun <A : ComponentActivity, T : ViewBinding> ComponentActivity.viewBinding(
@@ -55,8 +55,8 @@ public fun <A : ComponentActivity, T : ViewBinding> ComponentActivity.viewBindin
 }
 
 /**
- * Create new [ViewBinding] associated with the [Activity][ComponentActivity] and allow customize how
- * a [View] will be bounded to the view binding.
+ * Create new [ViewBinding] associated with the [Activity][ComponentActivity] and allow customization
+ * of how a [View] will be bound to the view binding
  */
 @JvmName("viewBindingActivity")
 public inline fun <A : ComponentActivity, T : ViewBinding> ComponentActivity.viewBinding(
@@ -67,8 +67,8 @@ public inline fun <A : ComponentActivity, T : ViewBinding> ComponentActivity.vie
 }
 
 /**
- * Create new [ViewBinding] associated with the [Activity][ComponentActivity] and allow customize how
- * a [View] will be bounded to the view binding.
+ * Create new [ViewBinding] associated with the [Activity][ComponentActivity] and allow customization
+ * of how a [View] will be bound to the view binding
  */
 @JvmName("viewBindingActivityWithCallbacks")
 public inline fun <A : ComponentActivity, T : ViewBinding> ComponentActivity.viewBinding(
@@ -80,11 +80,11 @@ public inline fun <A : ComponentActivity, T : ViewBinding> ComponentActivity.vie
 }
 
 /**
- * Create new [ViewBinding] associated with the [Activity][this] and allow customize how
- * a [View] will be bounded to the view binding.
+ * Create new [ViewBinding] associated with the [Activity][this] and allow customization of how
+ * a [View] will be bound to the view binding.
  *
- * @param vbFactory Function that create new instance of [ViewBinding]. `MyViewBinding::bind` can be used
- * @param viewBindingRootId Root view's id that will be used as root for the view binding
+ * @param vbFactory Function that creates a new instance of [ViewBinding]. `MyViewBinding::bind` can be used
+ * @param viewBindingRootId Root view's id that will be used as a root for the view binding
  */
 @Suppress("unused")
 @JvmName("viewBindingActivity")
@@ -96,11 +96,11 @@ public inline fun <T : ViewBinding> ComponentActivity.viewBinding(
 }
 
 /**
- * Create new [ViewBinding] associated with the [Activity][this] and allow customize how
- * a [View] will be bounded to the view binding.
+ * Create new [ViewBinding] associated with the [Activity][this] and allow customization of how
+ * a [View] will be bound to the view binding.
  *
- * @param vbFactory Function that create new instance of [ViewBinding]. `MyViewBinding::bind` can be used
- * @param viewBindingRootId Root view's id that will be used as root for the view binding
+ * @param vbFactory Function that creates a new instance of [ViewBinding]. `MyViewBinding::bind` can be used
+ * @param viewBindingRootId Root view's id that will be used as a root for the view binding
  */
 @Suppress("unused")
 @JvmName("viewBindingActivity")

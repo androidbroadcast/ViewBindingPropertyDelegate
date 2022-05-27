@@ -11,10 +11,10 @@ import androidx.viewbinding.ViewBinding
 object ViewBindingPropertyDelegate {
 
     /**
-     * Enable strict checks of how ViewBindingPropertyDelegate is accessed. Will throw an [Exception]
-     * when try to access a [ViewBinding] outside view lifecycle. As an example, when you will try
-     * access to [Fragment]'s before [Fragment.onViewCreated] will be called of after
-     * [Fragment.onDestroyView] you will get crash.
+     * Enable strict checks for how ViewBindingPropertyDelegate is accessed. Throws an [Exception]
+     * if a [ViewBinding] is accessed outside of the view lifecycle. As an example, if you try
+     * accessing a [Fragment]'s one before [Fragment.onViewCreated] has been called or after
+     * [Fragment.onDestroyView] was called, you will get a crash.
      *
      * **By default strict mode is enabled**
      */

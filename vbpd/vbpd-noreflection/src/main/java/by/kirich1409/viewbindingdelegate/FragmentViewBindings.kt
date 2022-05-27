@@ -31,7 +31,7 @@ private class DialogFragmentViewBindingProperty<in F : DialogFragment, out T : V
             try {
                 thisRef.viewLifecycleOwner
             } catch (ignored: IllegalStateException) {
-                error("Fragment doesn't have view associated with it or the view has been destroyed")
+                error("Fragment doesn't have a view associated with it or the view has been destroyed")
             }
         }
 
@@ -98,7 +98,7 @@ private class FragmentViewBindingProperty<in F : Fragment, out T : ViewBinding>(
         try {
             return thisRef.viewLifecycleOwner
         } catch (ignored: IllegalStateException) {
-            error("Fragment doesn't have view associated with it or the view has been destroyed")
+            error("Fragment doesn't have a view associated with it or the view has been destroyed")
         }
     }
 
@@ -109,7 +109,7 @@ private class FragmentViewBindingProperty<in F : Fragment, out T : ViewBinding>(
         private var fragment: Reference<Fragment> = WeakReference(fragment)
 
         override fun onFragmentDestroyed(fm: FragmentManager, f: Fragment) {
-            // Fix for destroying view for case with issue of navigation
+            // Fix for the view destruction in the case with a navigation issue
             if (fragment.get() === f) {
                 postClear()
             }
@@ -146,7 +146,7 @@ public fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
 /**
  * Create new [ViewBinding] associated with the [Fragment]
  *
- * @param vbFactory Function that create new instance of [ViewBinding]. `MyViewBinding::bind` can be used
+ * @param vbFactory Function that creates a new instance of [ViewBinding]. `MyViewBinding::bind` can be used
  * @param viewProvider Provide a [View] from the Fragment. By default call [Fragment.requireView]
  */
 @JvmName("viewBindingFragment")
@@ -160,7 +160,7 @@ public inline fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
 /**
  * Create new [ViewBinding] associated with the [Fragment]
  *
- * @param vbFactory Function that create new instance of [ViewBinding]. `MyViewBinding::bind` can be used
+ * @param vbFactory Function that creates a new instance of [ViewBinding]. `MyViewBinding::bind` can be used
  * @param viewProvider Provide a [View] from the Fragment. By default call [Fragment.requireView]
  */
 @JvmName("viewBindingFragmentWithCallbacks")
@@ -175,8 +175,8 @@ public inline fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
 /**
  * Create new [ViewBinding] associated with the [Fragment]
  *
- * @param vbFactory Function that create new instance of [ViewBinding]. `MyViewBinding::bind` can be used
- * @param viewBindingRootId Root view's id that will be used as root for the view binding
+ * @param vbFactory Function that creates a new instance of [ViewBinding]. `MyViewBinding::bind` can be used
+ * @param viewBindingRootId Root view's id that will be used as a root for the view binding
  */
 @Suppress("UNCHECKED_CAST")
 @JvmName("viewBindingFragment")
@@ -190,8 +190,8 @@ public inline fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
 /**
  * Create new [ViewBinding] associated with the [Fragment]
  *
- * @param vbFactory Function that create new instance of [ViewBinding]. `MyViewBinding::bind` can be used
- * @param viewBindingRootId Root view's id that will be used as root for the view binding
+ * @param vbFactory Function that creates a new instance of [ViewBinding]. `MyViewBinding::bind` can be used
+ * @param viewBindingRootId Root view's id that will be used as a root for the view binding
  */
 @Suppress("UNCHECKED_CAST")
 @JvmName("viewBindingFragmentWithCallbacks")

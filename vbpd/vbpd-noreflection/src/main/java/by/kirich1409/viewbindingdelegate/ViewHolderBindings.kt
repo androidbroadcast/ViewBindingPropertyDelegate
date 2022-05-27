@@ -19,7 +19,7 @@ fun <VH : ViewHolder, T : ViewBinding> VH.viewBinding(viewBinder: (VH) -> T): Vi
 /**
  * Create new [ViewBinding] associated with the [ViewHolder]
  *
- * @param vbFactory Function that create new instance of [ViewBinding]. `MyViewBinding::bind` can be used
+ * @param vbFactory Function that creates a new instance of [ViewBinding]. `MyViewBinding::bind` can be used
  * @param viewProvider Provide a [View] from the [ViewHolder]. By default call [ViewHolder.itemView]
  */
 inline fun <VH : ViewHolder, T : ViewBinding> VH.viewBinding(
@@ -32,8 +32,8 @@ inline fun <VH : ViewHolder, T : ViewBinding> VH.viewBinding(
 /**
  * Create new [ViewBinding] associated with the [ViewHolder]
  *
- * @param vbFactory Function that create new instance of [ViewBinding]. `MyViewBinding::bind` can be used
- * @param viewBindingRootId Root view's id that will be used as root for the view binding
+ * @param vbFactory Function that creates a new instance of [ViewBinding]. `MyViewBinding::bind` can be used
+ * @param viewBindingRootId Root view's id that will be used as a root for the view binding
  */
 inline fun <VH : ViewHolder, T : ViewBinding> VH.viewBinding(
     crossinline vbFactory: (View) -> T,

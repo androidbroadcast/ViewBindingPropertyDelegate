@@ -9,7 +9,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.viewbinding.ViewBinding
 
 /**
- * Create new [ViewBinding] associated with the [DialogFragment]
+ * Create new [ViewBinding] associated with the [DialogFragment][this]
  */
 @JvmName("viewBindingDialogFragment")
 @Deprecated(
@@ -23,9 +23,9 @@ public fun <F : DialogFragment, T : ViewBinding> DialogFragment.dialogViewBindin
 }
 
 /**
- * Create new [ViewBinding] associated with the [DialogFragment]
+ * Create new [ViewBinding] associated with the [DialogFragment][this]
  *
- * @param vbFactory Function that create new instance of [ViewBinding]. `MyViewBinding::bind` can be used
+ * @param vbFactory Function that creates a new instance of [ViewBinding]. `MyViewBinding::bind` can be used
  */
 @JvmName("viewBindingDialogFragment")
 @Deprecated(
@@ -42,8 +42,8 @@ public inline fun <F : DialogFragment, T : ViewBinding> DialogFragment.dialogVie
 /**
  * Create new [ViewBinding] associated with the [DialogFragment][this]
  *
- * @param vbFactory Function that create new instance of [ViewBinding]. `MyViewBinding::bind` can be used
- * @param viewBindingRootId Id of the root view from your custom view
+ * @param vbFactory Function that creates a new instance of [ViewBinding]. `MyViewBinding::bind` can be used
+ * @param viewBindingRootId Id of the root view of your custom view
  */
 @Suppress("unused")
 @JvmName("viewBindingDialogFragment")
