@@ -21,7 +21,7 @@ internal class ViewGroupViewBindingProperty<in V : ViewGroup, out T : ViewBindin
 
     override fun getLifecycleOwner(thisRef: V): LifecycleOwner {
         return checkNotNull(ViewTreeLifecycleOwner.get(thisRef)) {
-            "Fragment doesn't have view associated with it or the view has been destroyed"
+            "Fragment doesn't have a view associated with it or the view has been destroyed"
         }
     }
 }
@@ -29,7 +29,7 @@ internal class ViewGroupViewBindingProperty<in V : ViewGroup, out T : ViewBindin
 /**
  * Create new [ViewBinding] associated with the [ViewGroup]
  *
- * @param vbFactory Function that create new instance of [ViewBinding]. `MyViewBinding::bind` can be used
+ * @param vbFactory Function that creates a new instance of [ViewBinding]. `MyViewBinding::bind` can be used
  */
 inline fun <T : ViewBinding> ViewGroup.viewBinding(
     crossinline vbFactory: (ViewGroup) -> T,
@@ -40,7 +40,7 @@ inline fun <T : ViewBinding> ViewGroup.viewBinding(
 /**
  * Create new [ViewBinding] associated with the [ViewGroup]
  *
- * @param vbFactory Function that create new instance of [ViewBinding]. `MyViewBinding::bind` can be used
+ * @param vbFactory Function that creates a new instance of [ViewBinding]. `MyViewBinding::bind` can be used
  * @param lifecycleAware Get [LifecycleOwner] from the [ViewGroup][this] using [ViewTreeLifecycleOwner]
  */
 inline fun <T : ViewBinding> ViewGroup.viewBinding(
@@ -53,7 +53,7 @@ inline fun <T : ViewBinding> ViewGroup.viewBinding(
 /**
  * Create new [ViewBinding] associated with the [ViewGroup]
  *
- * @param vbFactory Function that create new instance of [ViewBinding]. `MyViewBinding::bind` can be used
+ * @param vbFactory Function that creates a new instance of [ViewBinding]. `MyViewBinding::bind` can be used
  * @param lifecycleAware Get [LifecycleOwner] from the [ViewGroup][this] using [ViewTreeLifecycleOwner]
  */
 inline fun <T : ViewBinding> ViewGroup.viewBinding(
@@ -71,8 +71,8 @@ inline fun <T : ViewBinding> ViewGroup.viewBinding(
 /**
  * Create new [ViewBinding] associated with the [ViewGroup]
  *
- * @param vbFactory Function that create new instance of [ViewBinding]. `MyViewBinding::bind` can be used
- * @param viewBindingRootId Root view's id that will be used as root for the view binding
+ * @param vbFactory Function that creates a new instance of [ViewBinding]. `MyViewBinding::bind` can be used
+ * @param viewBindingRootId Root view's id that will be used as a root for the view binding
  */
 @Deprecated("Order of arguments was changed", ReplaceWith("viewBinding(viewBindingRootId, vbFactory)"))
 inline fun <T : ViewBinding> ViewGroup.viewBinding(
@@ -85,8 +85,8 @@ inline fun <T : ViewBinding> ViewGroup.viewBinding(
 /**
  * Create new [ViewBinding] associated with the [ViewGroup]
  *
- * @param vbFactory Function that create new instance of [ViewBinding]. `MyViewBinding::bind` can be used
- * @param viewBindingRootId Root view's id that will be used as root for the view binding
+ * @param vbFactory Function that creates a new instance of [ViewBinding]. `MyViewBinding::bind` can be used
+ * @param viewBindingRootId Root view's id that will be used as a root for the view binding
  */
 inline fun <T : ViewBinding> ViewGroup.viewBinding(
     @IdRes viewBindingRootId: Int,
@@ -99,8 +99,8 @@ inline fun <T : ViewBinding> ViewGroup.viewBinding(
 /**
  * Create new [ViewBinding] associated with the [ViewGroup]
  *
- * @param vbFactory Function that create new instance of [ViewBinding]. `MyViewBinding::bind` can be used
- * @param viewBindingRootId Root view's id that will be used as root for the view binding
+ * @param vbFactory Function that creates a new instance of [ViewBinding]. `MyViewBinding::bind` can be used
+ * @param viewBindingRootId Root view's id that will be used as a root for the view binding
  * @param lifecycleAware Get [LifecycleOwner] from the [ViewGroup][this] using [ViewTreeLifecycleOwner]
  */
 inline fun <T : ViewBinding> ViewGroup.viewBinding(
@@ -115,8 +115,8 @@ inline fun <T : ViewBinding> ViewGroup.viewBinding(
 /**
  * Create new [ViewBinding] associated with the [ViewGroup]
  *
- * @param vbFactory Function that create new instance of [ViewBinding]. `MyViewBinding::bind` can be used
- * @param viewBindingRootId Root view's id that will be used as root for the view binding
+ * @param vbFactory Function that creates a new instance of [ViewBinding]. `MyViewBinding::bind` can be used
+ * @param viewBindingRootId Root view's id that will be used as a root for the view binding
  * @param lifecycleAware Get [LifecycleOwner] from the [ViewGroup][this] using [ViewTreeLifecycleOwner]
  */
 inline fun <T : ViewBinding> ViewGroup.viewBinding(
