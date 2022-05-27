@@ -1,18 +1,18 @@
 ## 1.5.3
 November 19, 2021
 
-- Fix clear Fragment when it will be destroyed 
+- Fix clearing of a Fragment when it is destroyed 
 
 ## 1.5.2
 November 13, 2021
 
 ### New feature "Strict mode"
-New library mode to check correct usage of ViewBinding. Enabled by default. To return previous
-behaviour call ViewBindingPropertyDelegate.strcitMode = false
+New library mode to check correctness of ViewBinding usage. Enabled by default.
+Call ViewBindingPropertyDelegate.strictMode = false to switch to old behavior
 
-### Added callback when ViewBinding inside ViewBindingProperty will be destroyed
-Callback when a ViewBinding in ViewBindingPropertyDelegate will be destroyed
-Instead of overriding Fragment.onDestroyView() use
+### Added a callback called when a ViewBinding inside ViewBindingProperty is destroyed
+Callback is triggered when a ViewBinding in ViewBindingPropertyDelegate is destroyed
+Instead of overriding Fragment.onDestroyView(), use
 
 ```kotlin
 viewBinding(
@@ -23,10 +23,10 @@ viewBinding(
 )
 ```
 
-### ViewBindingProperty will throw error when it will be created before host ready
-ViewBindingPropertyDelegate throws an exception when it will be used before host
-(Fragment, Activity, etc.) be ready to create a ViewBinding. As an example, access to
-ViewBindingPropertyDelegate in a Fragment before onViewCreated() will be called now throw
+### ViewBindingProperty will throw an error if it is created before the host is ready
+ViewBindingPropertyDelegate throws an exception if it is used before the host
+(Fragment, Activity, etc.) is ready to create a ViewBinding. As an example, accessing
+ViewBindingPropertyDelegate in a Fragment, before onViewCreated() has been called, will now throw
 an Exception.
 
 ### Other
@@ -43,11 +43,11 @@ an Exception.
 
 ## 1.4.5
 
-- Update builtin ProGuard rules
+- Update built-in ProGuard rules
 
 ## 1.4.4
 
-- Improve checking of `Fragment`'s `ViewLifecycleOwner`
+- Improve checking of a `Fragment`'s `ViewLifecycleOwner`
 
 ## 1.4.3
 
@@ -55,21 +55,21 @@ an Exception.
 
 ## 1.4.2
 
-- Migrate to Maven Central. This is the latest releases available via JCenter.
-- Artifacts group and id were changed
+- Migrate to Maven Central. This is the last release available via JCenter
+- Artifacts group and id parameters were changed
 - Support of [ViewTreeLifecycleOwner](https://d.android.com/reference/androidx/lifecycle/ViewTreeLifecycleOwner) for `ViewGroup` bindings
 - `LifecycleViewBindingProperty` lifecycle management improvements
-- Improvements in viewBinding work for `DialogFragment`
+- Improvements in viewBinding implementation for `DialogFragment`
 - Bugfixes
 
 ## 1.4.0
 
 - Added support of `RecyclerView.ViewHolder`
 - Added support of `ViewGroup`
-- Added possibility to use the `viewBinding` delegate without specifying rootView.
-- Improved speed of usage `viewBinding` with reflection
+- Added an option to use the `viewBinding` delegate without specifying rootView.
+- Improved speed of `viewBinding` usage with reflection
 - More ways of creating `ViewBinding` using `ViewBinding.inflate` instead of `ViewBinding.bind`
-- *Breaking changes* `viewBinding()` in Activities use `ViewBinding.bind` instead of `ViewBinding.inflate`. To return previous behaviour use `viewBinding(CreateMethod.INFLATE)`
+- *Breaking changes* `viewBinding()` in Activities uses `ViewBinding.bind` instead of `ViewBinding.inflate`. Use `viewBinding(CreateMethod.INFLATE)` to switch to old behavior 
 - Split implementation of lazy `viewBinding` delegate and implementation with lifecycle
 - Minor improvements and bugfixes
 
@@ -79,11 +79,11 @@ an Exception.
 
 ## 1.3.0
 
-- Added support of create `ViewBinding` using `ViewBinding.inflate(LayoutInflater)`
-- Added possibility to create `ViewBindingProperty` using `Class<ViewBinding>` instance
+- Added support of creating `ViewBinding` using `ViewBinding.inflate(LayoutInflater)`
+- Added an option to create `ViewBindingProperty` using a `Class<ViewBinding>` instance
 - Upgrade view binding library to 4.1.0
-- Improved performance: removed check working from the main thread with `ViewBindingProperty`
-- Update sample
+- Improved performance: removed the check working on the main thread within `ViewBindingProperty`
+- Update the sample
 
 ## 1.2.2
 
@@ -95,8 +95,8 @@ an Exception.
 
 ## 1.2.0:
 
-- Add artifact `vbpd-noreflection` without reflection when create a `ViewBindingProperty`
-- Fix bug in Fragment
+- Add an artifact `vbpd-noreflection` without reflection when creating a `ViewBindingProperty`
+- Fix a bug in Fragment
 
 ## 1.1.0:
 
@@ -104,5 +104,5 @@ an Exception.
 
 ## 1.0.0:
 
-- Add support Android 4.0+
-- Support of Android View Binding inside `Fragment`, `ComponentActivity` and `DialogFragment`
+- Add Android 4.0+ support
+- Support Android View Binding inside `Fragment`, `ComponentActivity` and `DialogFragment`
