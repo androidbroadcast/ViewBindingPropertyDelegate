@@ -2,3 +2,4 @@ include ':sample'
 include ':vbpd:vbpd-full'
 include ':vbpd:vbpd-noreflection'
 rootProject.name = "View Binding Delegate"
+include ':vbpd:vbpd-core'

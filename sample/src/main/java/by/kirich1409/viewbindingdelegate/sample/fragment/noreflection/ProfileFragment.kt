@@ -12,7 +12,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private val viewBinding by viewBinding(FragmentProfileBinding::bind,
-        onViewDestroyed = { vb: FragmentProfileBinding ->
+        onViewDestroyed = { _: FragmentProfileBinding ->
             // reset view
         })
 

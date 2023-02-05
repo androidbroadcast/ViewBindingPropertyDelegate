@@ -8,10 +8,10 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 
 class ProfileActivity : AppCompatActivity() {
 
-    private val viewBindingUsingReflection: ActivityProfileBinding by viewBinding(CreateMethod.INFLATE)
+    private val viewBinding: ActivityProfileBinding by viewBinding(CreateMethod.INFLATE)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(viewBindingUsingReflection.root)
+        setContentView(viewBinding.root)
     }
 }

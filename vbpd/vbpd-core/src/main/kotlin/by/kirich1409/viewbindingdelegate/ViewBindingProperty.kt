@@ -13,7 +13,7 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.viewbinding.ViewBinding
-import by.kirich1409.viewbindingdelegate.internal.checkMainThread
+import by.kirich1409.viewbindingdelegate.internal.core.checkMainThread
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
@@ -23,7 +23,6 @@ interface ViewBindingProperty<in R : Any, out T : ViewBinding> : ReadOnlyPropert
     fun clear()
 }
 
-@RestrictTo(LIBRARY_GROUP)
 public open class LazyViewBindingProperty<in R : Any, out T : ViewBinding>(
     private val onViewDestroyed: (T) -> Unit,
     protected val viewBinder: (R) -> T,
@@ -72,7 +71,7 @@ public open class EagerViewBindingProperty<in R : Any, out T : ViewBinding>(
 @RestrictTo(LIBRARY_GROUP)
 public abstract class LifecycleViewBindingProperty<in R : Any, out T : ViewBinding>(
     private val viewBinder: (R) -> T,
-    private val onViewDestroyed: (T) -> Unit,
+    private val onViewDestroyed: (T) -> Unit = {},
 ) : ViewBindingProperty<R, T> {
 
     private var viewBinding: T? = null
@@ -81,10 +80,11 @@ public abstract class LifecycleViewBindingProperty<in R : Any, out T : ViewBindi
 
     @MainThread
     public override fun getValue(thisRef: R, property: KProperty<*>): T {
+        checkMainThread("access to ViewBinding from non UI (Main) thread")
         viewBinding?.let { return it }
 
         if (!isViewInitialized(thisRef)) {
-            error(ERROR_ACCESS_BEFORE_VIEW_READY)
+            error(viewNotInitializedReadableErrorMessage(thisRef))
         }
 
         if (ViewBindingPropertyDelegate.strictMode) {
@@ -116,9 +116,11 @@ public abstract class LifecycleViewBindingProperty<in R : Any, out T : ViewBindi
     /**
      * Check if the host view is ready to create viewBinding
      */
-    protected open fun isViewInitialized(thisRef: R): Boolean {
-        return true
-    }
+    protected open fun isViewInitialized(thisRef: R): Boolean = true
+
+    protected open fun viewNotInitializedReadableErrorMessage(
+        thisRef: R
+    ): String = ERROR_VIEW_NOT_INITIALIZED
 
     @MainThread
     @CallSuper
@@ -131,7 +133,8 @@ public abstract class LifecycleViewBindingProperty<in R : Any, out T : ViewBindi
         }
     }
 
-    internal fun postClear() {
+    @RestrictTo(LIBRARY_GROUP)
+    protected fun postClear() {
         if (!mainHandler.post { clear() }) {
             clear()
         }
@@ -181,6 +184,8 @@ public abstract class LifecycleViewBindingProperty<in R : Any, out T : ViewBindi
 }
 
 private const val TAG = "ViewBindingProperty"
+private const val ERROR_VIEW_NOT_INITIALIZED =
+    "Host view isn't ready. LifecycleViewBindingProperty.isViewInitialized return false"
 private const val ERROR_ACCESS_BEFORE_VIEW_READY =
     "Host view isn't ready to create a ViewBinding instance"
 private const val ERROR_ACCESS_AFTER_DESTROY =

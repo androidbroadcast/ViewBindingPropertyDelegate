@@ -12,11 +12,13 @@ import java.lang.reflect.Method
 
 object ViewBindingCache {
 
-    private val inflateCache = mutableMapOf<Class<out ViewBinding>, InflateViewBinding<ViewBinding>>()
+    private val inflateCache =
+        mutableMapOf<Class<out ViewBinding>, InflateViewBinding<ViewBinding>>()
     private val bindCache = mutableMapOf<Class<out ViewBinding>, BindViewBinding<ViewBinding>>()
 
     @Suppress("UNCHECKED_CAST")
     @RestrictTo(LIBRARY)
+    @PublishedApi
     internal fun <T : ViewBinding> getInflateWithLayoutInflater(viewBindingClass: Class<T>): InflateViewBinding<T> {
         return inflateCache.getOrPut(viewBindingClass) { InflateViewBinding(viewBindingClass) } as InflateViewBinding<T>
     }
@@ -40,24 +42,32 @@ object ViewBindingCache {
  * Wrapper of ViewBinding.inflate(LayoutInflater, ViewGroup, Boolean)
  */
 @RestrictTo(LIBRARY)
+@PublishedApi
 internal abstract class InflateViewBinding<out VB : ViewBinding>(
     private val inflateViewBinding: Method
 ) {
 
     @Suppress("UNCHECKED_CAST")
-    abstract fun inflate(layoutInflater: LayoutInflater, parent: ViewGroup?, attachToParent: Boolean): VB
+    abstract fun inflate(
+        layoutInflater: LayoutInflater, parent: ViewGroup?, attachToParent: Boolean
+    ): VB
 }
 
 @RestrictTo(LIBRARY)
 @Suppress("FunctionName")
-internal fun <VB : ViewBinding> InflateViewBinding(viewBindingClass: Class<VB>): InflateViewBinding<VB> {
+internal fun <VB : ViewBinding> InflateViewBinding(
+    viewBindingClass: Class<VB>
+): InflateViewBinding<VB> {
+
     try {
         val method = viewBindingClass.getMethod(
             "inflate", LayoutInflater::class.java, ViewGroup::class.java, Boolean::class.java
         )
         return FullInflateViewBinding(method)
     } catch (e: NoSuchMethodException) {
-        val method = viewBindingClass.getMethod("inflate", LayoutInflater::class.java, ViewGroup::class.java)
+        val method = viewBindingClass.getMethod(
+            "inflate", LayoutInflater::class.java, ViewGroup::class.java
+        )
         return MergeInflateViewBinding(method)
     }
 }
@@ -68,7 +78,11 @@ internal class FullInflateViewBinding<out VB : ViewBinding>(
 ) : InflateViewBinding<VB>(inflateViewBinding) {
 
     @Suppress("UNCHECKED_CAST")
-    override fun inflate(layoutInflater: LayoutInflater, parent: ViewGroup?, attachToParent: Boolean): VB {
+    override fun inflate(
+        layoutInflater: LayoutInflater,
+        parent: ViewGroup?,
+        attachToParent: Boolean
+    ): VB {
         return inflateViewBinding(null, layoutInflater, parent, attachToParent) as VB
     }
 }
@@ -80,9 +94,14 @@ internal class MergeInflateViewBinding<out VB : ViewBinding>(
 ) : InflateViewBinding<VB>(inflateViewBinding) {
 
     @Suppress("UNCHECKED_CAST")
-    override fun inflate(layoutInflater: LayoutInflater, parent: ViewGroup?, attachToParent: Boolean): VB {
+    override fun inflate(
+        layoutInflater: LayoutInflater,
+        parent: ViewGroup?,
+        attachToParent: Boolean
+    ): VB {
         require(attachToParent) {
-            "${InflateViewBinding::class.java.simpleName} supports inflate only with attachToParent=true"
+            "${InflateViewBinding::class.java.simpleName} " +
+                    "supports inflate only with attachToParent=true"
         }
         return inflateViewBinding(null, layoutInflater, parent) as VB
     }

@@ -5,6 +5,7 @@ package by.kirich1409.viewbindingdelegate
 
 import android.view.View
 import androidx.annotation.IdRes
+import androidx.annotation.MainThread
 import androidx.annotation.RestrictTo
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
@@ -57,6 +58,7 @@ private class FragmentViewBindingProperty<in F : Fragment, out T : ViewBinding>(
     private var fragmentLifecycleCallbacks: FragmentManager.FragmentLifecycleCallbacks? = null
     private var fragmentManager: Reference<FragmentManager>? = null
 
+    @MainThread
     override fun getValue(thisRef: F, property: KProperty<*>): T {
         val viewBinding = super.getValue(thisRef, property)
         registerFragmentLifecycleCallbacksIfNeeded(thisRef)
@@ -75,13 +77,22 @@ private class FragmentViewBindingProperty<in F : Fragment, out T : ViewBinding>(
     }
 
     override fun isViewInitialized(thisRef: F): Boolean {
-        if (!viewNeedsInitialization) return true
-
-        if (thisRef !is DialogFragment) {
-            return thisRef.view != null
-        } else {
-            return super.isViewInitialized(thisRef)
+        when {
+            !viewNeedsInitialization -> return true
+            !thisRef.isAdded || thisRef.isDetached -> return false
+            thisRef !is DialogFragment -> return thisRef.view != null
+            else -> return super.isViewInitialized(thisRef)
         }
+    }
+
+    override fun viewNotInitializedReadableErrorMessage(thisRef: F) = when {
+        !thisRef.isAdded -> "Fragment's view can't be accessed. Fragment isn't added"
+        thisRef.isDetached -> "Fragment's view can't be accessed. Fragment is detached"
+        thisRef !is DialogFragment && thisRef.view == null ->
+            "Fragment's view can't be accessed. Fragment's view is null. " +
+                    "Maybe you try to access view before onViewCreated() or after onDestroyView(). " +
+                    "Add check `if (view != null)` before call ViewBinding"
+        else -> super.viewNotInitializedReadableErrorMessage(thisRef)
     }
 
     override fun clear() {
@@ -130,6 +141,8 @@ public fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
 
 /**
  * Create new [ViewBinding] associated with the [Fragment]
+ *
+ * @param onViewDestroyed Called when the [ViewBinding] will be destroyed
  */
 @Suppress("UNCHECKED_CAST")
 @JvmName("viewBindingFragmentWithCallbacks")
@@ -162,6 +175,7 @@ public inline fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
  *
  * @param vbFactory Function that creates a new instance of [ViewBinding]. `MyViewBinding::bind` can be used
  * @param viewProvider Provide a [View] from the Fragment. By default call [Fragment.requireView]
+ * @param onViewDestroyed Called when the [ViewBinding] will be destroyed
  */
 @JvmName("viewBindingFragmentWithCallbacks")
 public inline fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
