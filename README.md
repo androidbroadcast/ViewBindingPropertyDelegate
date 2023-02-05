@@ -23,10 +23,10 @@ allprojects {
 
 dependencies {
     // reflection-based flavor
-    implementation 'com.github.kirich1409:viewbindingpropertydelegate:1.5.6'
+    implementation 'com.github.kirich1409:viewbindingpropertydelegate:1.5.8'
     
     // reflection-free flavor
-    implementation 'com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.5.6'
+    implementation 'com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.5.8'
 }
 ```
 
@@ -59,7 +59,7 @@ class ProfileActivity : AppCompatActivity(R.layout.profile) {
 
 # License
 
-   Copyright 2020-2022 Kirill Rozov
+   Copyright 2020-2023 Kirill Rozov
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
