@@ -1,10 +1,18 @@
+## 1.5.8
+February 5, 2023
+
+- Fix bugs
+- Update Jetpack Dependencies
+- Update Kotlin to 1.8.10
+- Update AGP to 7.4.1
+
 ## 1.5.4
 December 23, 2021
 
 - Bug fixes
 - Improve error messages
 
-## 1.4.3
+## 1.5.3
 November 19, 2021
 
 - Fix clearing of a Fragment when it is destroyed 
