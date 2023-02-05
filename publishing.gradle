@@ -17,6 +17,7 @@ afterEvaluate {
             release(MavenPublication) {
                 from components.kotlin
                 artifact(sourcesJar)
+                artifact(javadocJar)
 
                 groupId = project.ext.groupId
                 artifactId = project.ext.artifactId

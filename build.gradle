@@ -1,12 +1,13 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext.kotlin_version = "1.8.10"
+    ext.agp_version = "7.4.1"
     repositories {
         google()
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.4.1'
+        classpath "com.android.tools.build:gradle:$agp_version"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -36,14 +37,14 @@ ext {
     minSdkVersion = 14
     targetSdkVersion = 33
 
-    versionName = "1.5.7"
+    versionName = "1.5.8"
 
     dependencies = [:]
     dependencies.coreKtx = 'androidx.core:core-ktx:1.9.0'
     dependencies.core = 'androidx.core:core:1.9.0'
     dependencies.fragmentKtx = 'androidx.fragment:fragment-ktx:1.5.5'
     dependencies.fragment = 'androidx.fragment:fragment:1.5.5'
-    dependencies.viewBinding = 'androidx.databinding:viewbinding:7.4.1'
+    dependencies.viewBinding = "androidx.databinding:viewbinding:$agp_version"
     dependencies.lifecycleCommonJava8 = 'androidx.lifecycle:lifecycle-common-java8:2.5.1'
     dependencies.lifecycleCommon = 'androidx.lifecycle:lifecycle-common:2.5.1'
     dependencies.lifecycleViewmodel = 'androidx.lifecycle:lifecycle-viewmodel:2.5.1'
