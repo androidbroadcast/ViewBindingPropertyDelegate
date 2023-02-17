@@ -2,9 +2,15 @@
 February 5, 2023
 
 - Fix bugs
+- All artifacts now will distributed as JAR instead of AAR
 - Update Jetpack Dependencies
 - Update Kotlin to 1.8.10
 - Update AGP to 7.4.1
+
+### Artifacts Renaming
+viewbindingpropertydelegate-core - base API for ViewBindingPropertyDelegate
+viewbindingpropertydelegate-noreflection - API to work with ViewBindingPropertyDelegate without reflection calls
+viewbindingpropertydelegate -> viewbindingpropertydelegate-full - All possible ways to create ViewBindingPropertyDelegate
 
 ## 1.5.4
 December 23, 2021
