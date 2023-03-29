@@ -1,3 +1,13 @@
+## 1.5.9
+- Fix build-in ProGuard and R8 configuration for obfuscation
+
+## 1.5.8
+- Fix bugs
+- All artifacts now will distributed as JAR instead of AAR
+- Update Jetpack Dependencies
+- Update Kotlin to 1.8.10
+- Update AGP to 7.4.1
+
 ## 1.5.4
 December 23, 2021
 
