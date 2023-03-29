@@ -1,3 +1,6 @@
+## 1.5.9
+- Fix build-in ProGuard and R8 configuration for obfuscation
+
 ## 1.5.8
 February 5, 2023
 
