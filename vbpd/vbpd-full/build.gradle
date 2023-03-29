@@ -28,20 +28,8 @@ java {
 }
 
 dependencies {
-    implementationAar rootProject.ext.dependencies.coreKtx
-    implementationAar rootProject.ext.dependencies.core
-    implementationAar rootProject.ext.dependencies.fragmentKtx
-    implementationAar rootProject.ext.dependencies.fragment
-    compileOnlyAar rootProject.ext.dependencies.viewBinding
-    implementationAar rootProject.ext.dependencies.lifecycleCommon
-    implementationAar rootProject.ext.dependencies.recyclerview
-    compileOnly rootProject.ext.dependencies.annotations
-    compileOnlyAar rootProject.ext.dependencies.activity
-    compileOnlyAar rootProject.ext.dependencies.savedstate
-    compileOnlyAar rootProject.ext.dependencies.lifecycleViewmodel
-    compileOnlyAar rootProject.ext.dependencies.lifecycleRuntime
-    compileOnly androidJar
     api project(':vbpd:vbpd-noreflection')
+    api project(':vbpd:vbpd-reflection')
 }
 
 apply from: rootProject.file('publishing.gradle')
