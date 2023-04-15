@@ -1,3 +1,6 @@
+## 1.5.10
+- Bugs fixes
+
 ## 1.5.9
 - Fix build-in ProGuard and R8 configuration for obfuscation
 
