@@ -80,7 +80,6 @@ private class FragmentViewBindingProperty<in F : Fragment, out T : ViewBinding>(
         when {
             !viewNeedsInitialization -> return true
             !thisRef.isAdded || thisRef.isDetached -> return false
-            thisRef !is DialogFragment -> return thisRef.view != null
             else -> return super.isViewInitialized(thisRef)
         }
     }
@@ -131,7 +130,6 @@ private class FragmentViewBindingProperty<in F : Fragment, out T : ViewBinding>(
 /**
  * Create new [ViewBinding] associated with the [Fragment]
  */
-@Suppress("UNCHECKED_CAST")
 @JvmName("viewBindingFragment")
 public fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
     viewBinder: (F) -> T,
@@ -144,15 +142,15 @@ public fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
  *
  * @param onViewDestroyed Called when the [ViewBinding] will be destroyed
  */
-@Suppress("UNCHECKED_CAST")
 @JvmName("viewBindingFragmentWithCallbacks")
 public fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
     viewBinder: (F) -> T,
     onViewDestroyed: (T) -> Unit = {},
+    viewNeedsInitialization: Boolean = true,
 ): ViewBindingProperty<F, T> {
     return when (this) {
-        is DialogFragment -> dialogFragmentViewBinding(onViewDestroyed, viewBinder)
-        else -> fragmentViewBinding(onViewDestroyed, viewBinder)
+        is DialogFragment -> dialogFragmentViewBinding(onViewDestroyed, viewBinder, viewNeedsInitialization)
+        else -> fragmentViewBinding(onViewDestroyed, viewBinder, viewNeedsInitialization)
     }
 }
 
@@ -192,7 +190,6 @@ public inline fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
  * @param vbFactory Function that creates a new instance of [ViewBinding]. `MyViewBinding::bind` can be used
  * @param viewBindingRootId Root view's id that will be used as a root for the view binding
  */
-@Suppress("UNCHECKED_CAST")
 @JvmName("viewBindingFragment")
 public inline fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
     crossinline vbFactory: (View) -> T,
@@ -232,7 +229,7 @@ public inline fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
 fun <F : Fragment, T : ViewBinding> fragmentViewBinding(
     onViewDestroyed: (T) -> Unit,
     viewBinder: (F) -> T,
-    viewNeedsInitialization: Boolean = true
+    viewNeedsInitialization: Boolean = true,
 ): ViewBindingProperty<F, T> {
     return FragmentViewBindingProperty(viewNeedsInitialization, viewBinder, onViewDestroyed)
 }
