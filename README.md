@@ -23,10 +23,10 @@ allprojects {
 
 dependencies {
     // reflection-based flavor
-    implementation 'com.github.kirich1409:viewbindingpropertydelegate-full:1.5.9'
+    implementation 'com.github.kirich1409:viewbindingpropertydelegate-full:1.5.10'
     
     // reflection-free flavor
-    implementation 'com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.5.9'
+    implementation 'com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.5.10'
 }
 ```
 
