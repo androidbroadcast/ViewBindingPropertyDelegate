@@ -16,6 +16,9 @@ import by.kirich1409.viewbindingdelegate.internal.core.checkMainThread
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
+/**
+ * Base ViewBindingProperty interface that provides access to operations in the property delegate.
+ */
 interface ViewBindingProperty<in R : Any, out T : ViewBinding> : ReadOnlyProperty<R, T> {
 
     @MainThread
@@ -27,13 +30,16 @@ public open class LazyViewBindingProperty<in R : Any, out T : ViewBinding>(
     protected val viewBinder: (R) -> T,
 ) : ViewBindingProperty<R, T> {
 
-    constructor(viewBinder: (R) -> T) : this({}, viewBinder)
+    constructor(viewBinder: (R) -> T) : this(onViewDestroyed = {}, viewBinder)
 
     protected var viewBinding: Any? = null
 
     @Suppress("UNCHECKED_CAST")
     @MainThread
-    public override fun getValue(thisRef: R, property: KProperty<*>): T {
+    public override fun getValue(
+        thisRef: R,
+        property: KProperty<*>,
+    ): T {
         return viewBinding as? T ?: viewBinder(thisRef).also { viewBinding ->
             this.viewBinding = viewBinding
         }
@@ -44,22 +50,21 @@ public open class LazyViewBindingProperty<in R : Any, out T : ViewBinding>(
     @CallSuper
     public override fun clear() {
         val viewBinding = this.viewBinding as T?
-        if (viewBinding != null) {
-            onViewDestroyed(viewBinding)
-        }
+        if (viewBinding != null) onViewDestroyed(viewBinding)
         this.viewBinding = null
     }
 }
 
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
 public open class EagerViewBindingProperty<in R : Any, out T : ViewBinding>(
-    private val viewBinding: T
+    private val viewBinding: T,
 ) : ViewBindingProperty<R, T> {
 
     @MainThread
-    public override fun getValue(thisRef: R, property: KProperty<*>): T {
-        return viewBinding
-    }
+    public override fun getValue(
+        thisRef: R,
+        property: KProperty<*>,
+    ): T = viewBinding
 
     @MainThread
     public override fun clear() {
@@ -78,17 +83,15 @@ public abstract class LifecycleViewBindingProperty<in R : Any, out T : ViewBindi
     protected abstract fun getLifecycleOwner(thisRef: R): LifecycleOwner
 
     @MainThread
-    public override fun getValue(thisRef: R, property: KProperty<*>): T {
+    public override fun getValue(
+        thisRef: R,
+        property: KProperty<*>,
+    ): T {
         checkMainThread("access to ViewBinding from non UI (Main) thread")
         viewBinding?.let { return it }
 
-        if (!isViewInitialized(thisRef)) {
-            error(viewNotInitializedReadableErrorMessage(thisRef))
-        }
-
-        if (ViewBindingPropertyDelegate.strictMode) {
-            runStrictModeChecks(thisRef)
-        }
+        if (!isViewInitialized(thisRef)) error(viewNotInitializedReadableErrorMessage(thisRef))
+        if (ViewBindingPropertyDelegate.strictMode) runStrictModeChecks(thisRef)
 
         val lifecycle = getLifecycleOwner(thisRef).lifecycle
         if (lifecycle.currentState == Lifecycle.State.DESTROYED) {
@@ -118,7 +121,7 @@ public abstract class LifecycleViewBindingProperty<in R : Any, out T : ViewBindi
     protected open fun isViewInitialized(thisRef: R): Boolean = true
 
     protected open fun viewNotInitializedReadableErrorMessage(
-        thisRef: R
+        thisRef: R,
     ): String = ERROR_VIEW_NOT_INITIALIZED
 
     @MainThread

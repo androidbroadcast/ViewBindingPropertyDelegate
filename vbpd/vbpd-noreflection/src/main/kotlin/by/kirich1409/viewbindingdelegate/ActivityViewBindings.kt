@@ -19,7 +19,7 @@ import by.kirich1409.viewbindingdelegate.internal.requireViewByIdCompat
 private class ActivityViewBindingProperty<in A : ComponentActivity, out T : ViewBinding>(
     onViewDestroyed: (T) -> Unit,
     private val viewNeedsInitialization: Boolean = true,
-    viewBinder: (A) -> T
+    viewBinder: (A) -> T,
 ) : LifecycleViewBindingProperty<A, T>(viewBinder, onViewDestroyed) {
 
     override fun getLifecycleOwner(thisRef: A): LifecycleOwner = thisRef
@@ -35,7 +35,7 @@ private class ActivityViewBindingProperty<in A : ComponentActivity, out T : View
  */
 @JvmName("viewBindingActivity")
 public fun <A : ComponentActivity, T : ViewBinding> ComponentActivity.viewBinding(
-    viewBinder: (A) -> T
+    viewBinder: (A) -> T,
 ): ViewBindingProperty<A, T> {
     return viewBinding(emptyVbCallback(), viewBinder)
 }
@@ -48,7 +48,7 @@ public fun <A : ComponentActivity, T : ViewBinding> ComponentActivity.viewBindin
 @Suppress("UnusedReceiverParameter")
 public fun <A : ComponentActivity, T : ViewBinding> ComponentActivity.viewBinding(
     onViewDestroyed: (T) -> Unit = {},
-    viewBinder: (A) -> T
+    viewBinder: (A) -> T,
 ): ViewBindingProperty<A, T> {
     return ActivityViewBindingProperty(onViewDestroyed, viewBinder = viewBinder)
 }
@@ -60,7 +60,7 @@ public fun <A : ComponentActivity, T : ViewBinding> ComponentActivity.viewBindin
 @JvmName("viewBindingActivity")
 public inline fun <A : ComponentActivity, T : ViewBinding> ComponentActivity.viewBinding(
     crossinline vbFactory: (View) -> T,
-    crossinline viewProvider: (A) -> View = ::findRootView
+    crossinline viewProvider: (A) -> View = ::findRootView,
 ): ViewBindingProperty<A, T> {
     return viewBinding(emptyVbCallback(), vbFactory, viewProvider)
 }
@@ -73,7 +73,7 @@ public inline fun <A : ComponentActivity, T : ViewBinding> ComponentActivity.vie
 public inline fun <A : ComponentActivity, T : ViewBinding> ComponentActivity.viewBinding(
     noinline onViewDestroyed: (T) -> Unit = {},
     crossinline vbFactory: (View) -> T,
-    crossinline viewProvider: (A) -> View = ::findRootView
+    crossinline viewProvider: (A) -> View = ::findRootView,
 ): ViewBindingProperty<A, T> {
     return viewBinding(onViewDestroyed) { activity -> vbFactory(viewProvider(activity)) }
 }
@@ -89,7 +89,7 @@ public inline fun <A : ComponentActivity, T : ViewBinding> ComponentActivity.vie
 @JvmName("viewBindingActivity")
 public inline fun <T : ViewBinding> ComponentActivity.viewBinding(
     crossinline vbFactory: (View) -> T,
-    @IdRes viewBindingRootId: Int
+    @IdRes viewBindingRootId: Int,
 ): ViewBindingProperty<ComponentActivity, T> {
     return viewBinding(emptyVbCallback(), vbFactory, viewBindingRootId)
 }
@@ -106,7 +106,7 @@ public inline fun <T : ViewBinding> ComponentActivity.viewBinding(
 public inline fun <T : ViewBinding> ComponentActivity.viewBinding(
     noinline onViewDestroyed: (T) -> Unit = {},
     crossinline vbFactory: (View) -> T,
-    @IdRes viewBindingRootId: Int
+    @IdRes viewBindingRootId: Int,
 ): ViewBindingProperty<ComponentActivity, T> {
     return viewBinding(onViewDestroyed) { activity ->
         vbFactory(activity.requireViewByIdCompat(viewBindingRootId))
@@ -117,7 +117,7 @@ public inline fun <T : ViewBinding> ComponentActivity.viewBinding(
 fun <A : ComponentActivity, T : ViewBinding> activityViewBinding(
     onViewDestroyed: (T) -> Unit,
     viewNeedsInitialization: Boolean = true,
-    viewBinder: (A) -> T
+    viewBinder: (A) -> T,
 ): ViewBindingProperty<A, T> {
     return ActivityViewBindingProperty(onViewDestroyed, viewNeedsInitialization, viewBinder)
 }

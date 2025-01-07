@@ -1,7 +1,7 @@
 [versions]
 android-compileSdk = "35"
 android-buildTools = "35.0.0"
-android-minSdk = "14"
+android-minSdk = "21"
 android-targetSdk = "35"
 agp = "8.7.3"
 androidx-activity = "1.9.3"
@@ -28,7 +28,6 @@ androidx-lifecycle-common = { module = "androidx.lifecycle:lifecycle-common", ve
 androidx-lifecycle-common-java8 = { module = "androidx.lifecycle:lifecycle-common-java8", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel", version.ref = "androidx-lifecycle" }
-androidx-lifecycle-process = { module = "androidx.lifecycle:lifecycle-process", version.ref = "androidx-lifecycle" }
 androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "androidx-recyclerview" }
 androidx-savedstate = { module = "androidx.savedstate:savedstate", version.ref = "androidx-savedstate" }
 androidx-viewbinding = { module = "androidx.databinding:viewbinding", version.ref = "agp" }

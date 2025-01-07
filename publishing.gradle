@@ -15,13 +15,9 @@ afterEvaluate {
     publishing {
         publications {
             release(MavenPublication) {
-                from components.kotlin
-                artifact(sourcesJar)
-                artifact(javadocJar)
-
-                groupId = project.ext.groupId
-                artifactId = project.ext.artifactId
-                version = rootProject.ext.versionName
+                groupId = project.ext.get("groupId")
+                artifactId = project.ext.get("artifactId")
+                version = project.version
 
                 pom {
                     name = 'View Binding Property Delegate'
@@ -39,7 +35,7 @@ afterEvaluate {
                         developer {
                             id = 'kirich1409'
                             name = 'Kirill Rozov'
-                            email = 'krl.rozov@gmail.com'
+                            email = 'kirill@androidbroadcast.dev'
                         }
                     }
 

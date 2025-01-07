@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.android.library)
 }
 
+version = libs.versions.vbpd.version.get()
+
 android {
     namespace = "com.github.kirich1409.viewbindingpropertydelegate"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
@@ -28,15 +30,12 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.viewbinding)
+    compileOnly(libs.androidx.viewbinding)
     implementation(libs.androidx.lifecycle.common.java8)
-    implementation(libs.androidx.lifecycle.common)
     implementation(libs.androidx.annotation)
 }
 
-//ext {
-//    groupId = 'com.github.kirich1409'
-//    artifactId = "viewbindingpropertydelegate-core"
-//}
+ext.set("groupId", "com.github.kirich1409")
+ext.set("artifactId", "viewbindingpropertydelegate-core")
 
-//apply from: rootProject.file('publishing.gradle')
+apply(from = rootProject.file("publishing.gradle"))

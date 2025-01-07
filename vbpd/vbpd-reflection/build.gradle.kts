@@ -21,7 +21,7 @@ android {
 
     kotlinOptions {
         jvmTarget = "21"
-        freeCompilerArgs += listOf("-module-name", "com.github.kirich1409.ViewBindingPropertyDelegate.noreflection")
+        freeCompilerArgs += listOf("-module-name", "com.github.kirich1409.ViewBindingPropertyDelegate.reflection")
     }
 
     buildFeatures {
@@ -30,22 +30,22 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.activity)
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.activity)
     implementation(libs.androidx.fragment.ktx)
-    compileOnly(libs.androidx.viewbinding)
+    implementation(libs.androidx.viewbinding)
     implementation(libs.androidx.lifecycle.common)
     implementation(libs.androidx.recyclerview)
-    compileOnly(libs.androidx.annotation)
-    compileOnly(libs.androidx.activity)
-    compileOnly(libs.androidx.savedstate)
-    compileOnly(libs.androidx.lifecycle.viewmodel)
-    compileOnly(libs.androidx.lifecycle.runtime)
-    api(projects.vbpd.vbpdCore)
+    implementation(libs.androidx.annotation)
+    implementation(libs.androidx.activity)
+    implementation(libs.androidx.savedstate)
+    implementation(libs.androidx.lifecycle.viewmodel)
+    implementation(libs.androidx.lifecycle.runtime)
+    api(projects.vbpd.vbpdNoreflection)
 }
 
 ext {
-    set("artifactId", "viewbindingpropertydelegate-noreflection")
+    set("artifactId", "viewbindingpropertydelegate-reflection")
     set("groupId", "com.github.kirich1409")
 }
 

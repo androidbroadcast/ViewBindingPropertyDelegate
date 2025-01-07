@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.android.library)
 }
 
+version = libs.versions.vbpd.version.get()
+
 android {
     namespace = "com.github.kirich1409.viewbindingpropertydelegate"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
@@ -28,24 +30,14 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.activity)
-    implementation(libs.androidx.fragment.ktx)
-    implementation(libs.androidx.viewbinding)
-    implementation(libs.androidx.lifecycle.common)
-    implementation(libs.androidx.recyclerview)
-    implementation(libs.androidx.annotation)
-    implementation(libs.androidx.activity)
-    implementation(libs.androidx.savedstate)
-    implementation(libs.androidx.lifecycle.viewmodel)
-    implementation(libs.androidx.lifecycle.runtime)
     api(projects.vbpd.vbpdNoreflection)
+    api(projects.vbpd.vbpdReflection)
 }
 
 
-//ext {
-//    groupId = 'com.github.kirich1409'
-//    artifactId = "viewbindingpropertydelegate-full"
-//}
-//
-//apply from: rootProject.file('publishing.gradle')
+ext {
+    set("groupId", "com.github.kirich1409")
+    set("artifactId", "viewbindingpropertydelegate-full")
+}
+
+apply(from = rootProject.file("publishing.gradle"))
