@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.annotation.IdRes
 import androidx.annotation.RestrictTo
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ViewTreeLifecycleOwner
+import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.viewbinding.ViewBinding
 import by.kirich1409.viewbindingdelegate.internal.emptyVbCallback
 import by.kirich1409.viewbindingdelegate.internal.requireViewByIdCompat
@@ -20,7 +20,7 @@ internal class ViewGroupViewBindingProperty<in V : ViewGroup, out T : ViewBindin
 ) : LifecycleViewBindingProperty<V, T>(viewBinder, onViewDestroyed) {
 
     override fun getLifecycleOwner(thisRef: V): LifecycleOwner {
-        return checkNotNull(ViewTreeLifecycleOwner.get(thisRef)) {
+        return checkNotNull(thisRef.findViewTreeLifecycleOwner()) {
             "Fragment doesn't have a view associated with it or the view has been destroyed"
         }
     }

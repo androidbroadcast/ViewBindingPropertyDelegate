@@ -45,6 +45,7 @@ public fun <A : ComponentActivity, T : ViewBinding> ComponentActivity.viewBindin
  * of how a [View] will be bound to the view binding
  */
 @JvmName("viewBindingActivityWithCallbacks")
+@Suppress("UnusedReceiverParameter")
 public fun <A : ComponentActivity, T : ViewBinding> ComponentActivity.viewBinding(
     onViewDestroyed: (T) -> Unit = {},
     viewBinder: (A) -> T

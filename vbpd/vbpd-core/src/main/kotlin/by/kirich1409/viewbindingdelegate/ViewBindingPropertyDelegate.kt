@@ -16,7 +16,7 @@ object ViewBindingPropertyDelegate {
 
     /**
      * Enable strict checks for how ViewBindingPropertyDelegate is accessed. Throws an [Exception]
-     * if a [ViewBinding] is accessed outside of the view lifecycle. As an example, if you try
+     * if a [ViewBinding] is accessed outside the view lifecycle. As an example, if you try
      * accessing a [Fragment]'s one before [Fragment.onViewCreated] has been called or after
      * [Fragment.onDestroyView] was called, you will get a crash.
      *
@@ -79,7 +79,10 @@ fun <R : Any, VB : ViewBinding> viewBindingWithLifecycle(
 ): LifecycleViewBindingProperty<R, VB> {
     return object : LifecycleViewBindingProperty<R, VB>(viewBinder, onViewDestroyed) {
 
-        private val lifecycleOwner = LifecycleOwner { lifecycle }
+        private val lifecycleOwner = object : LifecycleOwner {
+
+            override val lifecycle = lifecycle
+        }
 
         override fun getLifecycleOwner(thisRef: R): LifecycleOwner = lifecycleOwner
     }

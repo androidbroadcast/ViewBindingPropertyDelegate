@@ -3,9 +3,6 @@
 package by.kirich1409.viewbindingdelegate.internal
 
 import android.app.Activity
-import android.content.Context
-import android.content.pm.ApplicationInfo
-import android.os.Looper
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.IdRes

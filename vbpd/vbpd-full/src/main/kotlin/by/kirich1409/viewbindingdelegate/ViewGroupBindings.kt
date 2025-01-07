@@ -6,7 +6,6 @@ package by.kirich1409.viewbindingdelegate
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ViewTreeLifecycleOwner
 import androidx.viewbinding.ViewBinding
 import by.kirich1409.viewbindingdelegate.internal.ViewBindingCache
 import by.kirich1409.viewbindingdelegate.internal.emptyVbCallback

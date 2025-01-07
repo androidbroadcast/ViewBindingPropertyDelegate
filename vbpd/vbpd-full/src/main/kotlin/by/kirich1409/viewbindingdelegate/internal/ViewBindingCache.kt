@@ -47,14 +47,12 @@ internal abstract class InflateViewBinding<out VB : ViewBinding>(
     private val inflateViewBinding: Method
 ) {
 
-    @Suppress("UNCHECKED_CAST")
     abstract fun inflate(
         layoutInflater: LayoutInflater, parent: ViewGroup?, attachToParent: Boolean
     ): VB
 }
 
 @RestrictTo(LIBRARY)
-@Suppress("FunctionName")
 internal fun <VB : ViewBinding> InflateViewBinding(
     viewBindingClass: Class<VB>
 ): InflateViewBinding<VB> {

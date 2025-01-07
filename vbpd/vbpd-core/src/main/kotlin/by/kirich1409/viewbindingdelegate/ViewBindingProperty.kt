@@ -8,7 +8,6 @@ import android.util.Log
 import androidx.annotation.CallSuper
 import androidx.annotation.MainThread
 import androidx.annotation.RestrictTo
-import androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
@@ -52,7 +51,7 @@ public open class LazyViewBindingProperty<in R : Any, out T : ViewBinding>(
     }
 }
 
-@RestrictTo(LIBRARY_GROUP)
+@RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
 public open class EagerViewBindingProperty<in R : Any, out T : ViewBinding>(
     private val viewBinding: T
 ) : ViewBindingProperty<R, T> {
@@ -68,7 +67,7 @@ public open class EagerViewBindingProperty<in R : Any, out T : ViewBinding>(
     }
 }
 
-@RestrictTo(LIBRARY_GROUP)
+@RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
 public abstract class LifecycleViewBindingProperty<in R : Any, out T : ViewBinding>(
     private val viewBinder: (R) -> T,
     private val onViewDestroyed: (T) -> Unit = {},
@@ -133,7 +132,7 @@ public abstract class LifecycleViewBindingProperty<in R : Any, out T : ViewBindi
         }
     }
 
-    @RestrictTo(LIBRARY_GROUP)
+    @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
     protected fun postClear() {
         if (!mainHandler.post { clear() }) {
             clear()

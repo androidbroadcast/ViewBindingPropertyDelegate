@@ -1,4 +1,4 @@
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.kirich1409/viewbindingpropertydelegate/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.kirich1409/viewbindingpropertydelegate)
+х!хЬфмут Сутекфдъ(реезыЖ//ьфмут-ифвпуыюрукщлгфззюсщь/ьфмут-сутекфд/сщьюпшергиюлшкшср1409/мшуциштвштпзкщзукенвудупфеу/ифвпуюымп)ъ(реезыЖ//ьфмут-ифвпуыюрукщлгфззюсщь/ьфмут-сутекфд/сщьюпшергиюлшкшср1409/мшуциштвштпзкщзукенвудупфеу)
 
 # ViewBindingPropertyDelegate
 

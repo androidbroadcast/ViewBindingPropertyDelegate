@@ -45,9 +45,9 @@ inline fun <R : Any, reified VB : ViewBinding> viewBindingWithLifecycle(
     noinline onViewDestroyed: (VB) -> Unit = {},
 ): LifecycleViewBindingProperty<R, VB> {
     return object : LifecycleViewBindingProperty<R, VB>({
-        ViewBindingCache.getInflateWithLayoutInflater(VB::class.java)
-            .inflate(layoutInflater, parent, attachToParent)
-    }, onViewDestroyed) {
+                                                            ViewBindingCache.getInflateWithLayoutInflater(VB::class.java)
+                                                                .inflate(layoutInflater, parent, attachToParent)
+                                                        }, onViewDestroyed) {
 
         override fun getLifecycleOwner(thisRef: R): LifecycleOwner = lifecycleOwner
     }
@@ -67,12 +67,18 @@ inline fun <R : Any, reified VB : ViewBinding> viewBindingWithLifecycle(
     attachToParent: Boolean = false,
     noinline onViewDestroyed: (VB) -> Unit = {},
 ): LifecycleViewBindingProperty<R, VB> {
-    return object : LifecycleViewBindingProperty<R, VB>({
-        ViewBindingCache.getInflateWithLayoutInflater(VB::class.java)
-            .inflate(layoutInflater, parent, attachToParent)
-    }, onViewDestroyed) {
+    return object : LifecycleViewBindingProperty<R, VB>(
+        viewBinder = {
+            ViewBindingCache.getInflateWithLayoutInflater(VB::class.java)
+                .inflate(layoutInflater, parent, attachToParent)
+        },
+        onViewDestroyed
+    ) {
 
-        private val lifecycleOwner = LifecycleOwner { lifecycle }
+        private val lifecycleOwner = object : LifecycleOwner {
+
+            override val lifecycle: Lifecycle = lifecycle
+        }
 
         override fun getLifecycleOwner(thisRef: R): LifecycleOwner = lifecycleOwner
     }
