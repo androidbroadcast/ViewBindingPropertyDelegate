@@ -8,37 +8,39 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import by.kirich1409.viewbindingdelegate.internal.ViewBindingCache
-import by.kirich1409.viewbindingdelegate.internal.emptyVbCallback
 import by.kirich1409.viewbindingdelegate.internal.getRootView
 import by.kirich1409.viewbindingdelegate.internal.requireViewByIdCompat
 
 @JvmName("viewBindingFragment")
 public inline fun <reified T : ViewBinding> Fragment.viewBinding(
     @IdRes viewBindingRootId: Int,
-    noinline onViewDestroyed: (T) -> Unit = emptyVbCallback(),
 ): ViewBindingProperty<Fragment, T> {
-    return viewBinding(T::class.java, viewBindingRootId, onViewDestroyed)
+    return viewBinding(T::class.java, viewBindingRootId)
 }
 
 @JvmName("viewBindingFragment")
 public fun <T : ViewBinding> Fragment.viewBinding(
     viewBindingClass: Class<T>,
     @IdRes viewBindingRootId: Int,
-    onViewDestroyed: (T) -> Unit = emptyVbCallback(),
 ): ViewBindingProperty<Fragment, T> {
     return when (this) {
         is DialogFragment -> {
-            viewBinding({ dialogFragment ->
-                require(dialogFragment is DialogFragment)
-                ViewBindingCache.getBind(viewBindingClass)
-                    .bind(dialogFragment.getRootView(viewBindingRootId))
-            }, onViewDestroyed)
+            viewBinding(
+                viewBinder = { dialogFragment ->
+                    dialogFragment as DialogFragment
+                    ViewBindingCache.getBind(viewBindingClass)
+                        .bind(dialogFragment.getRootView(viewBindingRootId))
+                }
+            )
         }
+
         else -> {
-            viewBinding({
-                ViewBindingCache.getBind(viewBindingClass)
-                    .bind(requireView().requireViewByIdCompat(viewBindingRootId))
-            }, onViewDestroyed)
+            viewBinding(
+                viewBinder = {
+                    ViewBindingCache.getBind(viewBindingClass)
+                        .bind(requireView().requireViewByIdCompat(viewBindingRootId))
+                }
+            )
         }
     }
 }
@@ -51,9 +53,8 @@ public fun <T : ViewBinding> Fragment.viewBinding(
 @JvmName("viewBindingFragment")
 public inline fun <reified T : ViewBinding> Fragment.viewBinding(
     createMethod: CreateMethod = CreateMethod.BIND,
-    noinline onViewDestroyed: (T) -> Unit = emptyVbCallback(),
 ): ViewBindingProperty<Fragment, T> {
-    return viewBinding(T::class.java, createMethod, onViewDestroyed)
+    return viewBinding(T::class.java, createMethod)
 }
 
 /**
@@ -65,23 +66,16 @@ public inline fun <reified T : ViewBinding> Fragment.viewBinding(
 public fun <T : ViewBinding> Fragment.viewBinding(
     viewBindingClass: Class<T>,
     createMethod: CreateMethod = CreateMethod.BIND,
-    onViewDestroyed: (T) -> Unit = emptyVbCallback(),
 ): ViewBindingProperty<Fragment, T> = when (createMethod) {
-    CreateMethod.BIND -> viewBinding({
-        ViewBindingCache.getBind(viewBindingClass).bind(requireView())
-    }, onViewDestroyed)
-    CreateMethod.INFLATE -> when (this) {
-        is DialogFragment -> dialogFragmentViewBinding(
-            onViewDestroyed,
-            {
-                ViewBindingCache.getInflateWithLayoutInflater(viewBindingClass)
-                    .inflate(layoutInflater, null, false)
-            },
-            viewNeedsInitialization = false
-        )
-        else -> fragmentViewBinding(
-            onViewDestroyed,
-            {
+    CreateMethod.BIND -> viewBinding(
+        vbFactory = {
+            ViewBindingCache.getBind(viewBindingClass).bind(requireView())
+        }
+    )
+
+    CreateMethod.INFLATE -> {
+        fragmentViewBinding(
+            viewBinder = {
                 ViewBindingCache.getInflateWithLayoutInflater(viewBindingClass)
                     .inflate(layoutInflater, null, false)
             },

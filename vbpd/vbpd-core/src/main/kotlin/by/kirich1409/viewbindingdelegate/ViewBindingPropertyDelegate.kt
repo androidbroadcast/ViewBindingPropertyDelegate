@@ -4,8 +4,6 @@
 package by.kirich1409.viewbindingdelegate
 
 import androidx.annotation.MainThread
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
 import androidx.viewbinding.ViewBinding
 import by.kirich1409.viewbindingdelegate.internal.core.checkMainThread
 
@@ -36,54 +34,9 @@ object ViewBindingPropertyDelegate {
  * [ViewBindingProperty.clear] or not to keep it at all.
  *
  * @param viewBinder Function that create new instance of [ViewBinding]
- * @param onViewDestroyed Called when the [ViewBinding] will be destroyed
  */
 fun <R : Any, VB : ViewBinding> viewBindingLazy(
     viewBinder: (R) -> VB,
-    onViewDestroyed: (VB) -> Unit = {},
 ): LazyViewBindingProperty<R, VB> {
-    return LazyViewBindingProperty(onViewDestroyed, viewBinder)
-}
-
-/**
- * Create new [ViewBindingPropertyDelegate] that will be initialized lazy and
- * associated with [lifecycleOwner].
- *
- * @param lifecycleOwner Owner of associated lifecycle
- * @param viewBinder Function that create new instance of [ViewBinding]
- * @param onViewDestroyed Called when the [ViewBinding] will be destroyed
- */
-fun <R : Any, VB : ViewBinding> viewBindingWithLifecycle(
-    lifecycleOwner: LifecycleOwner,
-    viewBinder: (R) -> VB,
-    onViewDestroyed: (VB) -> Unit = {},
-): LifecycleViewBindingProperty<R, VB> {
-    return object : LifecycleViewBindingProperty<R, VB>(viewBinder, onViewDestroyed) {
-
-        override fun getLifecycleOwner(thisRef: R): LifecycleOwner = lifecycleOwner
-    }
-}
-
-/**
- * Create new [ViewBindingPropertyDelegate] that will be initialized lazy and
- * associated with [lifecycle].
- *
- * @param lifecycle Associated lifecycle
- * @param viewBinder Function that create new instance of [ViewBinding]
- * @param onViewDestroyed Called when the [ViewBinding] will be destroyed
- */
-fun <R : Any, VB : ViewBinding> viewBindingWithLifecycle(
-    lifecycle: Lifecycle,
-    viewBinder: (R) -> VB,
-    onViewDestroyed: (VB) -> Unit = {},
-): LifecycleViewBindingProperty<R, VB> {
-    return object : LifecycleViewBindingProperty<R, VB>(viewBinder, onViewDestroyed) {
-
-        private val lifecycleOwner = object : LifecycleOwner {
-
-            override val lifecycle = lifecycle
-        }
-
-        override fun getLifecycleOwner(thisRef: R): LifecycleOwner = lifecycleOwner
-    }
+    return LazyViewBindingProperty(viewBinder)
 }

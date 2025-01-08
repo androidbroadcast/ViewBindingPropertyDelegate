@@ -30,17 +30,12 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.activity)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.fragment.ktx)
     compileOnly(libs.androidx.viewbinding)
-    implementation(libs.androidx.lifecycle.common)
     implementation(libs.androidx.recyclerview)
     compileOnly(libs.androidx.annotation)
-    compileOnly(libs.androidx.activity)
     compileOnly(libs.androidx.savedstate)
-    compileOnly(libs.androidx.lifecycle.viewmodel)
-    compileOnly(libs.androidx.lifecycle.runtime)
     api(projects.vbpd.vbpdCore)
 }
 

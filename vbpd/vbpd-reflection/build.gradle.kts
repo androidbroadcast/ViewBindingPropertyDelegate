@@ -42,6 +42,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel)
     implementation(libs.androidx.lifecycle.runtime)
     api(projects.vbpd.vbpdNoreflection)
+    api(projects.vbpd.vbpdCore)
 }
 
 ext {

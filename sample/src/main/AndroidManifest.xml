@@ -12,7 +12,7 @@
         >
 
         <activity
-            android:name=".activity.noreflection.ProfileActivity"
+            android:name=".MainActivity"
             android:exported="true"
             >
             <intent-filter>

@@ -11,6 +11,9 @@ import androidx.core.app.ActivityCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.DialogFragment
 import androidx.viewbinding.ViewBinding
+import java.lang.ref.WeakReference
+import kotlin.properties.ReadWriteProperty
+import kotlin.reflect.KProperty
 
 
 @Suppress("NOTHING_TO_INLINE")
@@ -53,4 +56,19 @@ internal val EMPTY_VB_CALLBACK: (ViewBinding) -> Unit = { _ -> }
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
 fun <T : ViewBinding> emptyVbCallback():(T) -> Unit {
     return EMPTY_VB_CALLBACK
+}
+
+fun <T: Any> weakReference(value: T? = null): ReadWriteProperty<Any, T?> {
+    return object : ReadWriteProperty<Any, T?> {
+
+        private var weakRef = WeakReference(value)
+
+        override fun getValue(thisRef: Any, property: KProperty<*>): T? {
+            return weakRef.get()
+        }
+
+        override fun setValue(thisRef: Any, property: KProperty<*>, value: T?) {
+            weakRef = WeakReference(value)
+        }
+    }
 }

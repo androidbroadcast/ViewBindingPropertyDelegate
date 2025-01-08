@@ -7,24 +7,14 @@ import android.view.ViewGroup
 import androidx.annotation.IdRes
 import androidx.annotation.RestrictTo
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.viewbinding.ViewBinding
-import by.kirich1409.viewbindingdelegate.internal.emptyVbCallback
 import by.kirich1409.viewbindingdelegate.internal.requireViewByIdCompat
 
 @PublishedApi
 @RestrictTo(RestrictTo.Scope.LIBRARY)
-internal class ViewGroupViewBindingProperty<in V : ViewGroup, out T : ViewBinding>(
-    onViewDestroyed: (T) -> Unit,
+internal class ViewGroupViewBindingProperty<in V : ViewGroup, T : ViewBinding>(
     viewBinder: (V) -> T
-) : LifecycleViewBindingProperty<V, T>(viewBinder, onViewDestroyed) {
-
-    override fun getLifecycleOwner(thisRef: V): LifecycleOwner {
-        return checkNotNull(thisRef.findViewTreeLifecycleOwner()) {
-            "Fragment doesn't have a view associated with it or the view has been destroyed"
-        }
-    }
-}
+) : BaseViewBindingProperty<V, T>(viewBinder)
 
 /**
  * Create new [ViewBinding] associated with the [ViewGroup]
@@ -47,24 +37,10 @@ inline fun <T : ViewBinding> ViewGroup.viewBinding(
     lifecycleAware: Boolean,
     crossinline vbFactory: (ViewGroup) -> T,
 ): ViewBindingProperty<ViewGroup, T> {
-    return viewBinding(lifecycleAware, vbFactory, emptyVbCallback())
-}
-
-/**
- * Create new [ViewBinding] associated with the [ViewGroup]
- *
- * @param vbFactory Function that creates a new instance of [ViewBinding]. `MyViewBinding::bind` can be used
- * @param lifecycleAware Get [LifecycleOwner] from the [ViewGroup][this] using [ViewTreeLifecycleOwner]
- */
-inline fun <T : ViewBinding> ViewGroup.viewBinding(
-    lifecycleAware: Boolean,
-    crossinline vbFactory: (ViewGroup) -> T,
-    noinline onViewDestroyed: (T) -> Unit,
-): ViewBindingProperty<ViewGroup, T> {
     return when {
         isInEditMode -> EagerViewBindingProperty(vbFactory(this))
-        lifecycleAware -> ViewGroupViewBindingProperty(onViewDestroyed) { viewGroup -> vbFactory(viewGroup) }
-        else -> LazyViewBindingProperty(onViewDestroyed) { viewGroup -> vbFactory(viewGroup) }
+        lifecycleAware -> ViewGroupViewBindingProperty { viewGroup -> vbFactory(viewGroup) }
+        else -> LazyViewBindingProperty { viewGroup -> vbFactory(viewGroup) }
     }
 }
 
@@ -79,7 +55,7 @@ inline fun <T : ViewBinding> ViewGroup.viewBinding(
     crossinline vbFactory: (View) -> T,
     @IdRes viewBindingRootId: Int,
 ): ViewBindingProperty<ViewGroup, T> {
-    return viewBinding(viewBindingRootId, vbFactory, emptyVbCallback())
+    return viewBinding(viewBindingRootId, vbFactory)
 }
 
 /**
@@ -91,9 +67,8 @@ inline fun <T : ViewBinding> ViewGroup.viewBinding(
 inline fun <T : ViewBinding> ViewGroup.viewBinding(
     @IdRes viewBindingRootId: Int,
     crossinline vbFactory: (View) -> T,
-    noinline onViewDestroyed: (T) -> Unit,
 ): ViewBindingProperty<ViewGroup, T> {
-    return viewBinding(viewBindingRootId, lifecycleAware = false, vbFactory, onViewDestroyed)
+    return viewBinding(viewBindingRootId, lifecycleAware = false, vbFactory)
 }
 
 /**
@@ -107,28 +82,11 @@ inline fun <T : ViewBinding> ViewGroup.viewBinding(
     @IdRes viewBindingRootId: Int,
     lifecycleAware: Boolean,
     crossinline vbFactory: (View) -> T,
-): ViewBindingProperty<ViewGroup, T> {
-    return viewBinding(viewBindingRootId, lifecycleAware, vbFactory, emptyVbCallback())
-}
-
-
-/**
- * Create new [ViewBinding] associated with the [ViewGroup]
- *
- * @param vbFactory Function that creates a new instance of [ViewBinding]. `MyViewBinding::bind` can be used
- * @param viewBindingRootId Root view's id that will be used as a root for the view binding
- * @param lifecycleAware Get [LifecycleOwner] from the [ViewGroup][this] using [ViewTreeLifecycleOwner]
- */
-inline fun <T : ViewBinding> ViewGroup.viewBinding(
-    @IdRes viewBindingRootId: Int,
-    lifecycleAware: Boolean,
-    crossinline vbFactory: (View) -> T,
-    noinline onViewDestroyed: (T) -> Unit,
 ): ViewBindingProperty<ViewGroup, T> {
     return when {
         isInEditMode -> EagerViewBindingProperty(vbFactory(this))
-        lifecycleAware -> ViewGroupViewBindingProperty(onViewDestroyed) { viewGroup -> vbFactory(viewGroup) }
-        else -> LazyViewBindingProperty(onViewDestroyed) { viewGroup: ViewGroup ->
+        lifecycleAware -> ViewGroupViewBindingProperty { viewGroup -> vbFactory(viewGroup) }
+        else -> LazyViewBindingProperty { viewGroup: ViewGroup ->
             vbFactory(viewGroup.requireViewByIdCompat(viewBindingRootId))
         }
     }

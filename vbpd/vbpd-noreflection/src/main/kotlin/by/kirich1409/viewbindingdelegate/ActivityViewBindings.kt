@@ -3,79 +3,102 @@
 
 package by.kirich1409.viewbindingdelegate
 
+import android.app.Activity
+import android.app.Application.ActivityLifecycleCallbacks
+import android.os.Bundle
 import android.view.View
-import androidx.activity.ComponentActivity
 import androidx.annotation.IdRes
 import androidx.annotation.RestrictTo
 import androidx.annotation.RestrictTo.Scope.LIBRARY
 import androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP
-import androidx.lifecycle.LifecycleOwner
 import androidx.viewbinding.ViewBinding
-import by.kirich1409.viewbindingdelegate.internal.emptyVbCallback
 import by.kirich1409.viewbindingdelegate.internal.findRootView
 import by.kirich1409.viewbindingdelegate.internal.requireViewByIdCompat
+import by.kirich1409.viewbindingdelegate.internal.weakReference
+import kotlin.reflect.KProperty
 
 @RestrictTo(LIBRARY)
-private class ActivityViewBindingProperty<in A : ComponentActivity, out T : ViewBinding>(
-    onViewDestroyed: (T) -> Unit,
+private class ActivityViewBindingProperty<in A : Activity, T : ViewBinding>(
     private val viewNeedsInitialization: Boolean = true,
     viewBinder: (A) -> T,
-) : LifecycleViewBindingProperty<A, T>(viewBinder, onViewDestroyed) {
+) : BaseViewBindingProperty<A, T>(viewBinder) {
 
-    override fun getLifecycleOwner(thisRef: A): LifecycleOwner = thisRef
+    private var lifecycleCallbacks: ActivityLifecycleCallbacks? = null
+    private var activity: Activity? by weakReference(null)
 
-    override fun isViewInitialized(thisRef: A): Boolean {
-        return !viewNeedsInitialization || thisRef.window != null
+    override fun getValue(thisRef: A, property: KProperty<*>): T {
+        val delegate = super.getValue(thisRef, property)
+        registerLifecycleCallbacksIfNeeded(thisRef)
+        return delegate
+    }
+
+    private fun registerLifecycleCallbacksIfNeeded(activity: Activity) {
+        if (lifecycleCallbacks != null) return
+        val lifecycleCallbacks = VBActivityLifecycleCallbacks().also { callbacks ->
+            this.lifecycleCallbacks = callbacks
+        }
+        activity.application.registerActivityLifecycleCallbacks(lifecycleCallbacks)
+    }
+
+    override fun clear() {
+        super.clear()
+        val lifecycleCallbacks = lifecycleCallbacks
+        if (lifecycleCallbacks != null) {
+            activity?.application?.unregisterActivityLifecycleCallbacks(lifecycleCallbacks)
+        }
+
+        this.activity = null
+        this.lifecycleCallbacks = null
+    }
+
+    private inner class VBActivityLifecycleCallbacks : ActivityLifecycleCallbacks {
+
+        override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
+        }
+
+        override fun onActivityStarted(activity: Activity) {
+        }
+
+        override fun onActivityResumed(activity: Activity) {
+        }
+
+        override fun onActivityPaused(activity: Activity) {
+        }
+
+        override fun onActivityStopped(activity: Activity) {
+        }
+
+        override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {
+        }
+
+        override fun onActivityDestroyed(activity: Activity) {
+            if (activity === this@ActivityViewBindingProperty.activity) clear()
+        }
     }
 }
 
 /**
- * Create new [ViewBinding] associated with the [Activity][ComponentActivity] and allow customization
- * of how a [View] will be bound to the view binding
- */
-@JvmName("viewBindingActivity")
-public fun <A : ComponentActivity, T : ViewBinding> ComponentActivity.viewBinding(
-    viewBinder: (A) -> T,
-): ViewBindingProperty<A, T> {
-    return viewBinding(emptyVbCallback(), viewBinder)
-}
-
-/**
- * Create new [ViewBinding] associated with the [Activity][ComponentActivity] and allow customization
+ * Create new [ViewBinding] associated with the [Activity] and allow customization
  * of how a [View] will be bound to the view binding
  */
 @JvmName("viewBindingActivityWithCallbacks")
 @Suppress("UnusedReceiverParameter")
-public fun <A : ComponentActivity, T : ViewBinding> ComponentActivity.viewBinding(
-    onViewDestroyed: (T) -> Unit = {},
+public fun <A : Activity, T : ViewBinding> Activity.viewBinding(
     viewBinder: (A) -> T,
 ): ViewBindingProperty<A, T> {
-    return ActivityViewBindingProperty(onViewDestroyed, viewBinder = viewBinder)
+    return ActivityViewBindingProperty(viewBinder = viewBinder)
 }
 
 /**
- * Create new [ViewBinding] associated with the [Activity][ComponentActivity] and allow customization
- * of how a [View] will be bound to the view binding
- */
-@JvmName("viewBindingActivity")
-public inline fun <A : ComponentActivity, T : ViewBinding> ComponentActivity.viewBinding(
-    crossinline vbFactory: (View) -> T,
-    crossinline viewProvider: (A) -> View = ::findRootView,
-): ViewBindingProperty<A, T> {
-    return viewBinding(emptyVbCallback(), vbFactory, viewProvider)
-}
-
-/**
- * Create new [ViewBinding] associated with the [Activity][ComponentActivity] and allow customization
+ * Create new [ViewBinding] associated with the [Activity] and allow customization
  * of how a [View] will be bound to the view binding
  */
 @JvmName("viewBindingActivityWithCallbacks")
-public inline fun <A : ComponentActivity, T : ViewBinding> ComponentActivity.viewBinding(
-    noinline onViewDestroyed: (T) -> Unit = {},
+public inline fun <A : Activity, T : ViewBinding> Activity.viewBinding(
     crossinline vbFactory: (View) -> T,
     crossinline viewProvider: (A) -> View = ::findRootView,
 ): ViewBindingProperty<A, T> {
-    return viewBinding(onViewDestroyed) { activity -> vbFactory(viewProvider(activity)) }
+    return viewBinding { activity -> vbFactory(viewProvider(activity)) }
 }
 
 /**
@@ -87,37 +110,19 @@ public inline fun <A : ComponentActivity, T : ViewBinding> ComponentActivity.vie
  */
 @Suppress("unused")
 @JvmName("viewBindingActivity")
-public inline fun <T : ViewBinding> ComponentActivity.viewBinding(
+public inline fun <A : Activity, T : ViewBinding> Activity.viewBinding(
     crossinline vbFactory: (View) -> T,
     @IdRes viewBindingRootId: Int,
-): ViewBindingProperty<ComponentActivity, T> {
-    return viewBinding(emptyVbCallback(), vbFactory, viewBindingRootId)
-}
-
-/**
- * Create new [ViewBinding] associated with the [Activity][this] and allow customization of how
- * a [View] will be bound to the view binding.
- *
- * @param vbFactory Function that creates a new instance of [ViewBinding]. `MyViewBinding::bind` can be used
- * @param viewBindingRootId Root view's id that will be used as a root for the view binding
- */
-@Suppress("unused")
-@JvmName("viewBindingActivity")
-public inline fun <T : ViewBinding> ComponentActivity.viewBinding(
-    noinline onViewDestroyed: (T) -> Unit = {},
-    crossinline vbFactory: (View) -> T,
-    @IdRes viewBindingRootId: Int,
-): ViewBindingProperty<ComponentActivity, T> {
-    return viewBinding(onViewDestroyed) { activity ->
+): ViewBindingProperty<A, T> {
+    return viewBinding { activity ->
         vbFactory(activity.requireViewByIdCompat(viewBindingRootId))
     }
 }
 
 @RestrictTo(LIBRARY_GROUP)
-fun <A : ComponentActivity, T : ViewBinding> activityViewBinding(
-    onViewDestroyed: (T) -> Unit,
+fun <A : Activity, T : ViewBinding> activityViewBinding(
     viewNeedsInitialization: Boolean = true,
     viewBinder: (A) -> T,
 ): ViewBindingProperty<A, T> {
-    return ActivityViewBindingProperty(onViewDestroyed, viewNeedsInitialization, viewBinder)
+    return ActivityViewBindingProperty(viewNeedsInitialization, viewBinder)
 }
