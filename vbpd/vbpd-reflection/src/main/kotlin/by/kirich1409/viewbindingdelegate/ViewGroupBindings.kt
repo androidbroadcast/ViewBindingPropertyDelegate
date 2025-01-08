@@ -5,7 +5,6 @@ package by.kirich1409.viewbindingdelegate
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.lifecycle.LifecycleOwner
 import androidx.viewbinding.ViewBinding
 import by.kirich1409.viewbindingdelegate.internal.ViewBindingCache
 
@@ -14,14 +13,12 @@ import by.kirich1409.viewbindingdelegate.internal.ViewBindingCache
  *
  * @param T Class of expected [ViewBinding] result class
  * @param createMethod Way of creating [ViewBinding]
- * @param lifecycleAware Get [LifecycleOwner] from the [ViewGroup][this] using [ViewTreeLifecycleOwner]
  */
 @JvmName("viewBindingFragment")
 public inline fun <reified T : ViewBinding> ViewGroup.viewBinding(
     createMethod: CreateMethod = CreateMethod.BIND,
-    lifecycleAware: Boolean = false,
 ): ViewBindingProperty<ViewGroup, T> {
-    return viewBinding(T::class.java, createMethod, lifecycleAware)
+    return viewBinding(T::class.java, createMethod)
 }
 
 /**
@@ -29,16 +26,14 @@ public inline fun <reified T : ViewBinding> ViewGroup.viewBinding(
  *
  * @param viewBindingClass Class of expected [ViewBinding] result class
  * @param createMethod Way of creating [ViewBinding]
- * @param lifecycleAware Get [LifecycleOwner] from the [ViewGroup][this] using [ViewTreeLifecycleOwner]
  */
 @JvmName("viewBindingFragment")
 @JvmOverloads
 public fun <T : ViewBinding> ViewGroup.viewBinding(
     viewBindingClass: Class<T>,
     createMethod: CreateMethod = CreateMethod.BIND,
-    lifecycleAware: Boolean = false,
 ): ViewBindingProperty<ViewGroup, T> = when (createMethod) {
-    CreateMethod.BIND -> viewBinding(lifecycleAware) { viewGroup ->
+    CreateMethod.BIND -> viewBinding { viewGroup ->
         ViewBindingCache.getBind(viewBindingClass).bind(viewGroup)
     }
 
@@ -48,31 +43,23 @@ public fun <T : ViewBinding> ViewGroup.viewBinding(
 
 /**
  * Inflate new [ViewBinding] with the [ViewGroup][this] as a parent
- *
- * @param lifecycleAware Get [LifecycleOwner] from the [ViewGroup][this] using [ViewTreeLifecycleOwner]
  */
 @JvmName("viewBindingFragment")
-@JvmOverloads
 public inline fun <reified T : ViewBinding> ViewGroup.viewBinding(
-    attachToRoot: Boolean,
-    lifecycleAware: Boolean = false,
+    attachToRoot: Boolean = false,
 ): ViewBindingProperty<ViewGroup, T> {
-    return viewBinding(T::class.java, attachToRoot, lifecycleAware)
+    return viewBinding(T::class.java, attachToRoot)
 }
 
 /**
  * Inflate new [ViewBinding] with the [ViewGroup][this] as a parent
- *
- * @param lifecycleAware Get [LifecycleOwner] from the [ViewGroup][this] using [ViewTreeLifecycleOwner]
  */
 @JvmName("viewBindingFragment")
-@JvmOverloads
 public fun <T : ViewBinding> ViewGroup.viewBinding(
     viewBindingClass: Class<T>,
-    attachToRoot: Boolean,
-    lifecycleAware: Boolean = false,
+    attachToRoot: Boolean = false,
 ): ViewBindingProperty<ViewGroup, T> {
-    return viewBinding(lifecycleAware) { viewGroup ->
+    return viewBinding { viewGroup ->
         ViewBindingCache.getInflateWithLayoutInflater(viewBindingClass)
             .inflate(LayoutInflater.from(context), viewGroup, attachToRoot)
     }

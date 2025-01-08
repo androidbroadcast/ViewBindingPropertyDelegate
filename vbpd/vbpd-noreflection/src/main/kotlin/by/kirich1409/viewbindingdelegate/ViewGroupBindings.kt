@@ -24,22 +24,8 @@ internal class ViewGroupViewBindingProperty<in V : ViewGroup, T : ViewBinding>(
 inline fun <T : ViewBinding> ViewGroup.viewBinding(
     crossinline vbFactory: (ViewGroup) -> T,
 ): ViewBindingProperty<ViewGroup, T> {
-    return viewBinding(lifecycleAware = false, vbFactory)
-}
-
-/**
- * Create new [ViewBinding] associated with the [ViewGroup]
- *
- * @param vbFactory Function that creates a new instance of [ViewBinding]. `MyViewBinding::bind` can be used
- * @param lifecycleAware Get [LifecycleOwner] from the [ViewGroup][this] using [ViewTreeLifecycleOwner]
- */
-inline fun <T : ViewBinding> ViewGroup.viewBinding(
-    lifecycleAware: Boolean,
-    crossinline vbFactory: (ViewGroup) -> T,
-): ViewBindingProperty<ViewGroup, T> {
     return when {
         isInEditMode -> EagerViewBindingProperty(vbFactory(this))
-        lifecycleAware -> ViewGroupViewBindingProperty { viewGroup -> vbFactory(viewGroup) }
         else -> LazyViewBindingProperty { viewGroup -> vbFactory(viewGroup) }
     }
 }

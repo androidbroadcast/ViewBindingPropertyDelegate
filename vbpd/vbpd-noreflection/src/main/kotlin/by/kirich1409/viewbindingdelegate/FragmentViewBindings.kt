@@ -16,7 +16,7 @@ import by.kirich1409.viewbindingdelegate.internal.requireViewByIdCompat
 import by.kirich1409.viewbindingdelegate.internal.weakReference
 import kotlin.reflect.KProperty
 
-private class FragmentViewBindingProperty<in F : Fragment, T : ViewBinding>(
+private class FragmentViewBindingProperty<F : Fragment, T : ViewBinding>(
     private val viewNeedsInitialization: Boolean,
     viewBinder: (F) -> T,
 ) : BaseViewBindingProperty<F, T>(viewBinder) {
