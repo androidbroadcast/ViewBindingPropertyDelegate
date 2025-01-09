@@ -29,8 +29,8 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "ViewBindingDelegate"
-include(":vbpd:vbpd-core")
-include(":vbpd:vbpd-noreflection")
-include(":vbpd:vbpd-reflection")
+include(":vbpd-core")
+include(":vbpd")
+include(":vbpd-reflection")
 include(":sample")
 

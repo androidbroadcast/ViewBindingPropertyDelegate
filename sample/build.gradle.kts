@@ -35,8 +35,8 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.activity)
-    implementation(projects.vbpd.vbpdNoreflection)
-    implementation(projects.vbpd.vbpdReflection)
+    implementation(projects.vbpd)
+    implementation(projects.vbpdReflection)
 
     debugImplementation(libs.leakcanary.android)
 }
