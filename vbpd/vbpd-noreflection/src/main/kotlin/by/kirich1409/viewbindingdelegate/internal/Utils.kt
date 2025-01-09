@@ -10,21 +10,18 @@ import androidx.annotation.RestrictTo
 import androidx.core.app.ActivityCompat
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.DialogFragment
-import androidx.viewbinding.ViewBinding
 import java.lang.ref.WeakReference
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
 
-@Suppress("NOTHING_TO_INLINE")
 @RestrictTo(RestrictTo.Scope.LIBRARY)
-inline fun <V : View> View.requireViewByIdCompat(@IdRes id: Int): V {
+fun <V : View> View.requireViewByIdCompat(@IdRes id: Int): V {
     return ViewCompat.requireViewById(this, id)
 }
 
-@Suppress("NOTHING_TO_INLINE")
 @RestrictTo(RestrictTo.Scope.LIBRARY)
-inline fun <V : View> Activity.requireViewByIdCompat(@IdRes id: Int): V {
+fun <V : View> Activity.requireViewByIdCompat(@IdRes id: Int): V {
     return ActivityCompat.requireViewById(this, id)
 }
 
@@ -43,22 +40,21 @@ fun findRootView(activity: Activity): View {
 }
 
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-fun DialogFragment.getRootView(viewBindingRootId: Int): View {
-    val dialog = checkNotNull(dialog) {
-        "DialogFragment doesn't have a dialog. Use viewBinding delegate after onCreateDialog"
+fun DialogFragment.findRootView(@IdRes viewBindingRootId: Int): View {
+    if (showsDialog) {
+        val dialog = checkNotNull(dialog) {
+            "DialogFragment doesn't have a dialog. Use viewBinding delegate after onCreateDialog"
+        }
+        val window = checkNotNull(dialog.window) { "Fragment's Dialog has no window" }
+        return with(window.decorView) {
+            if (viewBindingRootId != 0) requireViewByIdCompat(viewBindingRootId) else this
+        }
+    } else {
+        return requireView().findViewById(viewBindingRootId)
     }
-    val window = checkNotNull(dialog.window) { "Fragment's Dialog has no window" }
-    return with(window.decorView) { if (viewBindingRootId != 0) requireViewByIdCompat(viewBindingRootId) else this }
 }
 
-internal val EMPTY_VB_CALLBACK: (ViewBinding) -> Unit = { _ -> }
-
-@RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-fun <T : ViewBinding> emptyVbCallback():(T) -> Unit {
-    return EMPTY_VB_CALLBACK
-}
-
-fun <T: Any> weakReference(value: T? = null): ReadWriteProperty<Any, T?> {
+fun <T : Any> weakReference(value: T? = null): ReadWriteProperty<Any, T?> {
     return object : ReadWriteProperty<Any, T?> {
 
         private var weakRef = WeakReference(value)

@@ -12,21 +12,28 @@ import java.lang.reflect.Method
 
 object ViewBindingCache {
 
-    private val inflateCache =
-        mutableMapOf<Class<out ViewBinding>, InflateViewBinding<ViewBinding>>()
+    private val inflateCache = mutableMapOf<Class<out ViewBinding>, InflateViewBinding<ViewBinding>>()
     private val bindCache = mutableMapOf<Class<out ViewBinding>, BindViewBinding<ViewBinding>>()
 
     @Suppress("UNCHECKED_CAST")
     @RestrictTo(LIBRARY)
     @PublishedApi
-    internal fun <T : ViewBinding> getInflateWithLayoutInflater(viewBindingClass: Class<T>): InflateViewBinding<T> {
-        return inflateCache.getOrPut(viewBindingClass) { InflateViewBinding(viewBindingClass) } as InflateViewBinding<T>
+    internal fun <T : ViewBinding> getInflateWithLayoutInflater(
+        viewBindingClass: Class<T>,
+    ): InflateViewBinding<T> {
+        return inflateCache.getOrPut(viewBindingClass) {
+            InflateViewBinding(viewBindingClass)
+        } as InflateViewBinding<T>
     }
 
     @Suppress("UNCHECKED_CAST")
     @RestrictTo(LIBRARY)
-    internal fun <T : ViewBinding> getBind(viewBindingClass: Class<T>): BindViewBinding<T> {
-        return bindCache.getOrPut(viewBindingClass) { BindViewBinding(viewBindingClass) } as BindViewBinding<T>
+    internal fun <T : ViewBinding> getBind(
+        viewBindingClass: Class<T>,
+    ): BindViewBinding<T> {
+        return bindCache.getOrPut(viewBindingClass) {
+            BindViewBinding(viewBindingClass)
+        } as BindViewBinding<T>
     }
 
     /**
@@ -48,7 +55,9 @@ internal abstract class InflateViewBinding<out VB : ViewBinding>(
 ) {
 
     abstract fun inflate(
-        layoutInflater: LayoutInflater, parent: ViewGroup?, attachToParent: Boolean
+        layoutInflater: LayoutInflater,
+        parent: ViewGroup?,
+        attachToParent: Boolean,
     ): VB
 }
 

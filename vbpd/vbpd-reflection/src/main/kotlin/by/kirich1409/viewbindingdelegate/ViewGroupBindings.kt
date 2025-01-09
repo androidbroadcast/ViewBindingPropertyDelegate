@@ -37,8 +37,7 @@ public fun <T : ViewBinding> ViewGroup.viewBinding(
         ViewBindingCache.getBind(viewBindingClass).bind(viewGroup)
     }
 
-    CreateMethod.INFLATE ->
-        viewBinding(viewBindingClass, attachToRoot = true)
+    CreateMethod.INFLATE -> viewBinding(viewBindingClass, attachToRoot = true)
 }
 
 /**

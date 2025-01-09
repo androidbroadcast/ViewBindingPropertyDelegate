@@ -11,7 +11,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.viewbinding.ViewBinding
-import by.kirich1409.viewbindingdelegate.internal.getRootView
+import by.kirich1409.viewbindingdelegate.internal.findRootView
 import by.kirich1409.viewbindingdelegate.internal.requireViewByIdCompat
 import by.kirich1409.viewbindingdelegate.internal.weakReference
 import kotlin.reflect.KProperty
@@ -79,7 +79,7 @@ private class FragmentViewBindingProperty<F : Fragment, T : ViewBinding>(
 public fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
     viewBinder: (F) -> T,
 ): ViewBindingProperty<F, T> {
-    return fragmentViewBinding(viewBinder)
+    return fragmentViewBinding(viewBinder = viewBinder)
 }
 
 /**
@@ -88,12 +88,13 @@ public fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
  * @param vbFactory Function that creates a new instance of [ViewBinding]. `MyViewBinding::bind` can be used
  * @param viewProvider Provide a [View] from the Fragment. By default call [Fragment.requireView]
  */
+@Suppress("UnusedReceiverParameter")
 @JvmName("viewBindingFragment")
 public inline fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
     crossinline vbFactory: (View) -> T,
     crossinline viewProvider: (F) -> View = Fragment::requireView,
 ): ViewBindingProperty<F, T> {
-    return viewBinding(viewBinder = { fragment -> vbFactory(viewProvider(fragment)) })
+    return fragmentViewBinding(viewBinder = { fragment -> viewProvider(fragment).let(vbFactory) })
 }
 
 /**
@@ -102,7 +103,6 @@ public inline fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
  * @param vbFactory Function that creates a new instance of [ViewBinding]. `MyViewBinding::bind` can be used
  * @param viewBindingRootId Root view's id that will be used as a root for the view binding
  */
-@Suppress("UNCHECKED_CAST")
 @JvmName("viewBindingFragmentWithCallbacks")
 public inline fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
     crossinline vbFactory: (View) -> T,
@@ -110,24 +110,27 @@ public inline fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
 ): ViewBindingProperty<F, T> {
     return when (this) {
         is DialogFragment -> {
-            viewBinding<DialogFragment, T>(
-                vbFactory,
-                viewProvider = { fragment -> fragment.getRootView(viewBindingRootId) }
-            ) as ViewBindingProperty<F, T>
+            fragmentViewBinding { fragment ->
+                (fragment as DialogFragment)
+                    .findRootView(viewBindingRootId)
+                    .let(vbFactory)
+            }
         }
 
         else -> {
-            viewBinding(vbFactory, { fragment: F ->
-                fragment.requireView().requireViewByIdCompat(viewBindingRootId)
-            })
+            fragmentViewBinding { fragment ->
+                fragment.requireView()
+                    .requireViewByIdCompat<View>(viewBindingRootId)
+                    .let(vbFactory)
+            }
         }
     }
 }
 
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
 fun <F : Fragment, T : ViewBinding> fragmentViewBinding(
-    viewBinder: (F) -> T,
     viewNeedsInitialization: Boolean = true,
+    viewBinder: (F) -> T,
 ): ViewBindingProperty<F, T> {
     return FragmentViewBindingProperty(viewNeedsInitialization, viewBinder)
 }

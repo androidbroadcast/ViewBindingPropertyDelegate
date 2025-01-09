@@ -18,7 +18,7 @@ inline fun <R : Any, reified VB : ViewBinding> viewBindingLazy(
     layoutInflater: LayoutInflater,
     parent: ViewGroup? = null,
     attachToParent: Boolean = false,
-): LazyViewBindingProperty<R, VB> {
+): ViewBindingProperty<R, VB> {
     return LazyViewBindingProperty {
         ViewBindingCache.getInflateWithLayoutInflater(VB::class.java)
             .inflate(layoutInflater, parent, attachToParent)

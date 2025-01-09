@@ -1,5 +1,4 @@
-@file:Suppress("RedundantVisibilityModifier", "unused")
-@file:JvmName("ReflectionFragmentViewBindings")
+@file:Suppress("RedundantVisibilityModifier", "unused") @file:JvmName("ReflectionFragmentViewBindings")
 
 package by.kirich1409.viewbindingdelegate
 
@@ -8,7 +7,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import by.kirich1409.viewbindingdelegate.internal.ViewBindingCache
-import by.kirich1409.viewbindingdelegate.internal.getRootView
+import by.kirich1409.viewbindingdelegate.internal.findRootView
 import by.kirich1409.viewbindingdelegate.internal.requireViewByIdCompat
 
 @JvmName("viewBindingFragment")
@@ -19,29 +18,24 @@ public inline fun <reified T : ViewBinding> Fragment.viewBinding(
 }
 
 @JvmName("viewBindingFragment")
+public fun <T : ViewBinding> DialogFragment.viewBinding(
+    viewBindingClass: Class<T>,
+    @IdRes viewBindingRootId: Int,
+): ViewBindingProperty<DialogFragment, T> {
+    return viewBinding { dialogFragment: DialogFragment ->
+        ViewBindingCache.getBind(viewBindingClass)
+            .bind(dialogFragment.findRootView(viewBindingRootId))
+    }
+}
+
+@JvmName("viewBindingFragment")
 public fun <T : ViewBinding> Fragment.viewBinding(
     viewBindingClass: Class<T>,
     @IdRes viewBindingRootId: Int,
 ): ViewBindingProperty<Fragment, T> {
-    return when (this) {
-        is DialogFragment -> {
-            viewBinding(
-                viewBinder = { dialogFragment ->
-                    dialogFragment as DialogFragment
-                    ViewBindingCache.getBind(viewBindingClass)
-                        .bind(dialogFragment.getRootView(viewBindingRootId))
-                }
-            )
-        }
-
-        else -> {
-            viewBinding(
-                viewBinder = {
-                    ViewBindingCache.getBind(viewBindingClass)
-                        .bind(requireView().requireViewByIdCompat(viewBindingRootId))
-                }
-            )
-        }
+    return viewBinding { _: Fragment ->
+        ViewBindingCache.getBind(viewBindingClass)
+            .bind(requireView().requireViewByIdCompat(viewBindingRootId))
     }
 }
 
@@ -67,19 +61,17 @@ public fun <T : ViewBinding> Fragment.viewBinding(
     viewBindingClass: Class<T>,
     createMethod: CreateMethod = CreateMethod.BIND,
 ): ViewBindingProperty<Fragment, T> = when (createMethod) {
-    CreateMethod.BIND -> viewBinding(
-        vbFactory = {
-            ViewBindingCache.getBind(viewBindingClass).bind(requireView())
-        }
-    )
+    CreateMethod.BIND -> fragmentViewBinding{
+        ViewBindingCache.getBind(viewBindingClass).bind(requireView())
+    }
 
     CreateMethod.INFLATE -> {
         fragmentViewBinding(
+            viewNeedsInitialization = false,
             viewBinder = {
                 ViewBindingCache.getInflateWithLayoutInflater(viewBindingClass)
                     .inflate(layoutInflater, null, false)
-            },
-            viewNeedsInitialization = false
+            }
         )
     }
 }

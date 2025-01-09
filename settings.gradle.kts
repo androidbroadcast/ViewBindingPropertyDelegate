@@ -32,6 +32,5 @@ rootProject.name = "ViewBindingDelegate"
 include(":vbpd:vbpd-core")
 include(":vbpd:vbpd-noreflection")
 include(":vbpd:vbpd-reflection")
-include(":vbpd:vbpd-full")
 include(":sample")
 
