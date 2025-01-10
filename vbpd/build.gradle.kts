@@ -1,4 +1,3 @@
-import com.android.utils.TraceUtils.simpleId
 import com.vanniktech.maven.publish.SonatypeHost
 
 plugins {

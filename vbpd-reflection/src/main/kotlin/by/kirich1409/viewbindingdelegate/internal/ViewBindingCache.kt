@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RestrictTo
 import androidx.annotation.RestrictTo.Scope.LIBRARY
-import androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP
 import androidx.viewbinding.ViewBinding
 import java.lang.reflect.Method
 
