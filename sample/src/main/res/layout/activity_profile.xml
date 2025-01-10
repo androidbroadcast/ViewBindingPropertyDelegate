@@ -8,7 +8,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/profile_fragment_container"
-        android:name="by.kirich1409.viewbindingdelegate.sample.fragment.noreflection.ProfileFragment"
+        android:name="dev.androidbroadcast.vbpd.sample.fragment.noreflection.ProfileFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout="@layout/fragment_profile" />

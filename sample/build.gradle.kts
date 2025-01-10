@@ -4,25 +4,25 @@ plugins {
 }
 
 android {
-    namespace = "by.kirich1409.viewbindingdelegate.sample"
+    namespace = "dev.androidbroadcast.vbpd.sample"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
     buildToolsVersion = libs.versions.android.buildTools.get()
 
     defaultConfig {
-        applicationId = "by.kirich1409.viewbindingdelegate.profile"
-        minSdk = 21
+        applicationId = "dev.androidbroadcast.vbpd"
+        minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
+        sourceCompatibility = JavaVersion.toVersion(libs.versions.jvmTarget.get())
+        targetCompatibility = JavaVersion.toVersion(libs.versions.jvmTarget.get())
     }
 
     kotlinOptions {
-        jvmTarget = "21"
+        jvmTarget = libs.versions.jvmTarget.get()
     }
 
     buildFeatures {

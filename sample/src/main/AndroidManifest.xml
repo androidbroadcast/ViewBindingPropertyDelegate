@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="by.kirich1409.viewbindingdelegate.sample"
+    package="dev.androidbroadcast.vbpd.sample"
     >
 
     <application
