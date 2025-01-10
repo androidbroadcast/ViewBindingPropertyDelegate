@@ -1,4 +1,4 @@
-х!хЬфмут Сутекфдъ(реезыЖ//ьфмут-ифвпуыюрукщлгфззюсщь/ьфмут-сутекфд/сщьюпшергиюлшкшср1409/мшуциштвштпзкщзукенвудупфеу/ифвпуюымп)ъ(реезыЖ//ьфмут-ифвпуыюрукщлгфззюсщь/ьфмут-сутекфд/сщьюпшергиюлшкшср1409/мшуциштвштпзкщзукенвудупфеу)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.kirich1409/viewbindingpropertydelegate/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.kirich1409/viewbindingpropertydelegate)
 
 # ViewBindingPropertyDelegate
 
@@ -7,14 +7,14 @@ Make work with [Android View Binding](https://d.android.com/topic/libraries/view
 - eliminates the need to keep nullable references to Views or ViewBindings
 - creates ViewBinding lazily
 
-The library comes in two flavors: with and without reflection. The artifacts are respectively: `viewbindingpropertydelegate` and `viewbindingpropertydelegate-noreflection`. **Prefer to use the one without reflection for better performance**
+The library comes in two variants: with and without reflection. The artifacts are respectively: `vbpd` and `vbpd-reflection`. **Prefer to use the one without reflection for better performance**
 
 ## IMPORTANT: Enable ViewBinding before using the library
 Each Gradle module in your project where you need to use ViewBinding must be properly configured. Refer to the [official guide](https://d.android.com/topic/libraries/view-binding) on how to do that 
 
 ## Add the library to a project
 
-```groovy
+```kotlin
 allprojects {
   repositories {
     mavenCentral()
@@ -22,44 +22,28 @@ allprojects {
 }
 
 dependencies {
-    // reflection-based flavor
-    implementation 'com.github.kirich1409:viewbindingpropertydelegate-full:1.5.10'
+    val vbpdVersion = "2.0.0-alpha01"
+    // recommended
+    implementation("dev.androidbroadcast.vbpd:vbpd:$vbpdVersion")
     
-    // reflection-free flavor
-    implementation 'com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.5.10'
+    // additional factories that use reflection under hood
+    implementation("dev.androidbroadcast.vbpd:vbpd-reflection:$vbpdVersion")
 }
 ```
 
 ## Samples
 
 ```kotlin
-class ProfileFragment : Fragment(R.layout.profile) {
-
-    // reflection API and ViewBinding.bind are used under the hood
-    private val viewBinding: ProfileBinding by viewBinding()
-
-    // reflection API and ViewBinding.inflate are used under the hood
-    private val viewBinding: ProfileBinding by viewBinding(createMethod = CreateMethod.INFLATE)
-
-    // no reflection API is used under the hood
-    private val viewBinding by viewBinding(ProfileBinding::bind)
-}
-```
-
-```kotlin
-class ProfileActivity : AppCompatActivity(R.layout.profile) {
-
-    // reflection API is used under the hood
-    private val viewBinding: ProfileBinding by viewBinding(R.id.container)
-
-    // no reflection API is used under the hood
-    private val viewBinding by viewBinding(ProfileBinding::bind, R.id.container)
+class ProfileFragment : Fragment(R.layout.profile) { 
+   // RECOMMENDED 
+   // no reflection API is used under the hood
+   private val profileBinding: ProfileBinding by viewBinding(ProfileBinding::bind)
 }
 ```
 
 # License
 
-   Copyright 2020-2023 Kirill Rozov
+   Copyright 2020-2025 Kirill Rozov
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
