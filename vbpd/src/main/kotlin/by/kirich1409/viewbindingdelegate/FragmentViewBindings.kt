@@ -128,7 +128,7 @@ public inline fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
 }
 
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-fun <F : Fragment, T : ViewBinding> fragmentViewBinding(
+public fun <F : Fragment, T : ViewBinding> fragmentViewBinding(
     viewNeedsInitialization: Boolean = true,
     viewBinder: (F) -> T,
 ): ViewBindingProperty<F, T> {

@@ -1,3 +1,4 @@
+import com.android.utils.TraceUtils.simpleId
 import com.vanniktech.maven.publish.SonatypeHost
 
 plugins {
@@ -10,8 +11,10 @@ plugins {
 version = libs.versions.vbpd.version.get()
 group = "dev.androidbroadcast.vbpd"
 
+val libraryId = "dev.androidbroadcast.vbpd"
+
 android {
-    namespace = "dev.androidbroadcast.vbpd"
+    namespace = libraryId
     compileSdk = libs.versions.android.compileSdk.get().toInt()
     buildToolsVersion = libs.versions.android.buildTools.get()
 
@@ -20,27 +23,26 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
+        sourceCompatibility = JavaVersion.toVersion(libs.versions.jvmTarget.get())
+        targetCompatibility = JavaVersion.toVersion(libs.versions.jvmTarget.get())
     }
 
     kotlinOptions {
-        jvmTarget = "21"
-        freeCompilerArgs += listOf("-module-name", "dev.androidbroadcast.vbpd.noreflection")
-    }
-
-    buildFeatures {
-        androidResources = false
+        jvmTarget = libs.versions.jvmTarget.get()
+        freeCompilerArgs += listOf("-module-name", libraryId)
     }
 }
 
+kotlin {
+    explicitApi()
+}
+
 dependencies {
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.fragment.ktx)
-    compileOnly(libs.androidx.viewbinding)
-    implementation(libs.androidx.recyclerview)
-    compileOnly(libs.androidx.annotation)
-    compileOnly(libs.androidx.savedstate)
+    // Use compileOnly dependencies because usage
+    // ViewBindingPropertyDelegate without adding them in the project
+    compileOnly(libs.androidx.fragment)
+    compileOnly(libs.androidx.activity)
+    compileOnly(libs.androidx.recyclerview)
     api(projects.vbpdCore)
 }
 
@@ -62,9 +64,9 @@ mavenPublishing {
     signAllPublications()
 
     coordinates(
-        groupId = "dev.androidbroadcast.vbpd",
-        artifactId = "vbpd",
-        version = libs.versions.vbpd.version.get()
+        groupId = project.group.toString(),
+        artifactId = project.name,
+        version = project.version.toString(),
     )
 
     pom {

@@ -120,7 +120,7 @@ public inline fun <A : Activity, T : ViewBinding> Activity.viewBinding(
 }
 
 @RestrictTo(LIBRARY_GROUP)
-fun <A : Activity, T : ViewBinding> activityViewBinding(
+public fun <A : Activity, T : ViewBinding> activityViewBinding(
     viewNeedsInitialization: Boolean = true,
     viewBinder: (A) -> T,
 ): ViewBindingProperty<A, T> {

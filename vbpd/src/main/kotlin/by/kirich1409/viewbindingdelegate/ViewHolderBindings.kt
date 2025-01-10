@@ -13,7 +13,7 @@ import by.kirich1409.viewbindingdelegate.internal.requireViewByIdCompat
  * Create new [ViewBinding] associated with the [ViewHolder]
  */
 @Suppress("UnusedReceiverParameter")
-fun <VH : ViewHolder, T : ViewBinding> ViewHolder.viewBinding(viewBinder: (VH) -> T): ViewBindingProperty<VH, T> {
+public fun <VH : ViewHolder, T : ViewBinding> ViewHolder.viewBinding(viewBinder: (VH) -> T): ViewBindingProperty<VH, T> {
     return LazyViewBindingProperty(viewBinder)
 }
 
@@ -24,7 +24,7 @@ fun <VH : ViewHolder, T : ViewBinding> ViewHolder.viewBinding(viewBinder: (VH) -
  * @param viewProvider Provide a [View] from the [ViewHolder]. By default call [ViewHolder.itemView]
  */
 @Suppress("UnusedReceiverParameter")
-inline fun <VH : ViewHolder, T : ViewBinding> ViewHolder.viewBinding(
+public inline fun <VH : ViewHolder, T : ViewBinding> ViewHolder.viewBinding(
     crossinline vbFactory: (View) -> T,
     crossinline viewProvider: (VH) -> View = ViewHolder::itemView,
 ): ViewBindingProperty<VH, T> {
@@ -38,7 +38,7 @@ inline fun <VH : ViewHolder, T : ViewBinding> ViewHolder.viewBinding(
  * @param viewBindingRootId Root view's id that will be used as a root for the view binding
  */
 @Suppress("UnusedReceiverParameter")
-inline fun <VH : ViewHolder, T : ViewBinding> ViewHolder.viewBinding(
+public inline fun <VH : ViewHolder, T : ViewBinding> ViewHolder.viewBinding(
     crossinline vbFactory: (View) -> T,
     @IdRes viewBindingRootId: Int,
 ): ViewBindingProperty<VH, T> {

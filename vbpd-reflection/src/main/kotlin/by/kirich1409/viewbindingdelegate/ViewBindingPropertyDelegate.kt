@@ -14,10 +14,10 @@ import by.kirich1409.viewbindingdelegate.internal.ViewBindingCache
  * not associated with any host. You need to manually clear reference with
  * [ViewBindingProperty.clear] or not to keep it at all.
  */
-inline fun <R : Any, reified VB : ViewBinding> viewBindingLazy(
+public inline fun <R : Any, reified VB : ViewBinding> viewBindingLazy(
     layoutInflater: LayoutInflater,
     parent: ViewGroup? = null,
-    attachToParent: Boolean = false,
+    attachToParent: Boolean = parent != null,
 ): ViewBindingProperty<R, VB> {
     return LazyViewBindingProperty {
         ViewBindingCache.getInflateWithLayoutInflater(VB::class.java)

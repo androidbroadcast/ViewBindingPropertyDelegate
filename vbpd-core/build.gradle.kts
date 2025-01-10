@@ -1,3 +1,4 @@
+import com.android.utils.TraceUtils.simpleId
 import com.vanniktech.maven.publish.SonatypeHost
 
 plugins {
@@ -10,35 +11,38 @@ plugins {
 version = libs.versions.vbpd.version.get()
 group = "dev.androidbroadcast.vbpd"
 
-version = libs.versions.vbpd.version.get()
+val libraryId = "dev.androidbroadcast.vbpd.core"
 
 android {
-    namespace = "com.github.kirich1409.viewbindingpropertydelegate"
+    namespace = libraryId
     compileSdk = libs.versions.android.compileSdk.get().toInt()
     buildToolsVersion = libs.versions.android.buildTools.get()
 
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()
+
+        aarMetadata {
+            minCompileSdk = libs.versions.android.minSdk.get().toInt()
+        }
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
+        sourceCompatibility = JavaVersion.toVersion(libs.versions.jvmTarget.get())
+        targetCompatibility = JavaVersion.toVersion(libs.versions.jvmTarget.get())
     }
 
     kotlinOptions {
-        jvmTarget = "21"
-        freeCompilerArgs += listOf("-module-name", "com.github.kirich1409.ViewBindingPropertyDelegate.core")
-    }
-
-    buildFeatures {
-        androidResources = false
+        jvmTarget = libs.versions.jvmTarget.get()
+        freeCompilerArgs += listOf("-module-name", libraryId)
     }
 }
 
+kotlin {
+    explicitApi()
+}
+
 dependencies {
-    compileOnly(libs.androidx.viewbinding)
-    implementation(libs.androidx.lifecycle.common.java8)
+    api(libs.androidx.viewbinding)
     implementation(libs.androidx.annotation)
 }
 
@@ -60,9 +64,9 @@ mavenPublishing {
     signAllPublications()
 
     coordinates(
-        groupId = "dev.androidbroadcast.vbpd",
-        artifactId = "vbpd-core",
-        version = libs.versions.vbpd.version.get(),
+        groupId = project.group.toString(),
+        artifactId = project.name,
+        version = project.version.toString(),
     )
 
     pom {

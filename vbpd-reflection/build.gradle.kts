@@ -1,3 +1,4 @@
+import com.android.utils.TraceUtils.simpleId
 import com.vanniktech.maven.publish.SonatypeHost
 
 plugins {
@@ -10,8 +11,10 @@ plugins {
 version = libs.versions.vbpd.version.get()
 group = "dev.androidbroadcast.vbpd"
 
+val libraryId = "dev.androidbroadcast.vbpd.reflection"
+
 android {
-    namespace = "com.github.kirich1409.viewbindingpropertydelegate"
+    namespace = libraryId
     compileSdk = libs.versions.android.compileSdk.get().toInt()
     buildToolsVersion = libs.versions.android.buildTools.get()
 
@@ -20,32 +23,26 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
+        sourceCompatibility = JavaVersion.toVersion(libs.versions.jvmTarget.get())
+        targetCompatibility = JavaVersion.toVersion(libs.versions.jvmTarget.get())
     }
 
     kotlinOptions {
-        jvmTarget = "21"
-        freeCompilerArgs += listOf("-module-name", "com.github.kirich1409.ViewBindingPropertyDelegate.reflection")
-    }
-
-    buildFeatures {
-        androidResources = false
+        jvmTarget = libs.versions.jvmTarget.get()
+        freeCompilerArgs += listOf("-module-name", libraryId)
     }
 }
 
+kotlin {
+    explicitApi()
+}
+
 dependencies {
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.activity)
-    implementation(libs.androidx.fragment.ktx)
-    implementation(libs.androidx.viewbinding)
-    implementation(libs.androidx.lifecycle.common)
-    implementation(libs.androidx.recyclerview)
-    implementation(libs.androidx.annotation)
-    implementation(libs.androidx.activity)
-    implementation(libs.androidx.savedstate)
-    implementation(libs.androidx.lifecycle.viewmodel)
-    implementation(libs.androidx.lifecycle.runtime)
+    // Use compileOnly dependencies because usage
+    // ViewBindingPropertyDelegate without adding them in the project
+    compileOnly(libs.androidx.fragment)
+    compileOnly(libs.androidx.recyclerview)
+    compileOnly(libs.androidx.activity)
     api(projects.vbpd)
 }
 
@@ -76,9 +73,9 @@ mavenPublishing {
     signAllPublications()
 
     coordinates(
-        groupId = "dev.androidbroadcast.vbpd",
-        artifactId = "vbpd-reflection",
-        version = libs.versions.vbpd.version.get(),
+        groupId = project.group.toString(),
+        artifactId = project.name,
+        version = project.version.toString(),
     )
 
     pom {

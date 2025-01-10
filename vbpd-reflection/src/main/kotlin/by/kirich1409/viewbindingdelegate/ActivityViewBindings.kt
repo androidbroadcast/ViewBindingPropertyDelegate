@@ -70,7 +70,9 @@ public fun <A: Activity, T : ViewBinding> Activity.viewBinding(
 @JvmName("inflateViewBindingActivity")
 public inline fun <A: Activity, reified T : ViewBinding> Activity.viewBinding(
     createMethod: CreateMethod = CreateMethod.BIND,
-) = viewBinding<A, T>(T::class.java, createMethod)
+): ViewBindingProperty<A, T> {
+    return viewBinding(T::class.java, createMethod)
+}
 
 @JvmName("inflateViewBindingActivity")
 public fun <A: Activity, T : ViewBinding> Activity.viewBinding(

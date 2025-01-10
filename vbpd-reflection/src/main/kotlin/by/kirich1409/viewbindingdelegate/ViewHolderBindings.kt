@@ -13,7 +13,9 @@ import by.kirich1409.viewbindingdelegate.internal.ViewBindingCache
  * @param T Class of expected [ViewBinding] result class
  */
 @JvmName("viewBindingViewHolder")
-public inline fun <reified T : ViewBinding> ViewHolder.viewBinding() = viewBinding(T::class.java)
+public inline fun <reified T : ViewBinding> ViewHolder.viewBinding(): ViewBindingProperty<ViewHolder, T> {
+    return viewBinding(T::class.java)
+}
 
 /**
  * Create new [ViewBinding] associated with the [ViewHolder]

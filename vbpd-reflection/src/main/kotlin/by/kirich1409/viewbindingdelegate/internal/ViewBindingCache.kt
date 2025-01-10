@@ -7,16 +7,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RestrictTo
 import androidx.annotation.RestrictTo.Scope.LIBRARY
+import androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP
 import androidx.viewbinding.ViewBinding
 import java.lang.reflect.Method
 
-object ViewBindingCache {
+@PublishedApi
+internal object ViewBindingCache {
 
     private val inflateCache = mutableMapOf<Class<out ViewBinding>, InflateViewBinding<ViewBinding>>()
     private val bindCache = mutableMapOf<Class<out ViewBinding>, BindViewBinding<ViewBinding>>()
 
     @Suppress("UNCHECKED_CAST")
-    @RestrictTo(LIBRARY)
     @PublishedApi
     internal fun <T : ViewBinding> getInflateWithLayoutInflater(
         viewBindingClass: Class<T>,

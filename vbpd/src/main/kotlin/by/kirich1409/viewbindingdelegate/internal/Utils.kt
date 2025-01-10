@@ -16,12 +16,12 @@ import kotlin.reflect.KProperty
 
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
-fun <V : View> View.requireViewByIdCompat(@IdRes id: Int): V {
+public fun <V : View> View.requireViewByIdCompat(@IdRes id: Int): V {
     return ViewCompat.requireViewById(this, id)
 }
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
-fun <V : View> Activity.requireViewByIdCompat(@IdRes id: Int): V {
+public fun <V : View> Activity.requireViewByIdCompat(@IdRes id: Int): V {
     return ActivityCompat.requireViewById(this, id)
 }
 
@@ -29,7 +29,7 @@ fun <V : View> Activity.requireViewByIdCompat(@IdRes id: Int): V {
  * Utility to find root view for ViewBinding in Activity
  */
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-fun findRootView(activity: Activity): View {
+public fun findRootView(activity: Activity): View {
     val contentView = activity.findViewById<ViewGroup>(android.R.id.content)
     checkNotNull(contentView) { "Activity has no content view" }
     return when (contentView.childCount) {
@@ -40,7 +40,7 @@ fun findRootView(activity: Activity): View {
 }
 
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-fun DialogFragment.findRootView(@IdRes viewBindingRootId: Int): View {
+public fun DialogFragment.findRootView(@IdRes viewBindingRootId: Int): View {
     if (showsDialog) {
         val dialog = checkNotNull(dialog) {
             "DialogFragment doesn't have a dialog. Use viewBinding delegate after onCreateDialog"
@@ -54,7 +54,8 @@ fun DialogFragment.findRootView(@IdRes viewBindingRootId: Int): View {
     }
 }
 
-fun <T : Any> weakReference(value: T? = null): ReadWriteProperty<Any, T?> {
+@RestrictTo(RestrictTo.Scope.LIBRARY)
+internal fun <T : Any> weakReference(value: T? = null): ReadWriteProperty<Any, T?> {
     return object : ReadWriteProperty<Any, T?> {
 
         private var weakRef = WeakReference(value)

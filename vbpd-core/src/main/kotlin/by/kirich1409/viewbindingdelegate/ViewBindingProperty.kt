@@ -13,10 +13,10 @@ import kotlin.reflect.KProperty
 /**
  * Base ViewBindingProperty interface that provides access to operations in the property delegate.
  */
-interface ViewBindingProperty<in R : Any, out T : ViewBinding> : ReadOnlyProperty<R, T> {
+public interface ViewBindingProperty<in R : Any, out T : ViewBinding> : ReadOnlyProperty<R, T> {
 
     @MainThread
-    fun clear()
+    public fun clear()
 }
 
 public open class LazyViewBindingProperty<in R : Any, out T : ViewBinding>(

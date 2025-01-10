@@ -21,7 +21,7 @@ internal class ViewGroupViewBindingProperty<in V : ViewGroup, T : ViewBinding>(
  *
  * @param vbFactory Function that creates a new instance of [ViewBinding]. `MyViewBinding::bind` can be used
  */
-inline fun <T : ViewBinding> ViewGroup.viewBinding(
+public inline fun <T : ViewBinding> ViewGroup.viewBinding(
     crossinline vbFactory: (ViewGroup) -> T,
 ): ViewBindingProperty<ViewGroup, T> {
     return when {
@@ -37,7 +37,7 @@ inline fun <T : ViewBinding> ViewGroup.viewBinding(
  * @param viewBindingRootId Root view's id that will be used as a root for the view binding
  */
 @Deprecated("Order of arguments was changed", ReplaceWith("viewBinding(viewBindingRootId, vbFactory)"))
-inline fun <T : ViewBinding> ViewGroup.viewBinding(
+public inline fun <T : ViewBinding> ViewGroup.viewBinding(
     crossinline vbFactory: (View) -> T,
     @IdRes viewBindingRootId: Int,
 ): ViewBindingProperty<ViewGroup, T> {
@@ -50,7 +50,7 @@ inline fun <T : ViewBinding> ViewGroup.viewBinding(
  * @param vbFactory Function that creates a new instance of [ViewBinding]. `MyViewBinding::bind` can be used
  * @param viewBindingRootId Root view's id that will be used as a root for the view binding
  */
-inline fun <T : ViewBinding> ViewGroup.viewBinding(
+public inline fun <T : ViewBinding> ViewGroup.viewBinding(
     @IdRes viewBindingRootId: Int,
     crossinline vbFactory: (View) -> T,
 ): ViewBindingProperty<ViewGroup, T> {
@@ -64,7 +64,7 @@ inline fun <T : ViewBinding> ViewGroup.viewBinding(
  * @param viewBindingRootId Root view's id that will be used as a root for the view binding
  * @param lifecycleAware Get [LifecycleOwner] from the [ViewGroup][this] using [ViewTreeLifecycleOwner]
  */
-inline fun <T : ViewBinding> ViewGroup.viewBinding(
+public inline fun <T : ViewBinding> ViewGroup.viewBinding(
     @IdRes viewBindingRootId: Int,
     lifecycleAware: Boolean,
     crossinline vbFactory: (View) -> T,

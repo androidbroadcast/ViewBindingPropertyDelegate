@@ -10,7 +10,7 @@ import by.kirich1409.viewbindingdelegate.internal.core.checkMainThread
 /**
  * Setting for ViewBindingPropertyDelegate library
  */
-object ViewBindingPropertyDelegate {
+public object ViewBindingPropertyDelegate {
 
     /**
      * Enable strict checks for how ViewBindingPropertyDelegate is accessed. Throws an [Exception]
@@ -21,7 +21,7 @@ object ViewBindingPropertyDelegate {
      * **By default strict mode is enabled**
      */
     @set:MainThread
-    var strictMode = true
+    public var strictMode: Boolean = true
         set(value) {
             checkMainThread()
             field = value
@@ -35,7 +35,7 @@ object ViewBindingPropertyDelegate {
  *
  * @param viewBinder Function that create new instance of [ViewBinding]
  */
-fun <R : Any, VB : ViewBinding> viewBindingLazy(
+public fun <R : Any, VB : ViewBinding> viewBindingLazy(
     viewBinder: (R) -> VB,
 ): LazyViewBindingProperty<R, VB> {
     return LazyViewBindingProperty(viewBinder)
