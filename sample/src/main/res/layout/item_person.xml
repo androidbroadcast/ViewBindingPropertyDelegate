@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fullname"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:minHeight="?listPreferredItemHeight"
+    android:orientation="vertical"
+    android:paddingStart="?listPreferredItemPaddingStart"
+    android:paddingTop="8dp"
+    android:paddingEnd="?listPreferredItemPaddingEnd"
+    android:paddingBottom="8dp"
+    android:background="?selectableItemBackground"
+    android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+    />

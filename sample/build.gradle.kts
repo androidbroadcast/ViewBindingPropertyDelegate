@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.android.application)
+    alias(libs.plugins.parcelize)
 }
 
 android {
@@ -35,6 +36,7 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.activity)
+    implementation(libs.androidx.fragment)
     implementation(projects.vbpd)
     implementation(projects.vbpdReflection)
 

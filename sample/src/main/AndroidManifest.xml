@@ -22,16 +22,6 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".activity.reflection.ProfileActivity"
-            android:exported="true"
-            />
-
-        <activity
-            android:name=".activity.reflection.inflate.ProfileActivity"
-            android:exported="true"
-            />
-
     </application>
 
 </manifest>
