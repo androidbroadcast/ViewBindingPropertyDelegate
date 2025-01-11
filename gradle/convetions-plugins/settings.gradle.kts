@@ -1,8 +1,7 @@
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+@file:Suppress("UnstableApiUsage")
+
 
 pluginManagement {
-    includeBuild("gradle/convetions-plugins")
-
     repositories {
         google {
             content {
@@ -11,13 +10,12 @@ pluginManagement {
                 includeGroupAndSubgroups("com.google")
             }
         }
-        mavenCentral()
         gradlePluginPortal()
+        mavenCentral()
     }
 }
 
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google {
             content {
@@ -26,14 +24,14 @@ dependencyResolutionManagement {
                 includeGroupAndSubgroups("com.google")
             }
         }
-        mavenCentral()
         gradlePluginPortal()
+        mavenCentral()
+    }
+    versionCatalogs {
+        create("libs") {
+            from(files("../libs.versions.toml"))
+        }
     }
 }
 
-rootProject.name = "ViewBindingDelegate"
-include(":vbpd-core")
-include(":vbpd")
-include(":vbpd-reflection")
-include(":sample")
-
+include(":vbpd-library-base")

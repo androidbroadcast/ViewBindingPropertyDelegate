@@ -26,6 +26,10 @@ androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version
 androidx-viewbinding = { module = "androidx.databinding:viewbinding", version.ref = "agp" }
 leakcanary-android = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanary" }
 
+gradleplugins-android = { module = "com.android.tools.build:gradle", version.ref = "agp" }
+gradleplugins-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+gradleplugins-vanniktechMavenPublish = { module = "com.vanniktech.maven.publish:com.vanniktech.maven.publish.gradle.plugin", version.ref = "vanniktechMavenPublish" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
