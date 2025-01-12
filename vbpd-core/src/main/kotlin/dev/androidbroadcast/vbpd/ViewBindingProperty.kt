@@ -1,5 +1,3 @@
-@file:Suppress("RedundantVisibilityModifier")
-
 package dev.androidbroadcast.vbpd
 
 import androidx.annotation.CallSuper
@@ -15,34 +13,18 @@ import kotlin.reflect.KProperty
  */
 public interface ViewBindingProperty<in R : Any, out T : ViewBinding> : ReadOnlyProperty<R, T> {
 
+    /**
+     * Clear all cached data. Will be called when own object destroys view
+     */
     @MainThread
-    public fun clear()
-}
-
-public open class LazyViewBindingProperty<in R : Any, out T : ViewBinding>(
-    protected val viewBinder: (R) -> T,
-) : ViewBindingProperty<R, T> {
-
-    protected var viewBinding: Any? = null
-
-    @Suppress("UNCHECKED_CAST")
-    @MainThread
-    public override fun getValue(
-        thisRef: R,
-        property: KProperty<*>,
-    ): T {
-        return viewBinding as? T ?: viewBinder(thisRef).also { viewBinding ->
-            this.viewBinding = viewBinding
-        }
-    }
-
-    @MainThread
-    @CallSuper
-    public override fun clear() {
-        this.viewBinding = null
+    public fun clear() {
+        // Do nothing
     }
 }
 
+/**
+ * Eager implementation of [ViewBindingProperty] that holds [ViewBinding] instance.
+ */
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
 public open class EagerViewBindingProperty<in R : Any, out T : ViewBinding>(
     private val viewBinding: T,
@@ -53,19 +35,17 @@ public open class EagerViewBindingProperty<in R : Any, out T : ViewBinding>(
         thisRef: R,
         property: KProperty<*>,
     ): T = viewBinding
-
-    @MainThread
-    public override fun clear() {
-        // Do nothing
-    }
 }
 
+/**
+ * Lazy implementation of [ViewBindingProperty] that creates [ViewBinding] instance on the first access.
+ */
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-public abstract class BaseViewBindingProperty<in R : Any, T : ViewBinding>(
+public open class LazyViewBindingProperty<in R : Any, T : ViewBinding>(
     private val viewBinder: (R) -> T,
 ) : ViewBindingProperty<R, T> {
 
-    protected var viewBinding: T? = null
+    private var viewBinding: T? = null
 
     @MainThread
     public override fun getValue(
@@ -73,15 +53,13 @@ public abstract class BaseViewBindingProperty<in R : Any, T : ViewBinding>(
         property: KProperty<*>,
     ): T {
         checkMainThread("Access to ViewBinding from non UI (Main) thread forbidden")
-        viewBinding?.let { return@getValue it }
-        this.viewBinding = null
-        return viewBinder(thisRef).also { this.viewBinding = it }
+        return viewBinding ?: viewBinder(thisRef).also { viewBinding = it }
     }
 
     @MainThread
     @CallSuper
     public override fun clear() {
         checkMainThread()
-        this.viewBinding = null
+        viewBinding = null
     }
 }

@@ -1,6 +1,8 @@
 package dev.androidbroadcast.vbpd.sample
 
+import android.graphics.Color
 import android.os.Bundle
+import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -11,12 +13,16 @@ import androidx.fragment.app.replace
 import dev.androidbroadcast.vbpd.sample.databinding.ActivityMainBinding
 import dev.androidbroadcast.vbpd.viewBinding
 
-class MainActivity : AppCompatActivity(R.layout.activity_main), PersonListFragment.OnPersonClickListener {
+class MainActivity :
+    AppCompatActivity(R.layout.activity_main),
+    PersonListFragment.OnPersonClickListener {
 
     private val viewBinding by viewBinding(ActivityMainBinding::bind)
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        enableEdgeToEdge()
+        enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.dark(Color.WHITE)
+        )
         super.onCreate(savedInstanceState)
         setSupportActionBar(viewBinding.appbar)
 

@@ -1,3 +1,25 @@
+## 2.0.0 (In progress)
+
+- Changed under hood tracking of View lifecycle in ViewBindingPropertyDelegate
+- Removed ViewBindingPropertyDelegate base on Lifecycle
+- Removed Jetpack Lifecycle dependencies
+- Remove Strict Modes checks
+- Up Min sdk to API Level 21 Android 5.0 Lollipop
+- Remove internal checking of possibility to access host's view
+- Change artifact from `com.github.kirich1409:viewbindingpropertydelegate-*` to `dev.androidbroadcast.vbpd:vbpd-*`
+- Change classes base package from `com.github.kirich1409.viewbindingpropertydelegate` to `dev.androidbroadcast.vbpd`. It allows to use 1.X and 2.X versions together
+- Remove onViewDestroyCallback\(\) from ViewBindingPropertyDelegate
+- Update Jetpack dependencies. All of them connected as compileOnly dependencies that's why you can use any version of them in project, but with required APIs
+- All libraries artifacts distributes as AAR instead of JAR
+- Fix bugs working during inter-Fragment's animations 
+- Minor improvements 
+
+### Changed under hood tracking of Fragment View lifecycle
+- Fragment: Replace Jetpack Lifecycle with FragmentManager.FragmentLifecycleCallbacks
+- Activity: Remove cleaning view after Activity.onDestroy()
+- ViewGroup: Will be kept during View instance life
+- RecyclerView.ViewHolder: Will be kept during ViewHolder instance life
+
 ## 1.5.10
 - Bugs fixes
 

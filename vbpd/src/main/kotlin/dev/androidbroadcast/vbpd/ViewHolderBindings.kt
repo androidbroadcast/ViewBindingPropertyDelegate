@@ -13,7 +13,9 @@ import dev.androidbroadcast.vbpd.internal.requireViewByIdCompat
  * Create new [ViewBinding] associated with the [ViewHolder]
  */
 @Suppress("UnusedReceiverParameter")
-public fun <VH : ViewHolder, T : ViewBinding> ViewHolder.viewBinding(viewBinder: (VH) -> T): ViewBindingProperty<VH, T> {
+public fun <VH : ViewHolder, T : ViewBinding> ViewHolder.viewBinding(
+    viewBinder: (VH) -> T,
+): ViewBindingProperty<VH, T> {
     return LazyViewBindingProperty(viewBinder)
 }
 
@@ -28,7 +30,9 @@ public inline fun <VH : ViewHolder, T : ViewBinding> ViewHolder.viewBinding(
     crossinline vbFactory: (View) -> T,
     crossinline viewProvider: (VH) -> View = ViewHolder::itemView,
 ): ViewBindingProperty<VH, T> {
-    return LazyViewBindingProperty { viewHolder: VH -> viewProvider(viewHolder).let(vbFactory) }
+    return LazyViewBindingProperty { viewHolder: VH ->
+        viewProvider(viewHolder).let(vbFactory)
+    }
 }
 
 /**

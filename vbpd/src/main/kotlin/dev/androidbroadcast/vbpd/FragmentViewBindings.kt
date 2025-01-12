@@ -19,7 +19,7 @@ import kotlin.reflect.KProperty
 private class FragmentViewBindingProperty<F : Fragment, T : ViewBinding>(
     private val viewNeedsInitialization: Boolean,
     viewBinder: (F) -> T,
-) : BaseViewBindingProperty<F, T>(viewBinder) {
+) : LazyViewBindingProperty<F, T>(viewBinder) {
 
     private var lifecycleCallbacks: FragmentManager.FragmentLifecycleCallbacks? = null
     private var fragmentManager: FragmentManager? = null

@@ -1,4 +1,3 @@
-@file:Suppress("RedundantVisibilityModifier", "unused")
 @file:JvmName("ReflectionActivityViewBindings")
 
 package  dev.androidbroadcast.vbpd
@@ -8,7 +7,6 @@ import android.view.View
 import androidx.annotation.IdRes
 import androidx.core.app.ActivityCompat
 import androidx.viewbinding.ViewBinding
-import  dev.androidbroadcast.vbpd.internal.ViewBindingCache
 import  dev.androidbroadcast.vbpd.internal.findRootView
 
 /**
@@ -81,7 +79,7 @@ public fun <A : Activity, T : ViewBinding> Activity.viewBinding(
 ): ViewBindingProperty<A, T> = when (createMethod) {
     CreateMethod.BIND -> viewBinding(viewBindingClass, ::findRootView)
     CreateMethod.INFLATE -> {
-        activityViewBinding(viewNeedsInitialization = false) {
+        ActivityViewBindingProperty {
             ViewBindingCache.getInflateWithLayoutInflater(viewBindingClass)
                 .inflate(layoutInflater, null, false)
         }

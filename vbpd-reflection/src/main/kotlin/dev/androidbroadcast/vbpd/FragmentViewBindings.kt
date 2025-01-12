@@ -1,4 +1,4 @@
-@file:Suppress("RedundantVisibilityModifier", "unused") @file:JvmName("ReflectionFragmentViewBindings")
+@file:JvmName("ReflectionFragmentViewBindings")
 
 package dev.androidbroadcast.vbpd
 
@@ -6,10 +6,16 @@ import androidx.annotation.IdRes
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
-import dev.androidbroadcast.vbpd.internal.ViewBindingCache
 import dev.androidbroadcast.vbpd.internal.findRootView
 import dev.androidbroadcast.vbpd.internal.requireViewByIdCompat
 
+/**
+ * Create new [ViewBinding] associated with the [Fragment]
+ *
+ * @param viewBindingRootId Root view's id that will be used as a root for the view binding
+ *
+ * @return [ViewBindingProperty] that holds [ViewBinding] instance
+ */
 @JvmName("viewBindingFragment")
 public inline fun <reified T : ViewBinding> Fragment.viewBinding(
     @IdRes viewBindingRootId: Int,
@@ -17,6 +23,14 @@ public inline fun <reified T : ViewBinding> Fragment.viewBinding(
     return viewBinding(T::class.java, viewBindingRootId)
 }
 
+/**
+ * Create new [ViewBinding] associated with the [DialogFragment]
+ *
+ * @param viewBindingClass Class of expected [ViewBinding]
+ * @param viewBindingRootId Root view's id that will be used as a root for the view binding
+ *
+ * @return [ViewBindingProperty] that holds [ViewBinding] instance
+ */
 @JvmName("viewBindingFragment")
 public fun <T : ViewBinding> DialogFragment.viewBinding(
     viewBindingClass: Class<T>,
@@ -28,6 +42,14 @@ public fun <T : ViewBinding> DialogFragment.viewBinding(
     }
 }
 
+/**
+ * Create new [ViewBinding] associated with the [Fragment]
+ *
+ * @param viewBindingClass Class of expected [ViewBinding]
+ * @param viewBindingRootId Root view's id that will be used as a root for the view binding
+ *
+ * @return [ViewBindingProperty] that holds [ViewBinding] instance
+ */
 @JvmName("viewBindingFragment")
 public fun <T : ViewBinding> Fragment.viewBinding(
     viewBindingClass: Class<T>,
@@ -42,7 +64,9 @@ public fun <T : ViewBinding> Fragment.viewBinding(
 /**
  * Create new [ViewBinding] associated with the [Fragment]
  *
- * @param T Class of expected [ViewBinding] result class
+ * @param createMethod Method that will be used to create [ViewBinding] instance
+ *
+ * @return [ViewBindingProperty] that holds [ViewBinding] instance
  */
 @JvmName("viewBindingFragment")
 public inline fun <reified T : ViewBinding> Fragment.viewBinding(
@@ -55,6 +79,9 @@ public inline fun <reified T : ViewBinding> Fragment.viewBinding(
  * Create new [ViewBinding] associated with the [Fragment]
  *
  * @param viewBindingClass Class of expected [ViewBinding] result class
+ * @param createMethod Method that will be used to create [ViewBinding] instance
+ *
+ * @return [ViewBindingProperty] that holds [ViewBinding] instance
  */
 @JvmName("viewBindingFragment")
 public fun <T : ViewBinding> Fragment.viewBinding(
