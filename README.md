@@ -22,7 +22,7 @@ allprojects {
 }
 
 dependencies {
-    val vbpdVersion = "2.0.0-alpha02"
+    val vbpdVersion = "2.0.0-beta01"
     // recommended
     implementation("dev.androidbroadcast.vbpd:vbpd:$vbpdVersion")
     
