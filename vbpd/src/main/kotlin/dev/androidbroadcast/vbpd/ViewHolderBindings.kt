@@ -1,4 +1,3 @@
-@file:Suppress("unused")
 @file:JvmName("ViewHolderBindings")
 
 package dev.androidbroadcast.vbpd

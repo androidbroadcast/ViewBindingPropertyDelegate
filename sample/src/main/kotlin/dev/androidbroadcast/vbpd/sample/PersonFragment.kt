@@ -2,11 +2,11 @@ package dev.androidbroadcast.vbpd.sample
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.DialogFragment
 import dev.androidbroadcast.vbpd.sample.databinding.FragmentPersonDetailBinding
 import dev.androidbroadcast.vbpd.viewBinding
 
-class PersonFragment : Fragment(R.layout.fragment_person_detail) {
+class PersonFragment : DialogFragment(R.layout.fragment_person_detail) {
 
     private val viewBinding by viewBinding(FragmentPersonDetailBinding::bind)
     private val person: Person by parcelableArgument(ARG_PERSON)
@@ -23,6 +23,12 @@ class PersonFragment : Fragment(R.layout.fragment_person_detail) {
     companion object {
 
         private const val ARG_PERSON = "PERSON"
+
+        fun newInstance(person: Person): PersonFragment {
+            return PersonFragment().apply {
+                arguments = arguments(person)
+            }
+        }
 
         fun arguments(person: Person): Bundle {
             return Bundle(1).apply {

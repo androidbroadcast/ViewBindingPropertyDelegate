@@ -1,5 +1,3 @@
-@file:Suppress("unused")
-
 package dev.androidbroadcast.vbpd
 
 import android.view.View

@@ -1,4 +1,3 @@
-@file:Suppress("RedundantVisibilityModifier", "unused")
 @file:JvmName("FragmentViewBindings")
 
 package dev.androidbroadcast.vbpd
@@ -17,7 +16,6 @@ import dev.androidbroadcast.vbpd.internal.weakReference
 import kotlin.reflect.KProperty
 
 private class FragmentViewBindingProperty<F : Fragment, T : ViewBinding>(
-    private val viewNeedsInitialization: Boolean,
     viewBinder: (F) -> T,
 ) : LazyViewBindingProperty<F, T>(viewBinder) {
 
@@ -56,7 +54,7 @@ private class FragmentViewBindingProperty<F : Fragment, T : ViewBinding>(
         this.lifecycleCallbacks = null
     }
 
-    internal inner class VBFragmentLifecycleCallback(
+    inner class VBFragmentLifecycleCallback(
         fragment: Fragment,
     ) : FragmentManager.FragmentLifecycleCallbacks() {
 
@@ -129,8 +127,7 @@ public inline fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
 
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
 public fun <F : Fragment, T : ViewBinding> fragmentViewBinding(
-    viewNeedsInitialization: Boolean = true,
     viewBinder: (F) -> T,
 ): ViewBindingProperty<F, T> {
-    return FragmentViewBindingProperty(viewNeedsInitialization, viewBinder)
+    return FragmentViewBindingProperty(viewBinder)
 }
