@@ -1,5 +1,4 @@
 import dev.androidbroadcast.vbpd.gradle.androidLibraryConfig
-import dev.androidbroadcast.vbpd.gradle.javaVersion
 import dev.androidbroadcast.vbpd.gradle.kotlinConfig
 import dev.androidbroadcast.vbpd.gradle.kotlinOptions
 import dev.androidbroadcast.vbpd.gradle.libs
@@ -35,7 +34,7 @@ androidLibraryConfig {
     }
 
     compileOptions {
-        val javaVersion = libs.javaVersion()
+        val javaVersion = JavaVersion.toVersion(libs.versions.jvmTarget.get())
         sourceCompatibility = javaVersion
         targetCompatibility = javaVersion
     }

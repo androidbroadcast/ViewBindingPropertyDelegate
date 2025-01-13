@@ -4,12 +4,10 @@ import com.android.build.api.dsl.LibraryExtension
 import com.vanniktech.maven.publish.MavenPublishBaseExtension
 import org.gradle.accessors.dm.LibrariesForLibs
 import org.gradle.api.Action
-import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.kotlin.dsl.findByType
 import org.gradle.kotlin.dsl.the
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
 
 private val Project.androidLibraryExtension: LibraryExtension
@@ -32,14 +30,6 @@ fun LibraryExtension.kotlinOptions(configure: Action<org.jetbrains.kotlin.gradle
 
 val Project.libs: LibrariesForLibs
     get() = the<LibrariesForLibs>()
-
-fun LibrariesForLibs.javaVersion(): JavaVersion {
-    return JavaVersion.toVersion(versions.jvmTarget.get())
-}
-
-fun LibrariesForLibs.jvmTarget(): JvmTarget {
-    return JvmTarget.fromTarget(versions.jvmTarget.get())
-}
 
 fun Project.vanniktechMavenPublishingConfig(configure: Action<MavenPublishBaseExtension>) {
     (this as org.gradle.api.plugins.ExtensionAware).extensions.configure("mavenPublishing", configure)
