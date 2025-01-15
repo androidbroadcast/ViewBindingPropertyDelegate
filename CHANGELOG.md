@@ -12,6 +12,7 @@
 - Update Jetpack dependencies. All of them connected as compileOnly dependencies that's why you can use any version of them in project, but with required APIs
 - All libraries artifacts distributes as AAR instead of JAR
 - Fix bugs working during inter-Fragment's animations 
+- Upgrade JVM target from 8 to 11
 - Minor improvements 
 
 ### Changed under hood tracking of Fragment View lifecycle
