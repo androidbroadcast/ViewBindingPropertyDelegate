@@ -1,5 +1,3 @@
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.kirich1409/viewbindingpropertydelegate/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.kirich1409/viewbindingpropertydelegate)
-
 # ViewBindingPropertyDelegate
 
 Make work with [Android View Binding](https://d.android.com/topic/libraries/view-binding) simpler. The library:
