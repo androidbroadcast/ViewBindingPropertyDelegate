@@ -1,4 +1,4 @@
-## 2.0.0 (In progress)
+## 2.0.0
 
 - Changed under hood tracking of View lifecycle in ViewBindingPropertyDelegate
 - Removed ViewBindingPropertyDelegate base on Lifecycle
