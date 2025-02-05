@@ -12,9 +12,9 @@ androidx-fragment = "1.8.5"
 androidx-recyclerview = "1.4.0"
 kotlin = "2.1.10"
 leakcanary = "2.7"
-vbpd-version = "2.0.0"
 vanniktechMavenPublish = "0.30.0"
 jvmTarget = "11"
+vbpd = "2.0.1"
 
 [libraries]
 androidx-activity = { module = "androidx.activity:activity", version.ref = "androidx-activity" }
