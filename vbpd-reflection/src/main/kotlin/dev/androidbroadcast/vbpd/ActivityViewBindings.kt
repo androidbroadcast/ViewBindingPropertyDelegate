@@ -29,10 +29,10 @@ public inline fun <reified T : ViewBinding> Activity.viewBinding(
  * @param viewBindingRootId Root view's id that will be used as a root for the view binding
  */
 @JvmName("viewBindingActivity")
-public fun <A : Activity, T : ViewBinding> Activity.viewBinding(
+public fun <T : ViewBinding> Activity.viewBinding(
     viewBindingClass: Class<T>,
     @IdRes viewBindingRootId: Int,
-): ViewBindingProperty<A, T> {
+): ViewBindingProperty<Activity, T> {
     return viewBinding(
         viewBinder = { activity ->
             val rootView = ActivityCompat.requireViewById<View>(activity, viewBindingRootId)
@@ -66,17 +66,17 @@ public fun <A : Activity, T : ViewBinding> Activity.viewBinding(
  * @param T Class of expected [ViewBinding] result class
  */
 @JvmName("inflateViewBindingActivity")
-public inline fun <A : Activity, reified T : ViewBinding> Activity.viewBinding(
+public inline fun <reified T : ViewBinding> Activity.viewBinding(
     createMethod: CreateMethod = CreateMethod.BIND,
-): ViewBindingProperty<A, T> {
+): ViewBindingProperty<Activity, T> {
     return viewBinding(T::class.java, createMethod)
 }
 
 @JvmName("inflateViewBindingActivity")
-public fun <A : Activity, T : ViewBinding> Activity.viewBinding(
+public fun <T : ViewBinding> Activity.viewBinding(
     viewBindingClass: Class<T>,
     createMethod: CreateMethod = CreateMethod.BIND,
-): ViewBindingProperty<A, T> = when (createMethod) {
+): ViewBindingProperty<Activity, T> = when (createMethod) {
     CreateMethod.BIND -> viewBinding(viewBindingClass, ::findRootView)
     CreateMethod.INFLATE -> {
         ActivityViewBindingProperty {
