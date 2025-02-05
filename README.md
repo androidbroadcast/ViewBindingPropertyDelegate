@@ -31,12 +31,36 @@ dependencies {
 ## Samples
 
 ```kotlin
-class ProfileFragment : Fragment(R.layout.profile) { 
+import javax.swing.text.View
+
+class ProfileFragment : Fragment(R.layout.profile) {
    // RECOMMENDED 
    // no reflection API is used under the hood
    private val profileBinding: ProfileBinding by viewBinding(ProfileBinding::bind)
+
+   override fun onViewCreated(view: View) {
+       super.onViewCreate(view)
+       with(profileBinding) {
+          firstName.text = person.name
+          lastName.text = person.surname
+          email.text = person.email
+       }
+   }
+
+   override fun onViewDestroyed() {
+      super.onViewDestroyed()
+      // profileBinding will be cleared after onViewDestroyed()
+   }
 }
 ```
+
+## Migration from 1.0
+
+You can use 1.X and 2.X in the same project without replacing code
+
+- Replace packages `com.github.kirich1409.viewbindingpropertydelegate` -> `dev.androidbroadcast.vbpd`
+- Replace `onViewDestroyed` with moving code to proper lifecycle callback (Fragment.onViewDestroyed(), Activity.onDestroy(), etc.)
+- 
 
 # License
 
