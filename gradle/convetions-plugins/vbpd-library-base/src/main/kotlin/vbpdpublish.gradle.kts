@@ -51,7 +51,7 @@ vanniktechMavenPublishingConfig {
             connection = "scm:git:https://github.com/androidbroadcast/ViewBindingPropertyDelegate.git"
             developerConnection = "scm:git:git@github.com:androidbroadcast/ViewBindingPropertyDelegate.git"
             url = "https://github.com/androidbroadcast/ViewBindingPropertyDelegate"
-            tag = libs.versions.vbpd.version.get()
+            tag = libs.vbpd.get()
         }
 
         ciManagement {
