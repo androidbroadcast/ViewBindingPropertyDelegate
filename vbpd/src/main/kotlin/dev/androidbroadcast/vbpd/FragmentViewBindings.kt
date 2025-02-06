@@ -4,7 +4,6 @@ package dev.androidbroadcast.vbpd
 
 import android.view.View
 import androidx.annotation.IdRes
-import androidx.annotation.MainThread
 import androidx.annotation.RestrictTo
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
@@ -22,7 +21,6 @@ private class FragmentViewBindingProperty<F : Fragment, T : ViewBinding>(
     private var lifecycleCallbacks: FragmentManager.FragmentLifecycleCallbacks? = null
     private var fragmentManager: FragmentManager? = null
 
-    @MainThread
     override fun getValue(thisRef: F, property: KProperty<*>): T {
         val viewBinding = super.getValue(thisRef, property)
         registerLifecycleCallbacksIfNeeded(thisRef)

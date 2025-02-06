@@ -7,7 +7,6 @@ import android.app.Application.ActivityLifecycleCallbacks
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.IdRes
-import androidx.annotation.MainThread
 import androidx.annotation.RestrictTo
 import androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP
 import androidx.viewbinding.ViewBinding
@@ -29,7 +28,6 @@ public class ActivityViewBindingProperty<in A : Activity, T : ViewBinding>(
             .also { registerLifecycleCallbacksIfNeeded(thisRef) }
     }
 
-    @MainThread
     private fun registerLifecycleCallbacksIfNeeded(activity: Activity) {
         if (lifecycleCallbacks != null) return
         VBActivityLifecycleCallbacks()

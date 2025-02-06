@@ -1,10 +1,8 @@
 package dev.androidbroadcast.vbpd
 
 import androidx.annotation.CallSuper
-import androidx.annotation.MainThread
 import androidx.annotation.RestrictTo
 import androidx.viewbinding.ViewBinding
-import dev.androidbroadcast.vbpd.internal.checkMainThread
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
@@ -16,7 +14,6 @@ public interface ViewBindingProperty<in R : Any, out T : ViewBinding> : ReadOnly
     /**
      * Clear all cached data. Will be called when own object destroys view
      */
-    @MainThread
     public fun clear() {
         // Do nothing
     }
@@ -30,7 +27,6 @@ public open class EagerViewBindingProperty<in R : Any, out T : ViewBinding>(
     private val viewBinding: T,
 ) : ViewBindingProperty<R, T> {
 
-    @MainThread
     public override fun getValue(
         thisRef: R,
         property: KProperty<*>,
@@ -47,19 +43,15 @@ public open class LazyViewBindingProperty<in R : Any, T : ViewBinding>(
 
     private var viewBinding: T? = null
 
-    @MainThread
     public override fun getValue(
         thisRef: R,
         property: KProperty<*>,
     ): T {
-        checkMainThread("Access to ViewBinding from non UI (Main) thread forbidden")
         return viewBinding ?: viewBinder(thisRef).also { viewBinding = it }
     }
 
-    @MainThread
     @CallSuper
     public override fun clear() {
-        checkMainThread()
         viewBinding = null
     }
 }
