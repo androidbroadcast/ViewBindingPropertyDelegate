@@ -3,7 +3,7 @@ import dev.androidbroadcast.vbpd.gradle.kotlinConfig
 import dev.androidbroadcast.vbpd.gradle.kotlinOptions
 import dev.androidbroadcast.vbpd.gradle.libs
 
-version = libs.vbpd.get()
+version = libs.versions.vbpd
 group = "dev.androidbroadcast.vbpd"
 
 plugins.apply(libs.plugins.jetbrains.kotlin.android.get().pluginId)
