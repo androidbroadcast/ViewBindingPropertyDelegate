@@ -1,5 +1,5 @@
 ## 2.0.2
-- Remove checking access from the Main thread
+- Removing checking access from the Main thread to correct work with [AsyncLayoutInflater](https://developer.android.com/jetpack/androidx/releases/asynclayoutinflater)
 
 ## 2.0.1
 - VBPD-reflection: revert new generic param in 2.0.0 for Activity ViewBindings
