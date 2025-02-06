@@ -14,7 +14,7 @@ kotlin = "2.1.10"
 leakcanary = "2.7"
 vanniktechMavenPublish = "0.30.0"
 jvmTarget = "11"
-vbpd = "2.0.1"
+vbpd = "2.0.2"
 
 [libraries]
 androidx-activity = { module = "androidx.activity:activity", version.ref = "androidx-activity" }
