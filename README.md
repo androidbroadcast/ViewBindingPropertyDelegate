@@ -60,7 +60,6 @@ You can use 1.X and 2.X in the same project without replacing code
 
 - Replace packages `com.github.kirich1409.viewbindingpropertydelegate` -> `dev.androidbroadcast.vbpd`
 - Replace `onViewDestroyed` with moving code to proper lifecycle callback (Fragment.onViewDestroyed(), Activity.onDestroy(), etc.)
-- 
 
 # License
 
