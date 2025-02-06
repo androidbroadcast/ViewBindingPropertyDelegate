@@ -1,3 +1,6 @@
+## 2.0.2
+- Remove checking access from the Main thread
+
 ## 2.0.1
 - VBPD-reflection: revert new generic param in 2.0.0 for Activity ViewBindings
 
