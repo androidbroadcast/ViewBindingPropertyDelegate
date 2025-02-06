@@ -32,7 +32,7 @@ mavenPublishingConfig {
 }
 
 vanniktechMavenPublishingConfig {
-    // Публикация в https://central.sonatype.com/
+    // Publishing to https://central.sonatype.com/
     publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
     signAllPublications()
 
