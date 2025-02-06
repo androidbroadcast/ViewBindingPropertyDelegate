@@ -1,3 +1,6 @@
+## 2.0.1
+- VBPD-reflection: revert new generic param in 2.0.0 for Activity ViewBindings
+
 ## 2.0.0
 
 - Changed under hood tracking of View lifecycle in ViewBindingPropertyDelegate
