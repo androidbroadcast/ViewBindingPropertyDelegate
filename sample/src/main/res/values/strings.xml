@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">View Binding Delegate</string>
+    <string name="app_name">VBPD</string>
     <string name="fullname_format">%s %s</string>
 </resources>

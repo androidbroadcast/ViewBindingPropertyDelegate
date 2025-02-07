@@ -17,7 +17,11 @@ class MainActivity :
     AppCompatActivity(R.layout.activity_main),
     PersonListFragment.OnPersonClickListener {
 
+    // Without reflection
     private val viewBinding by viewBinding(ActivityMainBinding::bind)
+
+    // Or with reflection
+    // private val viewBinding: ActivityMainBinding by viewBinding()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge(

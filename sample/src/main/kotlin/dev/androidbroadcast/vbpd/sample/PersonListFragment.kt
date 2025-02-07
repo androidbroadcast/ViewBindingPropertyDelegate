@@ -15,7 +15,12 @@ import dev.androidbroadcast.vbpd.viewBinding
 
 class PersonListFragment : Fragment(R.layout.fragment_person_list) {
 
+    // Without reflection
     private val viewBinding by viewBinding(FragmentPersonListBinding::bind)
+
+    // or with reflection
+    // private val viewBinding: FragmentPersonListBinding by viewBinding()
+
     private var personAdapter: PersonAdapter? = null
 
     private val onPersonClickListener: OnPersonClickListener

@@ -8,7 +8,12 @@ import dev.androidbroadcast.vbpd.viewBinding
 
 class PersonFragment : DialogFragment(R.layout.fragment_person_detail) {
 
+    // Without reflection
     private val viewBinding by viewBinding(FragmentPersonDetailBinding::bind)
+
+    // With reflection
+    // private val viewBinding: FragmentPersonDetailBinding by viewBinding()
+
     private val person: Person by parcelableArgument(ARG_PERSON)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
