@@ -11,13 +11,15 @@ private fun readProperties(): Properties {
     return localProperties
 }
 
-val properties = readProperties()
-project.extra["signing.keyId"] = properties.getProperty("signing.keyId")
-project.extra["signing.secretKeyRingFile"] = properties.getProperty("signing.secretKeyRingFile")
-project.extra["signing.password"] = properties.getProperty("signing.password")
+if (project.rootProject.file("local.properties").exists()) {
+    val properties = readProperties()
+    project.extra["signing.keyId"] = properties.getProperty("signing.keyId")
+    project.extra["signing.secretKeyRingFile"] = properties.getProperty("signing.secretKeyRingFile")
+    project.extra["signing.password"] = properties.getProperty("signing.password")
 
-project.extra["mavenCentralUsername"] = properties.getProperty("mavenCentralUsername")
-project.extra["mavenCentralPassword"] = properties.getProperty("mavenCentralPassword")
+    project.extra["mavenCentralUsername"] = properties.getProperty("mavenCentralUsername")
+    project.extra["mavenCentralPassword"] = properties.getProperty("mavenCentralPassword")
+}
 
 mavenPublishingConfig {
     publications {
