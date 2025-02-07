@@ -11,7 +11,6 @@ androidx-appcompat = "1.7.0"
 androidx-fragment = "1.8.5"
 androidx-recyclerview = "1.4.0"
 kotlin = "2.1.10"
-leakcanary = "2.7"
 vanniktechMavenPublish = "0.30.0"
 jvmTarget = "11"
 vbpd = "2.0.2"
@@ -24,7 +23,6 @@ androidx-core = { module = "androidx.core:core-ktx", version.ref = "androidx-cor
 androidx-fragment = { module = "androidx.fragment:fragment-ktx", version.ref = "androidx-fragment" }
 androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "androidx-recyclerview" }
 androidx-viewbinding = { module = "androidx.databinding:viewbinding", version.ref = "agp" }
-leakcanary-android = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanary" }
 
 gradleplugins-android = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 gradleplugins-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
