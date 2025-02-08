@@ -3,6 +3,7 @@ name: Build libs
 on:
   push:
     branches: [ "develop" ]
+  workflow_dispatch:
 
 jobs:
   check:
