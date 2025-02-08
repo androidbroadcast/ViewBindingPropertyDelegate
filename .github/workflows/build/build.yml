@@ -1,0 +1,47 @@
+name: Android CI
+
+on:
+  push:
+    branches: [ "develop" ]
+
+jobs:
+  check:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: set up JDK
+      uses: actions/setup-java@v4
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+        cache: gradle
+
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+    
+    - name: Check build
+      run: ./gradlew :vbpd-core:assembleRelease :vbpd:assembleRelease :vbpd-reflection:assembleRelease
+      continue-on-error: true
+    
+    - name: Save Gradle cache
+      uses: actions/cache@v4
+      continue-on-error: true
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
+
+    - name: Save build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: vbpd-libs-builds
+        path: 
+          vbpd/build/outputs/aar/*.aar
+          vbpd-core/build/outputs/aar/*.aar
+          vbpd-reflection/build/outputs/aar/*.aar
+          
