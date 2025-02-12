@@ -21,10 +21,10 @@ allprojects {
 
 dependencies {
     // recommended
-    implementation("dev.androidbroadcast.vbpd:vbpd:2.0.2")
+    implementation("dev.androidbroadcast.vbpd:vbpd:2.0.3")
     
     // additional factories that use reflection under hood
-    implementation("dev.androidbroadcast.vbpd:vbpd-reflection:2.0.2")
+    implementation("dev.androidbroadcast.vbpd:vbpd-reflection:2.0.3")
 }
 ```
 
