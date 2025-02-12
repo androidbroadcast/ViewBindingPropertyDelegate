@@ -30,6 +30,7 @@ public class ActivityViewBindingProperty<in A : Activity, T : ViewBinding>(
 
     private fun registerLifecycleCallbacksIfNeeded(activity: Activity) {
         if (lifecycleCallbacks != null) return
+        this.activity = activity
         VBActivityLifecycleCallbacks()
             .also { callbacks -> this.lifecycleCallbacks = callbacks }
             .let(activity.application::registerActivityLifecycleCallbacks)
