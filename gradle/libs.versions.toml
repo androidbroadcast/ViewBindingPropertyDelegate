@@ -13,7 +13,7 @@ androidx-recyclerview = "1.4.0"
 kotlin = "2.1.10"
 vanniktechMavenPublish = "0.30.0"
 jvmTarget = "11"
-vbpd = "2.0.3"
+vbpd = "2.0.4"
 
 [libraries]
 androidx-activity = { module = "androidx.activity:activity", version.ref = "androidx-activity" }
