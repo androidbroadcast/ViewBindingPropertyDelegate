@@ -1,4 +1,4 @@
-## 2.0.3
+## 2.0.4
 - Fix memory leaks when using VBPD in Activities [#127](https://github.com/androidbroadcast/ViewBindingPropertyDelegate/issues/127)
 
 ## 2.0.2
