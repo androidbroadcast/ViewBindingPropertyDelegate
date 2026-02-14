@@ -31,15 +31,16 @@ dependencies {
 ## Samples
 
 ```kotlin
-import javax.swing.text.View
+import android.os.Bundle
+import android.view.View
 
 class ProfileFragment : Fragment(R.layout.profile) {
-   // RECOMMENDED 
+   // RECOMMENDED
    // no reflection API is used under the hood
    private val profileBinding: ProfileBinding by viewBinding(ProfileBinding::bind)
 
-   override fun onViewCreated(view: View) {
-       super.onViewCreate(view)
+   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+       super.onViewCreated(view, savedInstanceState)
        with(profileBinding) {
           firstName.text = person.name
           lastName.text = person.surname
@@ -47,9 +48,9 @@ class ProfileFragment : Fragment(R.layout.profile) {
        }
    }
 
-   override fun onViewDestroyed() {
-      super.onViewDestroyed()
-      // profileBinding will be cleared after onViewDestroyed()
+   override fun onDestroyView() {
+      super.onDestroyView()
+      // profileBinding will be cleared after onDestroyView()
    }
 }
 ```
