@@ -1,6 +1,5 @@
 @file:JvmName("ViewBindingPropertyDelegateUtilsRef")
 
-
 package dev.androidbroadcast.vbpd
 
 import android.view.LayoutInflater

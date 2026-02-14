@@ -14,6 +14,14 @@ kotlin = "2.1.10"
 vanniktechMavenPublish = "0.30.0"
 jvmTarget = "11"
 vbpd = "2.0.4"
+detekt = "1.23.8"
+ktlint = "14.0.1"
+kover = "0.9.7"
+robolectric = "4.16.1"
+mockk = "1.14.9"
+androidx-test-core = "1.6.1"
+androidx-test-runner = "1.6.2"
+junit = "4.13.2"
 
 [libraries]
 androidx-activity = { module = "androidx.activity:activity", version.ref = "androidx-activity" }
@@ -27,6 +35,17 @@ androidx-viewbinding = { module = "androidx.databinding:viewbinding", version.re
 gradleplugins-android = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 gradleplugins-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 gradleplugins-vanniktechMavenPublish = { module = "com.vanniktech.maven.publish:com.vanniktech.maven.publish.gradle.plugin", version.ref = "vanniktechMavenPublish" }
+gradleplugins-detekt = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
+gradleplugins-ktlint = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref = "ktlint" }
+gradleplugins-kover = { module = "org.jetbrains.kotlinx:kover-gradle-plugin", version.ref = "kover" }
+
+test-robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
+test-mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+test-junit = { module = "junit:junit", version.ref = "junit" }
+test-kotlin = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
+test-androidx-core = { module = "androidx.test:core-ktx", version.ref = "androidx-test-core" }
+test-androidx-runner = { module = "androidx.test:runner", version.ref = "androidx-test-runner" }
+test-fragment = { module = "androidx.fragment:fragment-testing", version.ref = "androidx-fragment" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -34,3 +53,6 @@ android-library = { id = "com.android.library", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 vanniktechMavenPublish = { id = "com.vanniktech.maven.publish", version.ref = "vanniktechMavenPublish" }
 parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
+kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
