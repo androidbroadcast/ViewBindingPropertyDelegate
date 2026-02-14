@@ -4,15 +4,15 @@ import dev.androidbroadcast.vbpd.gradle.mavenPublishingConfig
 import dev.androidbroadcast.vbpd.gradle.vanniktechMavenPublishingConfig
 import java.util.Properties
 
-// generate Kotlin function read from local.properties
-private fun readProperties(): Properties {
-    val localProperties = Properties()
-    project.rootProject.file("local.properties").inputStream().use(localProperties::load)
-    return localProperties
-}
+// CI: credentials come from environment variables (ORG_GRADLE_PROJECT_* prefix)
+// Local: credentials come from local.properties
+private val localPropertiesFile = project.rootProject.file("local.properties")
 
-if (project.rootProject.file("local.properties").exists()) {
-    val properties = readProperties()
+if (localPropertiesFile.exists()) {
+    val properties = Properties().apply {
+        localPropertiesFile.inputStream().use(::load)
+    }
+    // File-based signing for local development
     project.extra["signing.keyId"] = properties.getProperty("signing.keyId")
     project.extra["signing.secretKeyRingFile"] = properties.getProperty("signing.secretKeyRingFile")
     project.extra["signing.password"] = properties.getProperty("signing.password")
