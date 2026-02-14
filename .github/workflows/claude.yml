@@ -6,23 +6,29 @@ on:
   pull_request_review_comment:
     types: [created]
   issues:
-    types: [opened, assigned]
+    types: [opened]
   pull_request_review:
     types: [submitted]
 
 jobs:
   claude:
-    # Only allow trusted collaborators to trigger Claude
+    # Only allow trusted collaborators to trigger Claude when explicitly mentioned
     if: |
-      github.event.comment.author_association == 'OWNER' ||
-      github.event.comment.author_association == 'MEMBER' ||
-      github.event.comment.author_association == 'COLLABORATOR' ||
-      github.event.review.author_association == 'OWNER' ||
-      github.event.review.author_association == 'MEMBER' ||
-      github.event.review.author_association == 'COLLABORATOR' ||
-      github.event.issue.author_association == 'OWNER' ||
-      github.event.issue.author_association == 'MEMBER' ||
-      github.event.issue.author_association == 'COLLABORATOR'
+      (
+        github.event.comment.author_association == 'OWNER' ||
+        github.event.comment.author_association == 'MEMBER' ||
+        github.event.comment.author_association == 'COLLABORATOR' ||
+        github.event.review.author_association == 'OWNER' ||
+        github.event.review.author_association == 'MEMBER' ||
+        github.event.review.author_association == 'COLLABORATOR' ||
+        github.event.issue.author_association == 'OWNER' ||
+        github.event.issue.author_association == 'MEMBER' ||
+        github.event.issue.author_association == 'COLLABORATOR'
+      ) && (
+        contains(github.event.comment.body || '', '@claude') ||
+        contains(github.event.review.body || '', '@claude') ||
+        contains(github.event.issue.body || '', '@claude')
+      )
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -32,6 +38,15 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
+        with:
+          ref: >-
+            ${{
+              (github.event_name == 'issue_comment' && github.event.issue.pull_request &&
+                format('refs/pull/{0}/head', github.event.issue.number)) ||
+              (github.event.pull_request &&
+                format('refs/pull/{0}/head', github.event.pull_request.number)) ||
+              github.sha
+            }}
 
       - name: Set up JDK 21
         uses: actions/setup-java@v5
