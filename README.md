@@ -1,5 +1,9 @@
 # ViewBindingPropertyDelegate
 
+[![Maven Central](https://img.shields.io/maven-central/v/dev.androidbroadcast.vbpd/vbpd)](https://central.sonatype.com/namespace/dev.androidbroadcast.vbpd)
+[![Build](https://github.com/androidbroadcast/ViewBindingPropertyDelegate/actions/workflows/build.yml/badge.svg)](https://github.com/androidbroadcast/ViewBindingPropertyDelegate/actions/workflows/build.yml)
+[![License](https://img.shields.io/github/license/androidbroadcast/ViewBindingPropertyDelegate)](LICENSE.md)
+
 Make work with [Android View Binding](https://d.android.com/topic/libraries/view-binding) simpler. The library:
 - manages ViewBinding lifecycle and clears the reference to it to prevent memory leaks
 - eliminates the need to keep nullable references to Views or ViewBindings
