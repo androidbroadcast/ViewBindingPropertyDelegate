@@ -1,7 +1,7 @@
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
-    includeBuild("gradle/convetions-plugins")
+    includeBuild("gradle/conventions-plugins")
 
     repositories {
         google {

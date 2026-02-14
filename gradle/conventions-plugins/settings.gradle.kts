@@ -1,5 +1,6 @@
 @file:Suppress("UnstableApiUsage")
 
+rootProject.name = "conventions-plugins"
 
 pluginManagement {
     repositories {
