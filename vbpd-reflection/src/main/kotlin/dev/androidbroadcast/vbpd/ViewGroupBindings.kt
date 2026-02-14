@@ -17,9 +17,7 @@ import androidx.viewbinding.ViewBinding
 @JvmName("viewBindingFragment")
 public inline fun <reified T : ViewBinding> ViewGroup.viewBinding(
     createMethod: CreateMethod = CreateMethod.BIND,
-): ViewBindingProperty<ViewGroup, T> {
-    return viewBinding(T::class.java, createMethod)
-}
+): ViewBindingProperty<ViewGroup, T> = viewBinding(T::class.java, createMethod)
 
 /**
  * Create new [ViewBinding] associated with the [ViewGroup]
@@ -34,13 +32,15 @@ public inline fun <reified T : ViewBinding> ViewGroup.viewBinding(
 public fun <T : ViewBinding> ViewGroup.viewBinding(
     viewBindingClass: Class<T>,
     createMethod: CreateMethod = CreateMethod.BIND,
-): ViewBindingProperty<ViewGroup, T> = when (createMethod) {
-    CreateMethod.BIND -> viewBinding { viewGroup ->
-        ViewBindingCache.getBind(viewBindingClass).bind(viewGroup)
-    }
+): ViewBindingProperty<ViewGroup, T> =
+    when (createMethod) {
+        CreateMethod.BIND ->
+            viewBinding { viewGroup ->
+                ViewBindingCache.getBind(viewBindingClass).bind(viewGroup)
+            }
 
-    CreateMethod.INFLATE -> viewBinding(viewBindingClass, attachToRoot = true)
-}
+        CreateMethod.INFLATE -> viewBinding(viewBindingClass, attachToRoot = true)
+    }
 
 /**
  * Inflate new [ViewBinding] with the [ViewGroup][this] as a parent
@@ -51,11 +51,8 @@ public fun <T : ViewBinding> ViewGroup.viewBinding(
  * @return [ViewBindingProperty] that holds [ViewBinding] instance
  */
 @JvmName("viewBindingFragment")
-public inline fun <reified T : ViewBinding> ViewGroup.viewBinding(
-    attachToRoot: Boolean = false,
-): ViewBindingProperty<ViewGroup, T> {
-    return viewBinding(T::class.java, attachToRoot)
-}
+public inline fun <reified T : ViewBinding> ViewGroup.viewBinding(attachToRoot: Boolean = false): ViewBindingProperty<ViewGroup, T> =
+    viewBinding(T::class.java, attachToRoot)
 
 /**
  * Inflate new [ViewBinding] with the [ViewGroup][this] as a parent
@@ -69,9 +66,9 @@ public inline fun <reified T : ViewBinding> ViewGroup.viewBinding(
 public fun <T : ViewBinding> ViewGroup.viewBinding(
     viewBindingClass: Class<T>,
     attachToRoot: Boolean = false,
-): ViewBindingProperty<ViewGroup, T> {
-    return viewBinding { viewGroup ->
-        ViewBindingCache.getInflateWithLayoutInflater(viewBindingClass)
+): ViewBindingProperty<ViewGroup, T> =
+    viewBinding { viewGroup ->
+        ViewBindingCache
+            .getInflateWithLayoutInflater(viewBindingClass)
             .inflate(LayoutInflater.from(context), viewGroup, attachToRoot)
     }
-}

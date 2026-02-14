@@ -15,7 +15,6 @@ import kotlin.test.assertNotNull
 
 @RunWith(RobolectricTestRunner::class)
 class ActivityViewBindingPropertyTest {
-
     class TestActivity : Activity() {
         val binding by viewBinding { activity: TestActivity ->
             mockk<ViewBinding> {
@@ -33,10 +32,12 @@ class ActivityViewBindingPropertyTest {
 
     @Test
     fun `binding is accessible after onCreate`() {
-        val controller = Robolectric.buildActivity(TestActivity::class.java)
-            .create()
-            .start()
-            .resume()
+        val controller =
+            Robolectric
+                .buildActivity(TestActivity::class.java)
+                .create()
+                .start()
+                .resume()
 
         val activity = controller.get()
         assertNotNull(activity.binding)
@@ -44,10 +45,12 @@ class ActivityViewBindingPropertyTest {
 
     @Test
     fun `binding is cleared after onDestroy`() {
-        val controller = Robolectric.buildActivity(TestActivity::class.java)
-            .create()
-            .start()
-            .resume()
+        val controller =
+            Robolectric
+                .buildActivity(TestActivity::class.java)
+                .create()
+                .start()
+                .resume()
 
         val activity = controller.get()
         assertNotNull(activity.binding)

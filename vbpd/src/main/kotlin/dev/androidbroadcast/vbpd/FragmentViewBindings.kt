@@ -17,11 +17,13 @@ import kotlin.reflect.KProperty
 private class FragmentViewBindingProperty<F : Fragment, T : ViewBinding>(
     viewBinder: (F) -> T,
 ) : LazyViewBindingProperty<F, T>(viewBinder) {
-
     private var lifecycleCallbacks: FragmentManager.FragmentLifecycleCallbacks? = null
     private var fragmentManager: FragmentManager? = null
 
-    override fun getValue(thisRef: F, property: KProperty<*>): T {
+    override fun getValue(
+        thisRef: F,
+        property: KProperty<*>,
+    ): T {
         val viewBinding = super.getValue(thisRef, property)
         registerLifecycleCallbacksIfNeeded(thisRef)
         return viewBinding
@@ -33,11 +35,13 @@ private class FragmentViewBindingProperty<F : Fragment, T : ViewBinding>(
     private fun registerLifecycleCallbacksIfNeeded(fragment: Fragment) {
         if (lifecycleCallbacks != null) return
 
-        val fragmentManager = fragment.parentFragmentManager
-            .also { fm -> this.fragmentManager = fm }
-        lifecycleCallbacks = VBFragmentLifecycleCallback(fragment).also { callbacks ->
-            fragmentManager.registerFragmentLifecycleCallbacks(callbacks, false)
-        }
+        val fragmentManager =
+            fragment.parentFragmentManager
+                .also { fm -> this.fragmentManager = fm }
+        lifecycleCallbacks =
+            VBFragmentLifecycleCallback(fragment).also { callbacks ->
+                fragmentManager.registerFragmentLifecycleCallbacks(callbacks, false)
+            }
     }
 
     override fun clear() {
@@ -55,7 +59,6 @@ private class FragmentViewBindingProperty<F : Fragment, T : ViewBinding>(
     inner class VBFragmentLifecycleCallback(
         fragment: Fragment,
     ) : FragmentManager.FragmentLifecycleCallbacks() {
-
         private val fragment by weakReference(fragment)
 
         override fun onFragmentViewDestroyed(
@@ -72,11 +75,8 @@ private class FragmentViewBindingProperty<F : Fragment, T : ViewBinding>(
  */
 @Suppress("UnusedReceiverParameter")
 @JvmName("viewBindingFragmentWithCallbacks")
-public fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
-    viewBinder: (F) -> T,
-): ViewBindingProperty<F, T> {
-    return fragmentViewBinding(viewBinder = viewBinder)
-}
+public fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(viewBinder: (F) -> T): ViewBindingProperty<F, T> =
+    fragmentViewBinding(viewBinder = viewBinder)
 
 /**
  * Create new [ViewBinding] associated with the [Fragment]
@@ -89,9 +89,7 @@ public fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
 public inline fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
     crossinline vbFactory: (View) -> T,
     crossinline viewProvider: (F) -> View = Fragment::requireView,
-): ViewBindingProperty<F, T> {
-    return fragmentViewBinding(viewBinder = { fragment -> viewProvider(fragment).let(vbFactory) })
-}
+): ViewBindingProperty<F, T> = fragmentViewBinding(viewBinder = { fragment -> viewProvider(fragment).let(vbFactory) })
 
 /**
  * Create new [ViewBinding] associated with the [Fragment]
@@ -103,8 +101,8 @@ public inline fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
 public inline fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
     crossinline vbFactory: (View) -> T,
     @IdRes viewBindingRootId: Int,
-): ViewBindingProperty<F, T> {
-    return when (this) {
+): ViewBindingProperty<F, T> =
+    when (this) {
         is DialogFragment -> {
             fragmentViewBinding { fragment ->
                 (fragment as DialogFragment)
@@ -115,17 +113,14 @@ public inline fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
 
         else -> {
             fragmentViewBinding { fragment ->
-                fragment.requireView()
+                fragment
+                    .requireView()
                     .requireViewByIdCompat<View>(viewBindingRootId)
                     .let(vbFactory)
             }
         }
     }
-}
 
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-public fun <F : Fragment, T : ViewBinding> fragmentViewBinding(
-    viewBinder: (F) -> T,
-): ViewBindingProperty<F, T> {
-    return FragmentViewBindingProperty(viewBinder)
-}
+public fun <F : Fragment, T : ViewBinding> fragmentViewBinding(viewBinder: (F) -> T): ViewBindingProperty<F, T> =
+    FragmentViewBindingProperty(viewBinder)

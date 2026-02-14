@@ -12,11 +12,8 @@ import dev.androidbroadcast.vbpd.internal.requireViewByIdCompat
  * Create new [ViewBinding] associated with the [ViewHolder]
  */
 @Suppress("UnusedReceiverParameter")
-public fun <VH : ViewHolder, T : ViewBinding> ViewHolder.viewBinding(
-    viewBinder: (VH) -> T,
-): ViewBindingProperty<VH, T> {
-    return LazyViewBindingProperty(viewBinder)
-}
+public fun <VH : ViewHolder, T : ViewBinding> ViewHolder.viewBinding(viewBinder: (VH) -> T): ViewBindingProperty<VH, T> =
+    LazyViewBindingProperty(viewBinder)
 
 /**
  * Create new [ViewBinding] associated with the [ViewHolder]
@@ -28,11 +25,10 @@ public fun <VH : ViewHolder, T : ViewBinding> ViewHolder.viewBinding(
 public inline fun <VH : ViewHolder, T : ViewBinding> ViewHolder.viewBinding(
     crossinline vbFactory: (View) -> T,
     crossinline viewProvider: (VH) -> View = ViewHolder::itemView,
-): ViewBindingProperty<VH, T> {
-    return LazyViewBindingProperty { viewHolder: VH ->
+): ViewBindingProperty<VH, T> =
+    LazyViewBindingProperty { viewHolder: VH ->
         viewProvider(viewHolder).let(vbFactory)
     }
-}
 
 /**
  * Create new [ViewBinding] associated with the [ViewHolder]
@@ -44,8 +40,7 @@ public inline fun <VH : ViewHolder, T : ViewBinding> ViewHolder.viewBinding(
 public inline fun <VH : ViewHolder, T : ViewBinding> ViewHolder.viewBinding(
     crossinline vbFactory: (View) -> T,
     @IdRes viewBindingRootId: Int,
-): ViewBindingProperty<VH, T> {
-    return LazyViewBindingProperty { viewHolder: VH ->
+): ViewBindingProperty<VH, T> =
+    LazyViewBindingProperty { viewHolder: VH ->
         vbFactory(viewHolder.itemView.requireViewByIdCompat(viewBindingRootId))
     }
-}
