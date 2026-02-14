@@ -38,7 +38,7 @@ jobs:
           ${{ runner.os }}-gradle-
 
     - name: Save build artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: vbpd-libs-builds
         path: 
