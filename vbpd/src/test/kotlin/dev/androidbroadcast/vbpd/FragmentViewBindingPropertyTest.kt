@@ -18,7 +18,6 @@ import kotlin.test.assertNotNull
 
 @RunWith(RobolectricTestRunner::class)
 class FragmentViewBindingPropertyTest {
-
     class TestFragment : Fragment() {
         val binding by viewBinding { fragment: TestFragment ->
             mockk<ViewBinding> {
@@ -29,10 +28,8 @@ class FragmentViewBindingPropertyTest {
         override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
-            savedInstanceState: Bundle?
-        ): View {
-            return FrameLayout(requireContext())
-        }
+            savedInstanceState: Bundle?,
+        ): View = FrameLayout(requireContext())
     }
 
     @Test

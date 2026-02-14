@@ -18,9 +18,7 @@ import dev.androidbroadcast.vbpd.internal.findRootView
 @JvmName("viewBindingActivity")
 public inline fun <reified T : ViewBinding> Activity.viewBinding(
     @IdRes viewBindingRootId: Int,
-): ViewBindingProperty<Activity, T> {
-    return viewBinding(T::class.java, viewBindingRootId)
-}
+): ViewBindingProperty<Activity, T> = viewBinding(T::class.java, viewBindingRootId)
 
 /**
  * Create new [ViewBinding] associated with the [Activity]
@@ -32,14 +30,13 @@ public inline fun <reified T : ViewBinding> Activity.viewBinding(
 public fun <T : ViewBinding> Activity.viewBinding(
     viewBindingClass: Class<T>,
     @IdRes viewBindingRootId: Int,
-): ViewBindingProperty<Activity, T> {
-    return viewBinding(
+): ViewBindingProperty<Activity, T> =
+    viewBinding(
         viewBinder = { activity ->
             val rootView = ActivityCompat.requireViewById<View>(activity, viewBindingRootId)
             ViewBindingCache.getBind(viewBindingClass).bind(rootView)
-        }
+        },
     )
-}
 
 /**
  * Create new [ViewBinding] associated with the [Activity]
@@ -51,13 +48,12 @@ public fun <T : ViewBinding> Activity.viewBinding(
 public fun <A : Activity, T : ViewBinding> Activity.viewBinding(
     viewBindingClass: Class<T>,
     rootViewProvider: (A) -> View,
-): ViewBindingProperty<A, T> {
-    return viewBinding(
+): ViewBindingProperty<A, T> =
+    viewBinding(
         viewBinder = { activity ->
             ViewBindingCache.getBind(viewBindingClass).bind(rootViewProvider(activity))
-        }
+        },
     )
-}
 
 /**
  * Create new [ViewBinding] associated with the [Activity].
@@ -68,20 +64,20 @@ public fun <A : Activity, T : ViewBinding> Activity.viewBinding(
 @JvmName("inflateViewBindingActivity")
 public inline fun <reified T : ViewBinding> Activity.viewBinding(
     createMethod: CreateMethod = CreateMethod.BIND,
-): ViewBindingProperty<Activity, T> {
-    return viewBinding(T::class.java, createMethod)
-}
+): ViewBindingProperty<Activity, T> = viewBinding(T::class.java, createMethod)
 
 @JvmName("inflateViewBindingActivity")
 public fun <T : ViewBinding> Activity.viewBinding(
     viewBindingClass: Class<T>,
     createMethod: CreateMethod = CreateMethod.BIND,
-): ViewBindingProperty<Activity, T> = when (createMethod) {
-    CreateMethod.BIND -> viewBinding(viewBindingClass, ::findRootView)
-    CreateMethod.INFLATE -> {
-        ActivityViewBindingProperty {
-            ViewBindingCache.getInflateWithLayoutInflater(viewBindingClass)
-                .inflate(layoutInflater, null, false)
+): ViewBindingProperty<Activity, T> =
+    when (createMethod) {
+        CreateMethod.BIND -> viewBinding(viewBindingClass, ::findRootView)
+        CreateMethod.INFLATE -> {
+            ActivityViewBindingProperty {
+                ViewBindingCache
+                    .getInflateWithLayoutInflater(viewBindingClass)
+                    .inflate(layoutInflater, null, false)
+            }
         }
     }
-}

@@ -7,10 +7,12 @@ import io.mockk.mockk
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import kotlin.reflect.KProperty
 import kotlin.test.assertEquals
 
 @RunWith(RobolectricTestRunner::class)
 class LazyViewBindingPropertyTest {
+    private val mockProperty = mockk<KProperty<*>>(relaxed = true)
 
     private fun createMockBinding(): ViewBinding {
         val view = mockk<View>()
@@ -25,7 +27,7 @@ class LazyViewBindingPropertyTest {
         val property = LazyViewBindingProperty<Any, ViewBinding> { expectedBinding }
         val thisRef = Any()
 
-        val result = property.getValue(thisRef, ::result)
+        val result = property.getValue(thisRef, mockProperty)
         assertEquals(expectedBinding, result)
     }
 
@@ -33,14 +35,15 @@ class LazyViewBindingPropertyTest {
     fun `getValue returns same instance on subsequent calls`() {
         var callCount = 0
         val binding = createMockBinding()
-        val property = LazyViewBindingProperty<Any, ViewBinding> {
-            callCount++
-            binding
-        }
+        val property =
+            LazyViewBindingProperty<Any, ViewBinding> {
+                callCount++
+                binding
+            }
         val thisRef = Any()
 
-        val first = property.getValue(thisRef, ::first)
-        val second = property.getValue(thisRef, ::second)
+        val first = property.getValue(thisRef, mockProperty)
+        val second = property.getValue(thisRef, mockProperty)
 
         assertEquals(first, second)
         assertEquals(1, callCount, "viewBinder should be called only once")
@@ -49,15 +52,16 @@ class LazyViewBindingPropertyTest {
     @Test
     fun `clear resets cached binding`() {
         var callCount = 0
-        val property = LazyViewBindingProperty<Any, ViewBinding> {
-            callCount++
-            createMockBinding()
-        }
+        val property =
+            LazyViewBindingProperty<Any, ViewBinding> {
+                callCount++
+                createMockBinding()
+            }
         val thisRef = Any()
 
-        property.getValue(thisRef, ::thisRef)
+        property.getValue(thisRef, mockProperty)
         property.clear()
-        property.getValue(thisRef, ::thisRef)
+        property.getValue(thisRef, mockProperty)
 
         assertEquals(2, callCount, "viewBinder should be called again after clear()")
     }
@@ -65,12 +69,13 @@ class LazyViewBindingPropertyTest {
     @Test
     fun `viewBinder receives correct thisRef`() {
         var receivedRef: Any? = null
-        val property = LazyViewBindingProperty<String, ViewBinding> { ref ->
-            receivedRef = ref
-            createMockBinding()
-        }
+        val property =
+            LazyViewBindingProperty<String, ViewBinding> { ref ->
+                receivedRef = ref
+                createMockBinding()
+            }
 
-        property.getValue("test", ::receivedRef)
+        property.getValue("test", mockProperty)
         assertEquals("test", receivedRef)
     }
 }

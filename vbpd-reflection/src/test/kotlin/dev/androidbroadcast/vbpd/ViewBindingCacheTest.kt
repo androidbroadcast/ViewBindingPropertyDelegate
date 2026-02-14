@@ -8,7 +8,6 @@ import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
 class ViewBindingCacheTest {
-
     @Before
     fun setup() {
         ViewBindingCache.clear()

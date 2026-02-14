@@ -7,10 +7,12 @@ import io.mockk.mockk
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import kotlin.reflect.KProperty
 import kotlin.test.assertEquals
 
 @RunWith(RobolectricTestRunner::class)
 class EagerViewBindingPropertyTest {
+    private val mockProperty = mockk<KProperty<*>>(relaxed = true)
 
     private fun createMockBinding(): ViewBinding {
         val view = mockk<View>()
@@ -24,7 +26,7 @@ class EagerViewBindingPropertyTest {
         val expectedBinding = createMockBinding()
         val property = EagerViewBindingProperty<Any, ViewBinding>(expectedBinding)
 
-        val result = property.getValue(Any(), ::result)
+        val result = property.getValue(Any(), mockProperty)
         assertEquals(expectedBinding, result)
     }
 
@@ -34,8 +36,8 @@ class EagerViewBindingPropertyTest {
         val property = EagerViewBindingProperty<Any, ViewBinding>(binding)
         val thisRef = Any()
 
-        val first = property.getValue(thisRef, ::first)
-        val second = property.getValue(thisRef, ::second)
+        val first = property.getValue(thisRef, mockProperty)
+        val second = property.getValue(thisRef, mockProperty)
         assertEquals(first, second)
     }
 }

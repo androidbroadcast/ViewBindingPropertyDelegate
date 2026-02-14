@@ -7,7 +7,6 @@ import kotlin.test.assertNotNull
 
 @RunWith(RobolectricTestRunner::class)
 class ReflectionActivityViewBindingsTest {
-
     @Test
     fun `CreateMethod BIND and INFLATE enum values exist`() {
         assertNotNull(CreateMethod.BIND)

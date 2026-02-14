@@ -14,5 +14,5 @@ public enum class CreateMethod {
     /**
      * Use `ViewBinding.inflate(LayoutInflater, ViewGroup, boolean)`
      */
-    INFLATE
+    INFLATE,
 }
