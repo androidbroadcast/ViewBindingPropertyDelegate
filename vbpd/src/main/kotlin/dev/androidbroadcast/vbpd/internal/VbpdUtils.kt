@@ -14,16 +14,15 @@ import java.lang.ref.WeakReference
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
+@RestrictTo(RestrictTo.Scope.LIBRARY)
+public fun <V : View> View.requireViewByIdCompat(
+    @IdRes id: Int,
+): V = ViewCompat.requireViewById(this, id)
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
-public fun <V : View> View.requireViewByIdCompat(@IdRes id: Int): V {
-    return ViewCompat.requireViewById(this, id)
-}
-
-@RestrictTo(RestrictTo.Scope.LIBRARY)
-public fun <V : View> Activity.requireViewByIdCompat(@IdRes id: Int): V {
-    return ActivityCompat.requireViewById(this, id)
-}
+public fun <V : View> Activity.requireViewByIdCompat(
+    @IdRes id: Int,
+): V = ActivityCompat.requireViewById(this, id)
 
 /**
  * Utility to find root view for ViewBinding in Activity
@@ -40,11 +39,14 @@ public fun findRootView(activity: Activity): View {
 }
 
 @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP)
-public fun DialogFragment.findRootView(@IdRes viewBindingRootId: Int): View {
+public fun DialogFragment.findRootView(
+    @IdRes viewBindingRootId: Int,
+): View {
     if (showsDialog) {
-        val dialog = checkNotNull(dialog) {
-            "DialogFragment doesn't have a dialog. Use viewBinding delegate after onCreateDialog"
-        }
+        val dialog =
+            checkNotNull(dialog) {
+                "DialogFragment doesn't have a dialog. Use viewBinding delegate after onCreateDialog"
+            }
         val window = checkNotNull(dialog.window) { "Fragment's Dialog has no window" }
         return with(window.decorView) {
             if (viewBindingRootId != 0) requireViewByIdCompat(viewBindingRootId) else this
@@ -55,17 +57,20 @@ public fun DialogFragment.findRootView(@IdRes viewBindingRootId: Int): View {
 }
 
 @RestrictTo(RestrictTo.Scope.LIBRARY)
-internal fun <T : Any> weakReference(value: T? = null): ReadWriteProperty<Any, T?> {
-    return object : ReadWriteProperty<Any, T?> {
-
+internal fun <T : Any> weakReference(value: T? = null): ReadWriteProperty<Any, T?> =
+    object : ReadWriteProperty<Any, T?> {
         private var weakRef = WeakReference(value)
 
-        override fun getValue(thisRef: Any, property: KProperty<*>): T? {
-            return weakRef.get()
-        }
+        override fun getValue(
+            thisRef: Any,
+            property: KProperty<*>,
+        ): T? = weakRef.get()
 
-        override fun setValue(thisRef: Any, property: KProperty<*>, value: T?) {
+        override fun setValue(
+            thisRef: Any,
+            property: KProperty<*>,
+            value: T?,
+        ) {
             weakRef = WeakReference(value)
         }
     }
-}

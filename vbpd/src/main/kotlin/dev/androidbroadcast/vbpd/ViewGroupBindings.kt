@@ -11,12 +11,11 @@ import dev.androidbroadcast.vbpd.internal.requireViewByIdCompat
  *
  * @param vbFactory Function that creates a new instance of [ViewBinding]. `MyViewBinding::bind` can be used
  */
-public inline fun <VG : ViewGroup, T : ViewBinding> VG.viewBinding(
-    crossinline vbFactory: (VG) -> T,
-): ViewBindingProperty<VG, T> = when {
-    isInEditMode -> EagerViewBindingProperty(vbFactory(this))
-    else -> LazyViewBindingProperty { viewGroup -> vbFactory(viewGroup) }
-}
+public inline fun <VG : ViewGroup, T : ViewBinding> VG.viewBinding(crossinline vbFactory: (VG) -> T): ViewBindingProperty<VG, T> =
+    when {
+        isInEditMode -> EagerViewBindingProperty(vbFactory(this))
+        else -> LazyViewBindingProperty { viewGroup -> vbFactory(viewGroup) }
+    }
 
 /**
  * Create new [ViewBinding] associated with the [ViewGroup]
@@ -28,9 +27,7 @@ public inline fun <VG : ViewGroup, T : ViewBinding> VG.viewBinding(
 public inline fun <T : ViewBinding> ViewGroup.viewBinding(
     crossinline vbFactory: (View) -> T,
     @IdRes viewBindingRootId: Int,
-): ViewBindingProperty<ViewGroup, T> {
-    return viewBinding(viewBindingRootId, vbFactory)
-}
+): ViewBindingProperty<ViewGroup, T> = viewBinding(viewBindingRootId, vbFactory)
 
 /**
  * Create new [ViewBinding] associated with the [ViewGroup]
@@ -41,9 +38,11 @@ public inline fun <T : ViewBinding> ViewGroup.viewBinding(
 public inline fun <T : ViewBinding> ViewGroup.viewBinding(
     @IdRes viewBindingRootId: Int,
     crossinline vbFactory: (View) -> T,
-): ViewBindingProperty<ViewGroup, T> = when {
-    isInEditMode -> EagerViewBindingProperty(requireViewByIdCompat(viewBindingRootId))
-    else -> LazyViewBindingProperty { viewGroup: ViewGroup ->
-        vbFactory(viewGroup.requireViewByIdCompat(viewBindingRootId))
+): ViewBindingProperty<ViewGroup, T> =
+    when {
+        isInEditMode -> EagerViewBindingProperty(requireViewByIdCompat(viewBindingRootId))
+        else ->
+            LazyViewBindingProperty { viewGroup: ViewGroup ->
+                vbFactory(viewGroup.requireViewByIdCompat(viewBindingRootId))
+            }
     }
-}

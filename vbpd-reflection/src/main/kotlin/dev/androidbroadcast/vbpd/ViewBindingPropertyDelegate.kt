@@ -1,6 +1,5 @@
 @file:JvmName("ViewBindingPropertyDelegateUtilsRef")
 
-
 package dev.androidbroadcast.vbpd
 
 import android.view.LayoutInflater
@@ -22,9 +21,9 @@ public inline fun <R : Any, reified VB : ViewBinding> viewBindingLazy(
     layoutInflater: LayoutInflater,
     parent: ViewGroup? = null,
     attachToParent: Boolean = parent != null,
-): ViewBindingProperty<R, VB> {
-    return LazyViewBindingProperty {
-        ViewBindingCache.getInflateWithLayoutInflater(VB::class.java)
+): ViewBindingProperty<R, VB> =
+    LazyViewBindingProperty {
+        ViewBindingCache
+            .getInflateWithLayoutInflater(VB::class.java)
             .inflate(layoutInflater, parent, attachToParent)
     }
-}

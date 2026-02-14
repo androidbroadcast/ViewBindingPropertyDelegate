@@ -19,9 +19,7 @@ import dev.androidbroadcast.vbpd.internal.requireViewByIdCompat
 @JvmName("viewBindingFragment")
 public inline fun <reified T : ViewBinding> Fragment.viewBinding(
     @IdRes viewBindingRootId: Int,
-): ViewBindingProperty<Fragment, T> {
-    return viewBinding(T::class.java, viewBindingRootId)
-}
+): ViewBindingProperty<Fragment, T> = viewBinding(T::class.java, viewBindingRootId)
 
 /**
  * Create new [ViewBinding] associated with the [DialogFragment]
@@ -35,12 +33,12 @@ public inline fun <reified T : ViewBinding> Fragment.viewBinding(
 public fun <T : ViewBinding> DialogFragment.viewBinding(
     viewBindingClass: Class<T>,
     @IdRes viewBindingRootId: Int,
-): ViewBindingProperty<DialogFragment, T> {
-    return viewBinding { dialogFragment: DialogFragment ->
-        ViewBindingCache.getBind(viewBindingClass)
+): ViewBindingProperty<DialogFragment, T> =
+    viewBinding { dialogFragment: DialogFragment ->
+        ViewBindingCache
+            .getBind(viewBindingClass)
             .bind(dialogFragment.findRootView(viewBindingRootId))
     }
-}
 
 /**
  * Create new [ViewBinding] associated with the [Fragment]
@@ -54,12 +52,12 @@ public fun <T : ViewBinding> DialogFragment.viewBinding(
 public fun <T : ViewBinding> Fragment.viewBinding(
     viewBindingClass: Class<T>,
     @IdRes viewBindingRootId: Int,
-): ViewBindingProperty<Fragment, T> {
-    return viewBinding { _: Fragment ->
-        ViewBindingCache.getBind(viewBindingClass)
+): ViewBindingProperty<Fragment, T> =
+    viewBinding { _: Fragment ->
+        ViewBindingCache
+            .getBind(viewBindingClass)
             .bind(requireView().requireViewByIdCompat(viewBindingRootId))
     }
-}
 
 /**
  * Create new [ViewBinding] associated with the [Fragment]
@@ -71,9 +69,7 @@ public fun <T : ViewBinding> Fragment.viewBinding(
 @JvmName("viewBindingFragment")
 public inline fun <reified T : ViewBinding> Fragment.viewBinding(
     createMethod: CreateMethod = CreateMethod.BIND,
-): ViewBindingProperty<Fragment, T> {
-    return viewBinding(T::class.java, createMethod)
-}
+): ViewBindingProperty<Fragment, T> = viewBinding(T::class.java, createMethod)
 
 /**
  * Create new [ViewBinding] associated with the [Fragment]
@@ -87,17 +83,20 @@ public inline fun <reified T : ViewBinding> Fragment.viewBinding(
 public fun <T : ViewBinding> Fragment.viewBinding(
     viewBindingClass: Class<T>,
     createMethod: CreateMethod = CreateMethod.BIND,
-): ViewBindingProperty<Fragment, T> = when (createMethod) {
-    CreateMethod.BIND -> fragmentViewBinding {
-        ViewBindingCache.getBind(viewBindingClass).bind(requireView())
-    }
-
-    CreateMethod.INFLATE -> {
-        fragmentViewBinding(
-            viewBinder = {
-                ViewBindingCache.getInflateWithLayoutInflater(viewBindingClass)
-                    .inflate(layoutInflater, null, false)
+): ViewBindingProperty<Fragment, T> =
+    when (createMethod) {
+        CreateMethod.BIND ->
+            fragmentViewBinding {
+                ViewBindingCache.getBind(viewBindingClass).bind(requireView())
             }
-        )
+
+        CreateMethod.INFLATE -> {
+            fragmentViewBinding(
+                viewBinder = {
+                    ViewBindingCache
+                        .getInflateWithLayoutInflater(viewBindingClass)
+                        .inflate(layoutInflater, null, false)
+                },
+            )
+        }
     }
-}

@@ -19,14 +19,16 @@ import kotlin.reflect.KProperty
 public class ActivityViewBindingProperty<in A : Activity, T : ViewBinding>(
     viewBinder: (A) -> T,
 ) : LazyViewBindingProperty<A, T>(viewBinder) {
-
     private var lifecycleCallbacks: ActivityLifecycleCallbacks? = null
     private var activity: Activity? by weakReference(null)
 
-    override fun getValue(thisRef: A, property: KProperty<*>): T {
-        return super.getValue(thisRef, property)
+    override fun getValue(
+        thisRef: A,
+        property: KProperty<*>,
+    ): T =
+        super
+            .getValue(thisRef, property)
             .also { registerLifecycleCallbacksIfNeeded(thisRef) }
-    }
 
     private fun registerLifecycleCallbacksIfNeeded(activity: Activity) {
         if (lifecycleCallbacks != null) return
@@ -48,8 +50,10 @@ public class ActivityViewBindingProperty<in A : Activity, T : ViewBinding>(
     }
 
     private inner class VBActivityLifecycleCallbacks : ActivityLifecycleCallbacks {
-
-        override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
+        override fun onActivityCreated(
+            activity: Activity,
+            savedInstanceState: Bundle?,
+        ) {
         }
 
         override fun onActivityStarted(activity: Activity) {
@@ -64,7 +68,10 @@ public class ActivityViewBindingProperty<in A : Activity, T : ViewBinding>(
         override fun onActivityStopped(activity: Activity) {
         }
 
-        override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {
+        override fun onActivitySaveInstanceState(
+            activity: Activity,
+            outState: Bundle,
+        ) {
         }
 
         override fun onActivityDestroyed(activity: Activity) {
@@ -83,11 +90,8 @@ public class ActivityViewBindingProperty<in A : Activity, T : ViewBinding>(
  */
 @JvmName("viewBindingActivityWithCallbacks")
 @Suppress("UnusedReceiverParameter")
-public fun <A : Activity, T : ViewBinding> Activity.viewBinding(
-    viewBinder: (A) -> T,
-): ViewBindingProperty<A, T> {
-    return ActivityViewBindingProperty(viewBinder = viewBinder)
-}
+public fun <A : Activity, T : ViewBinding> Activity.viewBinding(viewBinder: (A) -> T): ViewBindingProperty<A, T> =
+    ActivityViewBindingProperty(viewBinder = viewBinder)
 
 /**
  * Create new [ViewBinding] associated with the [Activity].
@@ -102,9 +106,7 @@ public fun <A : Activity, T : ViewBinding> Activity.viewBinding(
 public inline fun <A : Activity, T : ViewBinding> Activity.viewBinding(
     crossinline vbFactory: (View) -> T,
     crossinline viewProvider: (A) -> View = ::findRootView,
-): ViewBindingProperty<A, T> {
-    return viewBinding { activity -> vbFactory(viewProvider(activity)) }
-}
+): ViewBindingProperty<A, T> = viewBinding { activity -> vbFactory(viewProvider(activity)) }
 
 /**
  * Create new [ViewBinding] associated with the [Activity][this] and allow customization of how
@@ -119,8 +121,7 @@ public inline fun <A : Activity, T : ViewBinding> Activity.viewBinding(
 public inline fun <A : Activity, T : ViewBinding> Activity.viewBinding(
     crossinline vbFactory: (View) -> T,
     @IdRes viewBindingRootId: Int,
-): ViewBindingProperty<A, T> {
-    return viewBinding { activity ->
+): ViewBindingProperty<A, T> =
+    viewBinding { activity ->
         vbFactory(activity.requireViewByIdCompat(viewBindingRootId))
     }
-}

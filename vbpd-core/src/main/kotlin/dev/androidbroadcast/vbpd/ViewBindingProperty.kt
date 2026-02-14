@@ -10,7 +10,6 @@ import kotlin.reflect.KProperty
  * Base ViewBindingProperty interface that provides access to operations in the property delegate.
  */
 public interface ViewBindingProperty<in R : Any, out T : ViewBinding> : ReadOnlyProperty<R, T> {
-
     /**
      * Clear all cached data. Will be called when own object destroys view
      */
@@ -26,7 +25,6 @@ public interface ViewBindingProperty<in R : Any, out T : ViewBinding> : ReadOnly
 public open class EagerViewBindingProperty<in R : Any, out T : ViewBinding>(
     private val viewBinding: T,
 ) : ViewBindingProperty<R, T> {
-
     public override fun getValue(
         thisRef: R,
         property: KProperty<*>,
@@ -40,15 +38,12 @@ public open class EagerViewBindingProperty<in R : Any, out T : ViewBinding>(
 public open class LazyViewBindingProperty<in R : Any, T : ViewBinding>(
     private val viewBinder: (R) -> T,
 ) : ViewBindingProperty<R, T> {
-
     private var viewBinding: T? = null
 
     public override fun getValue(
         thisRef: R,
         property: KProperty<*>,
-    ): T {
-        return viewBinding ?: viewBinder(thisRef).also { viewBinding = it }
-    }
+    ): T = viewBinding ?: viewBinder(thisRef).also { viewBinding = it }
 
     @CallSuper
     public override fun clear() {

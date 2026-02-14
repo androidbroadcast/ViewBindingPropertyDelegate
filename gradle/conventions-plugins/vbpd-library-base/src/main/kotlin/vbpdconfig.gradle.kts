@@ -11,6 +11,9 @@ plugins.apply(libs.plugins.android.library.get().pluginId)
 plugins.apply("maven-publish")
 plugins.apply(libs.plugins.vanniktechMavenPublish.get().pluginId)
 plugins.apply("vbpdpublish")
+plugins.apply(libs.plugins.detekt.get().pluginId)
+plugins.apply(libs.plugins.ktlint.get().pluginId)
+plugins.apply(libs.plugins.kover.get().pluginId)
 
 val libraryId = "${project.group}.${project.name.replace("vbpd-", "").replace("-", ".")}"
 
@@ -43,9 +46,21 @@ androidLibraryConfig {
         jvmTarget = libs.versions.jvmTarget.get()
         freeCompilerArgs += listOf("-module-name", libraryId)
     }
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 kotlinConfig {
     jvmToolchain(libs.versions.jvmTarget.get().toInt())
     explicitApi()
+}
+
+extensions.configure<io.gitlab.arturbosch.detekt.extensions.DetektExtension> {
+    config.setFrom(rootProject.files("config/detekt/detekt.yml"))
+    buildUponDefaultConfig = true
+    parallel = true
 }

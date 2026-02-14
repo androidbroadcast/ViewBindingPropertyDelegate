@@ -13,9 +13,7 @@ import androidx.viewbinding.ViewBinding
  * @return [ViewBindingProperty] that holds [ViewBinding] instance
  */
 @JvmName("viewBindingViewHolder")
-public inline fun <reified T : ViewBinding> ViewHolder.viewBinding(): ViewBindingProperty<ViewHolder, T> {
-    return viewBinding(T::class.java)
-}
+public inline fun <reified T : ViewBinding> ViewHolder.viewBinding(): ViewBindingProperty<ViewHolder, T> = viewBinding(T::class.java)
 
 /**
  * Create new [ViewBinding] associated with the [ViewHolder]
@@ -25,8 +23,5 @@ public inline fun <reified T : ViewBinding> ViewHolder.viewBinding(): ViewBindin
  * @return [ViewBindingProperty] that holds [ViewBinding] instance
  */
 @JvmName("viewBindingViewHolder")
-public fun <T : ViewBinding> ViewHolder.viewBinding(
-    viewBindingClass: Class<T>,
-): ViewBindingProperty<ViewHolder, T> {
-    return viewBinding { ViewBindingCache.getBind(viewBindingClass).bind(itemView) }
-}
+public fun <T : ViewBinding> ViewHolder.viewBinding(viewBindingClass: Class<T>): ViewBindingProperty<ViewHolder, T> =
+    viewBinding { ViewBindingCache.getBind(viewBindingClass).bind(itemView) }
