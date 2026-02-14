@@ -1,0 +1,66 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Extract version from tag
+        id: version
+        run: echo "TAG_VERSION=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Validate version matches libs.versions.toml
+        run: |
+          TOML_VERSION=$(grep '^vbpd = ' gradle/libs.versions.toml | sed 's/vbpd = "\(.*\)"/\1/')
+          if [ "${{ steps.version.outputs.TAG_VERSION }}" != "$TOML_VERSION" ]; then
+            echo "::error::Tag version (${{ steps.version.outputs.TAG_VERSION }}) does not match libs.versions.toml ($TOML_VERSION)"
+            exit 1
+          fi
+          echo "Version validated: $TOML_VERSION"
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Run checks
+        run: ./gradlew check --no-configuration-cache
+
+      - name: Publish to Maven Central
+        run: ./gradlew publishAllPublicationsToMavenCentralRepository --no-configuration-cache
+        env:
+          ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.SIGNING_KEY_ID }}
+          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_KEY }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_PASSWORD }}
+          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+
+      - name: Build release AARs
+        run: ./gradlew :vbpd-core:assembleRelease :vbpd:assembleRelease :vbpd-reflection:assembleRelease --no-configuration-cache
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
+          generate_release_notes: true
+          files: |
+            vbpd-core/build/outputs/aar/vbpd-core-release.aar
+            vbpd/build/outputs/aar/vbpd-release.aar
+            vbpd-reflection/build/outputs/aar/vbpd-reflection-release.aar
