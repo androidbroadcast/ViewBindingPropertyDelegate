@@ -1,4 +1,4 @@
-name: Android quality checks
+name: Quality Checks
 
 on:
   push:
@@ -8,12 +8,12 @@ on:
 
 jobs:
   check:
-
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v4
-    - name: set up JDK
+
+    - name: Set up JDK
       uses: actions/setup-java@v4
       with:
         java-version: '21'
@@ -22,19 +22,26 @@ jobs:
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
-    
-    - name: Check build
+
+    - name: Run all checks
       run: ./gradlew check
-      continue-on-error: true
-    
-    - name: Save Gradle cache
-      uses: actions/cache@v4
-      continue-on-error: true
+
+    - name: Generate coverage report
+      run: ./gradlew koverXmlReport
+
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v4
       with:
+        name: test-results
         path: |
-          ~/.gradle/caches
-          ~/.gradle/wrapper
-        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-        restore-keys: |
-          ${{ runner.os }}-gradle-
-          
+          **/build/test-results/
+          **/build/reports/tests/
+
+    - name: Upload coverage reports
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-reports
+        path: |
+          **/build/reports/kover/

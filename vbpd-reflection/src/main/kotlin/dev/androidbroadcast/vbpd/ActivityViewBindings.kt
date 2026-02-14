@@ -1,13 +1,13 @@
 @file:JvmName("ReflectionActivityViewBindings")
 
-package  dev.androidbroadcast.vbpd
+package dev.androidbroadcast.vbpd
 
 import android.app.Activity
 import android.view.View
 import androidx.annotation.IdRes
 import androidx.core.app.ActivityCompat
 import androidx.viewbinding.ViewBinding
-import  dev.androidbroadcast.vbpd.internal.findRootView
+import dev.androidbroadcast.vbpd.internal.findRootView
 
 /**
  * Create new [ViewBinding] associated with the [Activity]

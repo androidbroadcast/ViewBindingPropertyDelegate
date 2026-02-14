@@ -14,7 +14,6 @@ import java.lang.ref.WeakReference
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
-
 @RestrictTo(RestrictTo.Scope.LIBRARY)
 public fun <V : View> View.requireViewByIdCompat(@IdRes id: Int): V {
     return ViewCompat.requireViewById(this, id)

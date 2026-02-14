@@ -18,4 +18,15 @@ dependencies {
     compileOnly(libs.androidx.recyclerview)
     compileOnly(libs.androidx.activity)
     api(projects.vbpd)
+
+    testImplementation(libs.test.junit)
+    testImplementation(libs.test.kotlin)
+    testImplementation(libs.test.mockk)
+    testImplementation(libs.test.robolectric)
+    testImplementation(libs.test.androidx.core)
+    testImplementation(libs.test.androidx.runner)
+    testImplementation(libs.androidx.fragment)
+    testImplementation(libs.androidx.activity)
+    testImplementation(libs.androidx.recyclerview)
+    testImplementation(libs.androidx.appcompat)
 }

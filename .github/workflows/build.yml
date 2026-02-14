@@ -1,4 +1,4 @@
-name: Build libs
+name: Build & Test
 
 on:
   push:
@@ -7,12 +7,12 @@ on:
 
 jobs:
   check:
-
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v4
-    - name: set up JDK
+
+    - name: Set up JDK
       uses: actions/setup-java@v4
       with:
         java-version: '21'
@@ -21,28 +21,41 @@ jobs:
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
-    
-    - name: Check build
-      run: ./gradlew :vbpd-core:assembleRelease :vbpd:assembleRelease :vbpd-reflection:assembleRelease --no-configuration-cache --no-build-cache
-      continue-on-error: true
-    
-    - name: Save Gradle cache
-      uses: actions/cache@v4
-      continue-on-error: true
-      with:
-        path: |
-          ~/.gradle/caches
-          ~/.gradle/wrapper
-        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-        restore-keys: |
-          ${{ runner.os }}-gradle-
 
-    - name: Save build artifacts
+    - name: Build libraries
+      run: ./gradlew :vbpd-core:assembleRelease :vbpd:assembleRelease :vbpd-reflection:assembleRelease
+
+    - name: Run tests
+      run: ./gradlew testDebugUnitTest
+
+    - name: Run code quality checks
+      run: ./gradlew detekt ktlintCheck
+
+    - name: Generate coverage report
+      run: ./gradlew koverXmlReport
+
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-results
+        path: |
+          **/build/test-results/
+          **/build/reports/tests/
+
+    - name: Upload coverage reports
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-reports
+        path: |
+          **/build/reports/kover/
+
+    - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
         name: vbpd-libs-builds
-        path: 
-          vbpd/build/outputs/aar/vbpd-release.aar
-          vbpd-core/build/outputs/aar/vbpd-core-release.aar
-          vbpd-reflection/build/outputs/aar/vbpd-reflection-release.aar
-          
+        path: |
+          vbpd-core/build/outputs/aar/*.aar
+          vbpd/build/outputs/aar/*.aar
+          vbpd-reflection/build/outputs/aar/*.aar
