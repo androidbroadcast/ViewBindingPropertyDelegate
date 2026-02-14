@@ -30,11 +30,12 @@ jobs:
         with:
           fetch-depth: 1
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
+      - name: Set up JDK 21
+        uses: actions/setup-java@v5
         with:
-          java-version: '17'
+          java-version: '21'
           distribution: 'temurin'
+          cache: gradle
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
@@ -48,6 +49,6 @@ jobs:
           # Configure Claude's behavior for Android/Gradle project
           claude_args: |
             --model claude-opus-4-6
-            --max-turns 15
-            --allowedTools "Bash(./gradlew check),Bash(./gradlew assembleRelease),Bash(./gradlew ktlintFormat),Bash(./gradlew koverHtmlReport),Bash(./gradlew :vbpd-core:*),Bash(./gradlew :vbpd:*),Bash(./gradlew :vbpd-reflection:*),Bash(git *)"
-            --system-prompt "Follow coding standards from CLAUDE.md. Use explicit API mode (all public declarations need visibility modifiers). Ensure Kotlin formatting with ktlintFormat before committing. Run ./gradlew check to verify changes. Target JVM 11. PRs target develop branch, except hotfixes which target master."
+            --max-turns 20
+            --allowedTools "Bash(./gradlew check),Bash(./gradlew assembleRelease),Bash(./gradlew ktlintFormat),Bash(./gradlew ktlintCheck),Bash(./gradlew detekt),Bash(./gradlew testDebugUnitTest),Bash(./gradlew koverHtmlReport),Bash(./gradlew koverXmlReport),Bash(./gradlew :vbpd-core:*),Bash(./gradlew :vbpd:*),Bash(./gradlew :vbpd-reflection:*),Bash(./gradlew :sample:*),Bash(git status),Bash(git diff),Bash(git log*),Bash(git show*)"
+            --system-prompt "Android library project (ViewBindingPropertyDelegate). Three modules: vbpd-core (foundation), vbpd (lifecycle delegates), vbpd-reflection (reflection + cache). Follow CLAUDE.md: explicit API mode required, Kotlin code style 'official', JVM target 11. Always run ktlintFormat before commit. Use './gradlew check' to verify. PRs → develop (feature/fix/chore/docs branches), hotfixes → master. Version in gradle/libs.versions.toml. Package: dev.androidbroadcast.vbpd."
