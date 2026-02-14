@@ -17,7 +17,14 @@ ViewBindingPropertyDelegate — Android library that simplifies ViewBinding life
 # per-module commands
 ./gradlew :vbpd-core:check        # check single module
 ./gradlew :vbpd:assembleRelease   # build single module AAR
+
+# tests
+./gradlew test                                        # run all unit tests
+./gradlew :vbpd-core:testDebugUnitTest                # tests for single module
+./gradlew :vbpd:testDebugUnitTest --tests '*.ActivityViewBindingPropertyTest'  # single test class
 ```
+
+Tests use JUnit 4 + Robolectric + MockK. Test sources are in `<module>/src/test/kotlin/`.
 
 ## Architecture
 
