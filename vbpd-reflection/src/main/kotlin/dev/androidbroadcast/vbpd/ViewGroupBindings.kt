@@ -14,7 +14,7 @@ import androidx.viewbinding.ViewBinding
  *
  * @return [ViewBindingProperty] that holds [ViewBinding] instance
  */
-@JvmName("viewBindingFragment")
+@JvmName("viewBindingViewGroup")
 public inline fun <reified T : ViewBinding> ViewGroup.viewBinding(
     createMethod: CreateMethod = CreateMethod.BIND,
 ): ViewBindingProperty<ViewGroup, T> = viewBinding(T::class.java, createMethod)
@@ -27,7 +27,7 @@ public inline fun <reified T : ViewBinding> ViewGroup.viewBinding(
  *
  * @return [ViewBindingProperty] that holds [ViewBinding] instance
  */
-@JvmName("viewBindingFragment")
+@JvmName("viewBindingViewGroup")
 @JvmOverloads
 public fun <T : ViewBinding> ViewGroup.viewBinding(
     viewBindingClass: Class<T>,
@@ -50,7 +50,7 @@ public fun <T : ViewBinding> ViewGroup.viewBinding(
  *
  * @return [ViewBindingProperty] that holds [ViewBinding] instance
  */
-@JvmName("viewBindingFragment")
+@JvmName("viewBindingViewGroupInflate")
 public inline fun <reified T : ViewBinding> ViewGroup.viewBinding(attachToRoot: Boolean = false): ViewBindingProperty<ViewGroup, T> =
     viewBinding(T::class.java, attachToRoot)
 
@@ -62,7 +62,7 @@ public inline fun <reified T : ViewBinding> ViewGroup.viewBinding(attachToRoot: 
  *
  * @return [ViewBindingProperty] that holds [ViewBinding] instance
  */
-@JvmName("viewBindingFragment")
+@JvmName("viewBindingViewGroupInflate")
 public fun <T : ViewBinding> ViewGroup.viewBinding(
     viewBindingClass: Class<T>,
     attachToRoot: Boolean = false,

@@ -40,4 +40,15 @@ class EagerViewBindingPropertyTest {
         val second = property.getValue(thisRef, mockProperty)
         assertEquals(first, second)
     }
+
+    @Test
+    fun `clear does not affect getValue`() {
+        val binding = createMockBinding()
+        val property = EagerViewBindingProperty<Any, ViewBinding>(binding)
+        val thisRef = Any()
+
+        property.clear()
+        val result = property.getValue(thisRef, mockProperty)
+        assertEquals(binding, result)
+    }
 }
