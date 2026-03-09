@@ -24,10 +24,6 @@ fun Project.androidLibraryConfig(block: LibraryExtension.() -> Unit): Unit = blo
 fun Project.kotlinConfig(configure: Action<KotlinAndroidProjectExtension>): Unit =
     (this as org.gradle.api.plugins.ExtensionAware).extensions.configure("kotlin", configure)
 
-@Suppress("DEPRECATION")
-fun LibraryExtension.kotlinOptions(configure: Action<org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions>): Unit =
-    (this as org.gradle.api.plugins.ExtensionAware).extensions.configure("kotlinOptions", configure)
-
 val Project.libs: LibrariesForLibs
     get() = the<LibrariesForLibs>()
 
