@@ -11,6 +11,9 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
+import kotlin.reflect.KProperty
+import kotlin.test.assertEquals
+import kotlin.test.assertNotEquals
 import kotlin.test.assertNotNull
 
 @RunWith(RobolectricTestRunner::class)
@@ -55,6 +58,37 @@ class ActivityViewBindingPropertyTest {
         val activity = controller.get()
         assertNotNull(activity.binding)
 
+        // Verify full lifecycle completes without crash
+        // onDestroy triggers clear() which nulls binding and unregisters callbacks
         controller.pause().stop().destroy()
+    }
+
+    @Test
+    fun `clear resets binding and allows recreation`() {
+        val mockProperty = mockk<KProperty<*>>(relaxed = true)
+        var callCount = 0
+        val delegate =
+            ActivityViewBindingProperty<Activity, ViewBinding> { activity ->
+                callCount++
+                mockk<ViewBinding> {
+                    every { root } returns View(activity)
+                }
+            }
+
+        val controller =
+            Robolectric
+                .buildActivity(TestActivity::class.java)
+                .create()
+                .start()
+                .resume()
+        val activity = controller.get()
+
+        val binding1 = delegate.getValue(activity, mockProperty)
+        assertEquals(1, callCount)
+
+        delegate.clear()
+        val binding2 = delegate.getValue(activity, mockProperty)
+        assertEquals(2, callCount)
+        assertNotEquals(binding1, binding2, "After clear(), a new binding should be created")
     }
 }

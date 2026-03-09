@@ -52,7 +52,7 @@ public fun DialogFragment.findRootView(
             if (viewBindingRootId != 0) requireViewByIdCompat(viewBindingRootId) else this
         }
     } else {
-        return requireView().findViewById(viewBindingRootId)
+        return requireView().requireViewByIdCompat(viewBindingRootId)
     }
 }
 
