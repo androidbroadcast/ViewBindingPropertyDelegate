@@ -1,12 +1,10 @@
 import dev.androidbroadcast.vbpd.gradle.androidLibraryConfig
 import dev.androidbroadcast.vbpd.gradle.kotlinConfig
-import dev.androidbroadcast.vbpd.gradle.kotlinOptions
 import dev.androidbroadcast.vbpd.gradle.libs
 
 version = libs.versions.vbpd.get()
 group = "dev.androidbroadcast.vbpd"
 
-plugins.apply(libs.plugins.jetbrains.kotlin.android.get().pluginId)
 plugins.apply(libs.plugins.android.library.get().pluginId)
 plugins.apply("maven-publish")
 plugins.apply(libs.plugins.vanniktechMavenPublish.get().pluginId)
@@ -40,11 +38,6 @@ androidLibraryConfig {
         val javaVersion = JavaVersion.toVersion(libs.versions.jvmTarget.get())
         sourceCompatibility = javaVersion
         targetCompatibility = javaVersion
-    }
-
-    kotlinOptions {
-        jvmTarget = libs.versions.jvmTarget.get()
-        freeCompilerArgs += listOf("-module-name", libraryId)
     }
 
     testOptions {

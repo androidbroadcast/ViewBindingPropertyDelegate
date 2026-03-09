@@ -1,5 +1,4 @@
 plugins {
-    alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.android.application)
     alias(libs.plugins.parcelize)
 }
@@ -20,10 +19,6 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.toVersion(libs.versions.jvmTarget.get())
         targetCompatibility = JavaVersion.toVersion(libs.versions.jvmTarget.get())
-    }
-
-    kotlinOptions {
-        jvmTarget = libs.versions.jvmTarget.get()
     }
 
     buildFeatures {
