@@ -8,3 +8,4 @@
 .externalNativeBuild
 .cxx
 firebase-debug.log
+.worktrees/
